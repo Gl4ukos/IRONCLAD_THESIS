@@ -140,7 +140,10 @@ install(DIRECTORY urdf/
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/ackermann_simulation_node.cpp)
+add_executable(teleop
+  src/teleop.cpp
+  src/command_publishers.cpp
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -202,6 +205,7 @@ install(DIRECTORY urdf/
 #############
 ## Testing ##
 #############
+target_link_libraries(teleop ${catkin_LIBRARIES})
 
 ## Add gtest based cpp test target and link libraries
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_ackermann_simulation.cpp)

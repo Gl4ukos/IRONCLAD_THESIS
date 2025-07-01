@@ -16,11 +16,11 @@ rear_drive_controller:
 gazebo_ros_control:
   pid_gains:
     left_front_steering_joint:
-      p: 10.0
+      p: 1.0
       i: 0.01
       d: 0.1
     right_front_steering_joint:
-      p: 10.0
+      p: 1.0
       i: 0.01
       d: 0.1
     left_rear_wheel_joint:

@@ -99,6 +99,18 @@ install/local/fast: preinstall/fast
 	/usr/local/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/local/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/local/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -141,18 +153,6 @@ list_install_components:
 list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/local/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/local/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -380,6 +380,21 @@ geometry_msgs_generate_messages_eus: ackermann_simulation/CMakeFiles/geometry_ms
 geometry_msgs_generate_messages_eus/fast:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make ackermann_simulation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
 .PHONY : geometry_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+ackermann_simulation/CMakeFiles/teleop.dir/rule:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ackermann_simulation/CMakeFiles/teleop.dir/rule
+.PHONY : ackermann_simulation/CMakeFiles/teleop.dir/rule
+
+# Convenience name for target.
+teleop: ackermann_simulation/CMakeFiles/teleop.dir/rule
+
+.PHONY : teleop
+
+# fast build rule for target.
+teleop/fast:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/build
+.PHONY : teleop/fast
 
 # Convenience name for target.
 ackermann_simulation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule:
@@ -996,6 +1011,60 @@ trajectory_msgs_generate_messages_py/fast:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/trajectory_msgs_generate_messages_py.dir/build.make ackermann_simulation/CMakeFiles/trajectory_msgs_generate_messages_py.dir/build
 .PHONY : trajectory_msgs_generate_messages_py/fast
 
+src/command_publishers.o: src/command_publishers.cpp.o
+
+.PHONY : src/command_publishers.o
+
+# target to build an object file
+src/command_publishers.cpp.o:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.o
+.PHONY : src/command_publishers.cpp.o
+
+src/command_publishers.i: src/command_publishers.cpp.i
+
+.PHONY : src/command_publishers.i
+
+# target to preprocess a source file
+src/command_publishers.cpp.i:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.i
+.PHONY : src/command_publishers.cpp.i
+
+src/command_publishers.s: src/command_publishers.cpp.s
+
+.PHONY : src/command_publishers.s
+
+# target to generate assembly for a file
+src/command_publishers.cpp.s:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.s
+.PHONY : src/command_publishers.cpp.s
+
+src/teleop.o: src/teleop.cpp.o
+
+.PHONY : src/teleop.o
+
+# target to build an object file
+src/teleop.cpp.o:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o
+.PHONY : src/teleop.cpp.o
+
+src/teleop.i: src/teleop.cpp.i
+
+.PHONY : src/teleop.i
+
+# target to preprocess a source file
+src/teleop.cpp.i:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.i
+.PHONY : src/teleop.cpp.i
+
+src/teleop.s: src/teleop.cpp.s
+
+.PHONY : src/teleop.s
+
+# target to generate assembly for a file
+src/teleop.cpp.s:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.s
+.PHONY : src/teleop.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1063,6 +1132,13 @@ help:
 	@echo "... trajectory_msgs_generate_messages_lisp"
 	@echo "... trajectory_msgs_generate_messages_nodejs"
 	@echo "... trajectory_msgs_generate_messages_py"
+	@echo "... teleop"
+	@echo "... src/command_publishers.o"
+	@echo "... src/command_publishers.i"
+	@echo "... src/command_publishers.s"
+	@echo "... src/teleop.o"
+	@echo "... src/teleop.i"
+	@echo "... src/teleop.s"
 .PHONY : help
 
 
