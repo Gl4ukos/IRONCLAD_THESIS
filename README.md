@@ -8,3 +8,8 @@ Requirements:
         -> ros-noetic-gazebo-msgs
     -> UBUNTU FOCAL
     
+TODO:
+
+-> Add target spawning/removing service
+-> Make model more realistic
+-> Make movement more stable (tune PID for steering, check why movement gets inverted in extreme steering cases) 
