@@ -1,0 +1,8 @@
+prefix=/home/maria/ironclad_ws/devel
+
+Name: ackermann_simulation
+Description: Description of ackermann_simulation
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

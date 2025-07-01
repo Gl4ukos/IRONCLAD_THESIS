@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="ackermann_robot">
+
+  <!-- Include common macros (optional) -->
+  <xacro:property name="wheel_radius" value="0.1"/>
+  <xacro:property name="wheel_width" value="0.05"/>
+  <xacro:property name="chassis_length" value="1.0"/>
+  <xacro:property name="chassis_width" value="0.6"/>
+  <xacro:property name="chassis_height" value="0.15"/>
+  <xacro:property name="steering_link_length" value="0.2"/>
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="20"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+
+  <!-- Rear Wheels (rotating only) -->
+  <xacro:macro name="wheel" params="prefix x y joint_name">
+    <link name="${prefix}_link">
+      <visual>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      </collision>
+      <inertial>
+        <mass value="1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+      </inertial>
+    </link>
+
+    <joint name="${joint_name}" type="continuous">
+      <parent link="base_link"/>
+      <child link="${prefix}_link"/>
+      <origin xyz="${x} ${y} ${-wheel_radius}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Front Wheels (steering + rotating) -->
+  <xacro:macro name="steering_wheel" params="prefix x y steering_joint_name wheel_joint_name">
+    <!-- Steering link -->
+    <link name="${prefix}_steering_link">
+      <visual>
+        <geometry>
+          <box size="0.1 0.1 0.1"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.1 0.1 0.1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+      </inertial>
+    </link>
+
+    <!-- Steering joint -->
+    <joint name="${steering_joint_name}" type="continuous">
+      <parent link="base_link"/>
+      <child link="${prefix}_steering_link"/>
+      <origin xyz="${x} ${y} ${-wheel_radius}" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <!-- Wheel link -->
+    <link name="${prefix}_wheel_link">
+      <visual>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      </collision>
+      <inertial>
+        <mass value="1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+      </inertial>
+    </link>
+
+    <!-- Wheel rotation joint -->
+    <joint name="${wheel_joint_name}" type="continuous">
+      <parent link="${prefix}_steering_link"/>
+      <child link="${prefix}_wheel_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Instantiate rear wheels -->
+  <xacro:wheel prefix="left_rear_wheel" x="-0.4" y="0.3" joint_name="left_rear_wheel_joint"/>
+  <xacro:wheel prefix="right_rear_wheel" x="-0.4" y="-0.3" joint_name="right_rear_wheel_joint"/>
+
+  <!-- Instantiate front steering wheels -->
+  <xacro:steering_wheel
+    prefix="left_front"
+    x="0.4"
+    y="0.3"
+    steering_joint_name="left_front_steering_joint"
+    wheel_joint_name="left_front_wheel_joint"/>
+
+  <xacro:steering_wheel
+    prefix="right_front"
+    x="0.4"
+    y="-0.3"
+    steering_joint_name="right_front_steering_joint"
+    wheel_joint_name="right_front_wheel_joint"/>
+
+
+<!-- Transmissions for front steering joints -->
+<transmission name="left_front_steering_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="left_front_steering_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="left_front_steering_motor">
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="right_front_steering_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="right_front_steering_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="right_front_steering_motor">
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<!-- Transmissions for rear wheel drive joints -->
+<transmission name="left_rear_wheel_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="left_rear_wheel_joint">
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="left_rear_wheel_motor">
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="right_rear_wheel_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="right_rear_wheel_joint">
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="right_rear_wheel_motor">
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/ack</robotNamespace>
+  </plugin>
+</gazebo>
+
+</robot>

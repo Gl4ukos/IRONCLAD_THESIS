@@ -1,0 +1,21 @@
+<launch>
+  <!-- Process Xacro to URDF -->
+  <param name="robot_description"
+         command="$(find xacro)/xacro '$(find ackermann_simulation)/urdf/ackermann_car.urdf.xacro'" />
+
+  <!-- Start Gazebo with an empty world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+
+  <!-- Spawn the robot -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model ackermann_car"
+        output="screen" />
+
+  <!-- Load controllers config YAML under 'ack' namespace -->
+  <rosparam file="$(find ackermann_simulation)/config/ironclad_controllers.yaml" command="load" ns="ack"/>
+
+  <!-- Spawn controllers under 'ack' namespace -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+    args="front_steering_controller rear_drive_controller" ns="ack" />
+
+</launch>

@@ -1,0 +1,2 @@
+ackermann_simulation:brain:embedded_system
+-DCATKIN_DEVEL_PREFIX=/home/maria/ironclad_ws/devel -DCMAKE_INSTALL_PREFIX=/home/maria/ironclad_ws/install -G Unix Makefiles

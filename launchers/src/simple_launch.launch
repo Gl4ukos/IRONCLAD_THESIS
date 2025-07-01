@@ -1,0 +1,6 @@
+<launch>
+  <node name="commander"
+        pkg="brain"
+        type="commander"
+        output="screen" />
+</launch>
