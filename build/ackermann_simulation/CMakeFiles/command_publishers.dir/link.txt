@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/command_publishers.dir/src/command_publishers.cpp.o -o /home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers 

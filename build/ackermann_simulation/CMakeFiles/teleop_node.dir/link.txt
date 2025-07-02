@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/teleop_node.dir/src/teleop.cpp.o -o /home/maria/ironclad_ws/devel/lib/ackermann_simulation/teleop_node 

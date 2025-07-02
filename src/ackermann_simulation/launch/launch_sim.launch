@@ -1,21 +1,28 @@
 <launch>
-  <!-- Process Xacro to URDF -->
+  <!--  Process Xacro to URDF -->
   <param name="robot_description"
          command="$(find xacro)/xacro '$(find ackermann_simulation)/urdf/ackermann_car.urdf.xacro'" />
 
-  <!-- Start Gazebo with an empty world -->
+  <!--  Start Gazebo with an empty world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch" />
 
-  <!-- Spawn the robot -->
+  <!--  Spawn the robot into Gazebo -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
         args="-param robot_description -urdf -model ackermann_car"
         output="screen" />
 
-  <!-- Load controllers config YAML under 'ack' namespace -->
+  <!--  Load controller config -->
   <rosparam file="$(find ackermann_simulation)/config/ironclad_controllers.yaml" command="load" ns="ack"/>
 
-  <!-- Spawn controllers under 'ack' namespace -->
+  <!--  Spawn controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-    args="front_steering_controller rear_drive_controller" ns="ack" />
+        args="front_steering_controller rear_drive_controller" ns="ack" />
 
+  <!--  Argument to pass model path for target -->
+  <arg name="model_path" default="$(find ackermann_simulation)/urdf/target.urdf.xacro"/>
+
+  <!--  Start your target spawner node -->
+  <node name="target_spawner" pkg="ackermann_simulation" type="target_spawner" output="screen">
+    <param name="urdf_path" value="$(arg model_path)"/>
+  </node>
 </launch>
