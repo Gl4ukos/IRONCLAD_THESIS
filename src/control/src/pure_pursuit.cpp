@@ -14,19 +14,17 @@ int Pure_pursuit::set_target(double x, double y){
         //if target unachievable return -1
         target_x = x;
         target_y = y;
+        curr_dist_sq = (target_x*target_x) + (target_y * target_y);
         return 0;
 }
 
 double Pure_pursuit::calc_speed(){
-        return max_speed;        
-
+        double dist = sqrt(curr_dist_sq);
+        return std::min(max_speed, Kp*dist - Kd*dist);
 }
 
 double Pure_pursuit::calc_steering(){
-    double dx = target_x;
-    double dy = target_y;
-
-    double curvature = (2*dy)/(dx*2 + dy*2);
+    double curvature = (2*target_y)/curr_dist_sq;
     return atan(wheelbase * curvature);
 }
 

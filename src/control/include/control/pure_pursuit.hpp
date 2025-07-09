@@ -1,13 +1,21 @@
 #pragma once
 
+
+
+
+
 class Pure_pursuit{
     private:
     double wheelbase; //distance from rear to front wheels
     double target_x;
     double target_y;
+    double curr_dist_sq;
     double max_speed;
     double max_steering;
 
+    double Kp = 1;
+    double Kd = 0;
+    double Ki = 0;
 
     public:
     Pure_pursuit(double wheelbase, double max_speed, double max_steering);

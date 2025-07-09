@@ -12,7 +12,6 @@ TODO:
 
     BASELINE:
     -> plot planned trajectory and actual trajectory in rviz 
-    -> Reset car position upon successful maneuver
 
 
     OPTIONAL:

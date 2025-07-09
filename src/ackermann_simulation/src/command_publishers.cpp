@@ -59,8 +59,8 @@ void command_publishers::reset_position(){
     state.reference_frame = "world";  // Important for correct positioning
 
     // Set desired position
-    state.pose.position.x = 1.0;
-    state.pose.position.y = 2.0;
+    state.pose.position.x = 0.0;
+    state.pose.position.y = 0.0;
     state.pose.position.z = 0.0;
 
     // Set desired orientation (no rotation)
