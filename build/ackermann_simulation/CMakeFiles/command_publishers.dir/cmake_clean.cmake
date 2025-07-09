@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers"
-  "/home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers.pdb"
+  "/home/maria/ironclad_ws/devel/lib/libcommand_publishers.pdb"
+  "/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so"
   "CMakeFiles/command_publishers.dir/src/command_publishers.cpp.o"
 )
 

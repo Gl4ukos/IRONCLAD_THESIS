@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/maria/ironclad_ws/src/control/include/control/pure_pursuit.hpp
+
+/home/maria/ironclad_ws/src/control/src/pure_pursuit.cpp
+vector
+-
+cmath
+-
+iostream
+-
+control/pure_pursuit.hpp
+/home/maria/ironclad_ws/src/control/src/control/pure_pursuit.hpp
+

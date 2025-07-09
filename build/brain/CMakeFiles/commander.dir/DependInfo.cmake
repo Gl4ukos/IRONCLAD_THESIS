@@ -17,12 +17,17 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/home/maria/ironclad_ws/src/brain/include"
+  "/home/maria/ironclad_ws/src/control/include"
+  "/home/maria/ironclad_ws/src/ackermann_simulation/include"
   "/opt/ros/noetic/include"
   "/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/maria/ironclad_ws/build/control/CMakeFiles/control_lib.dir/DependInfo.cmake"
+  "/home/maria/ironclad_ws/build/ackermann_simulation/CMakeFiles/command_publishers.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

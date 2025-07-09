@@ -1,0 +1,8 @@
+prefix=/home/maria/ironclad_ws/install
+
+Name: control
+Description: Description of control
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lcontrol_lib
+Requires: roscpp std_msgs

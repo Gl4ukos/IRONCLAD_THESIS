@@ -52,12 +52,22 @@
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>ackermann_simulation</build_depend>
+  <build_depend>control</build_depend>
+  
+
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>ackermann_simulation</build_export_depend>
+  <build_export_depend>control</build_export_depend>
+  
+
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>ackermann_simulation</exec_depend>
+  <exec_depend>control</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

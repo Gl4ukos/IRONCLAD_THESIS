@@ -4,6 +4,9 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Float64MultiArray.h>
+#include <geometry_msgs/Pose.h>
+#include <gazebo_msgs/ModelState.h>
+#include <gazebo_msgs/SetModelState.h>
 
 class command_publishers
 {
@@ -14,6 +17,13 @@ public:
     void publishSteering(double steer);
     float clip_vel(float val);
     float clip_steer(float val);
+
+    void reset_position();
+
+    ros::ServiceClient set_model_state_client;
+
+    double get_max_speed();
+    double get_max_steer();
 
 private:
     ros::Publisher velocity_pub;

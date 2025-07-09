@@ -3,6 +3,6 @@ prefix=/home/maria/ironclad_ws/devel
 Name: ackermann_simulation
 Description: Description of ackermann_simulation
 Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
+Cflags: -I/home/maria/ironclad_ws/src/ackermann_simulation/include
+Libs: -L${prefix}/lib -lcommand_publishers
 Requires: roscpp rospy std_msgs sensor_msgs gazebo_ros gazebo_msgs geometry_msgs urdf xacro

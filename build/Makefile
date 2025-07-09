@@ -304,19 +304,6 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
-# Target rules for targets named commander
-
-# Build rule for target.
-commander: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 commander
-.PHONY : commander
-
-# fast build rule for target.
-commander/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/commander.dir/build.make brain/CMakeFiles/commander.dir/build
-.PHONY : commander/fast
-
-#=============================================================================
 # Target rules for targets named std_msgs_generate_messages_py
 
 # Build rule for target.
@@ -326,7 +313,7 @@ std_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_py/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/std_msgs_generate_messages_py.dir/build.make brain/CMakeFiles/std_msgs_generate_messages_py.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/std_msgs_generate_messages_py.dir/build.make control/CMakeFiles/std_msgs_generate_messages_py.dir/build
 .PHONY : std_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -339,7 +326,7 @@ std_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_nodejs/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make brain/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make control/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
 .PHONY : std_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -352,7 +339,7 @@ roscpp_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_cpp/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make brain/CMakeFiles/roscpp_generate_messages_cpp.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make control/CMakeFiles/roscpp_generate_messages_cpp.dir/build
 .PHONY : roscpp_generate_messages_cpp/fast
 
 #=============================================================================
@@ -365,7 +352,7 @@ roscpp_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_eus/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/roscpp_generate_messages_eus.dir/build.make brain/CMakeFiles/roscpp_generate_messages_eus.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/roscpp_generate_messages_eus.dir/build.make control/CMakeFiles/roscpp_generate_messages_eus.dir/build
 .PHONY : roscpp_generate_messages_eus/fast
 
 #=============================================================================
@@ -378,7 +365,7 @@ rosgraph_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_nodejs/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make brain/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make control/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
 .PHONY : rosgraph_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -391,8 +378,21 @@ std_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_lisp/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make brain/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make control/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
 .PHONY : std_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named control_lib
+
+# Build rule for target.
+control_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 control_lib
+.PHONY : control_lib
+
+# fast build rule for target.
+control_lib/fast:
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/build
+.PHONY : control_lib/fast
 
 #=============================================================================
 # Target rules for targets named roscpp_generate_messages_py
@@ -404,7 +404,7 @@ roscpp_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_py/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/roscpp_generate_messages_py.dir/build.make brain/CMakeFiles/roscpp_generate_messages_py.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/roscpp_generate_messages_py.dir/build.make control/CMakeFiles/roscpp_generate_messages_py.dir/build
 .PHONY : roscpp_generate_messages_py/fast
 
 #=============================================================================
@@ -417,7 +417,7 @@ std_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_eus/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make brain/CMakeFiles/std_msgs_generate_messages_eus.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make control/CMakeFiles/std_msgs_generate_messages_eus.dir/build
 .PHONY : std_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -430,7 +430,7 @@ roscpp_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_nodejs/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make brain/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make control/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
 .PHONY : roscpp_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -443,7 +443,7 @@ rosgraph_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_cpp/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make brain/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
 .PHONY : rosgraph_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -456,7 +456,7 @@ std_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_cpp/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make brain/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make control/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
 .PHONY : std_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -469,7 +469,7 @@ rosgraph_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_eus/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make brain/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make control/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
 .PHONY : rosgraph_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -482,7 +482,7 @@ rosgraph_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_lisp/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make brain/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
 .PHONY : rosgraph_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -495,7 +495,7 @@ roscpp_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_lisp/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make brain/CMakeFiles/roscpp_generate_messages_lisp.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make control/CMakeFiles/roscpp_generate_messages_lisp.dir/build
 .PHONY : roscpp_generate_messages_lisp/fast
 
 #=============================================================================
@@ -508,7 +508,7 @@ rosgraph_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_py/fast:
-	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make brain/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
+	$(MAKE) $(MAKESILENT) -f control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
 .PHONY : rosgraph_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -1201,6 +1201,19 @@ trajectory_msgs_generate_messages_py/fast:
 .PHONY : trajectory_msgs_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named command_publishers
+
+# Build rule for target.
+command_publishers: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 command_publishers
+.PHONY : command_publishers
+
+# fast build rule for target.
+command_publishers/fast:
+	$(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/command_publishers.dir/build.make ackermann_simulation/CMakeFiles/command_publishers.dir/build
+.PHONY : command_publishers/fast
+
+#=============================================================================
 # Target rules for targets named actionlib_generate_messages_lisp
 
 # Build rule for target.
@@ -1226,6 +1239,32 @@ target_spawner/fast:
 	$(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/target_spawner.dir/build.make ackermann_simulation/CMakeFiles/target_spawner.dir/build
 .PHONY : target_spawner/fast
 
+#=============================================================================
+# Target rules for targets named commander
+
+# Build rule for target.
+commander: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 commander
+.PHONY : commander
+
+# fast build rule for target.
+commander/fast:
+	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/commander.dir/build.make brain/CMakeFiles/commander.dir/build
+.PHONY : commander/fast
+
+#=============================================================================
+# Target rules for targets named brain_xacro_generated_to_devel_space_
+
+# Build rule for target.
+brain_xacro_generated_to_devel_space_: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 brain_xacro_generated_to_devel_space_
+.PHONY : brain_xacro_generated_to_devel_space_
+
+# fast build rule for target.
+brain_xacro_generated_to_devel_space_/fast:
+	$(MAKE) $(MAKESILENT) -f brain/CMakeFiles/brain_xacro_generated_to_devel_space_.dir/build.make brain/CMakeFiles/brain_xacro_generated_to_devel_space_.dir/build
+.PHONY : brain_xacro_generated_to_devel_space_/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1250,6 +1289,7 @@ help:
 	@echo "... actionlib_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_nodejs"
 	@echo "... actionlib_msgs_generate_messages_py"
+	@echo "... brain_xacro_generated_to_devel_space_"
 	@echo "... clean_test_results"
 	@echo "... download_extra_data"
 	@echo "... doxygen"
@@ -1312,7 +1352,9 @@ help:
 	@echo "... trajectory_msgs_generate_messages_lisp"
 	@echo "... trajectory_msgs_generate_messages_nodejs"
 	@echo "... trajectory_msgs_generate_messages_py"
+	@echo "... command_publishers"
 	@echo "... commander"
+	@echo "... control_lib"
 	@echo "... gmock"
 	@echo "... gmock_main"
 	@echo "... gtest"

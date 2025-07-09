@@ -10,5 +10,12 @@ Requirements:
     
 TODO:
 
-    -> Make model more realistic
-    -> Start trajectory planning
+    BASELINE:
+    -> plot planned trajectory and actual trajectory in rviz 
+    -> Reset car position upon successful maneuver
+
+
+    OPTIONAL:
+    -> Make model more realistic, use urdf from Fusion
+    -> Make realistic city like environment
+    

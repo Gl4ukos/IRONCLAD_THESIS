@@ -71,10 +71,8 @@ int main(int argc, char** argv)
   spawn_cli = nh.serviceClient<gazebo_msgs::SpawnModel>("/gazebo/spawn_urdf_model");
   delete_cli = nh.serviceClient<gazebo_msgs::DeleteModel>("/gazebo/delete_model");
 
-  ROS_INFO(" Waiting for Gazebo services...");
   spawn_cli.waitForExistence();
   delete_cli.waitForExistence();
-  ROS_INFO(" Gazebo services are up");
 
   // Fill static parts of the spawn request
   spawn_srv.request.model_name = MODEL_NAME;

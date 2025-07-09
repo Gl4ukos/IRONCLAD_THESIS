@@ -96,14 +96,54 @@ command_publishers_OBJECTS = \
 # External object files for target command_publishers
 command_publishers_EXTERNAL_OBJECTS =
 
-/home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers: ackermann_simulation/CMakeFiles/command_publishers.dir/src/command_publishers.cpp.o
-/home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers: ackermann_simulation/CMakeFiles/command_publishers.dir/build.make
-/home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers: ackermann_simulation/CMakeFiles/command_publishers.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/maria/ironclad_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers"
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: ackermann_simulation/CMakeFiles/command_publishers.dir/src/command_publishers.cpp.o
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: ackermann_simulation/CMakeFiles/command_publishers.dir/build.make
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libtf.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libtf2_ros.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libactionlib.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libmessage_filters.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libtf2.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libdynamic_reconfigure_config_init_mutex.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/liburdf.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/liburdfdom_sensor.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/liburdfdom_model_state.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/liburdfdom_model.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/liburdfdom_world.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libtinyxml.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libclass_loader.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libPocoFoundation.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libdl.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libroslib.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/librospack.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libpython3.8.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libtinyxml2.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/librosconsole_bridge.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libroscpp.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/librosconsole.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/librosconsole_log4cxx.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/librosconsole_backend_interface.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libroscpp_serialization.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libxmlrpcpp.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/librostime.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /opt/ros/noetic/lib/libcpp_common.so
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/maria/ironclad_ws/devel/lib/libcommand_publishers.so: ackermann_simulation/CMakeFiles/command_publishers.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/maria/ironclad_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX shared library /home/maria/ironclad_ws/devel/lib/libcommand_publishers.so"
 	cd /home/maria/ironclad_ws/build/ackermann_simulation && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/command_publishers.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-ackermann_simulation/CMakeFiles/command_publishers.dir/build: /home/maria/ironclad_ws/devel/lib/ackermann_simulation/command_publishers
+ackermann_simulation/CMakeFiles/command_publishers.dir/build: /home/maria/ironclad_ws/devel/lib/libcommand_publishers.so
 
 .PHONY : ackermann_simulation/CMakeFiles/command_publishers.dir/build
 

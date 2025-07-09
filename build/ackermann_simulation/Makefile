@@ -111,6 +111,16 @@ install/fast: preinstall/fast
 	/usr/local/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
@@ -143,16 +153,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -982,6 +982,21 @@ trajectory_msgs_generate_messages_py/fast:
 .PHONY : trajectory_msgs_generate_messages_py/fast
 
 # Convenience name for target.
+ackermann_simulation/CMakeFiles/command_publishers.dir/rule:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ackermann_simulation/CMakeFiles/command_publishers.dir/rule
+.PHONY : ackermann_simulation/CMakeFiles/command_publishers.dir/rule
+
+# Convenience name for target.
+command_publishers: ackermann_simulation/CMakeFiles/command_publishers.dir/rule
+
+.PHONY : command_publishers
+
+# fast build rule for target.
+command_publishers/fast:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/command_publishers.dir/build.make ackermann_simulation/CMakeFiles/command_publishers.dir/build
+.PHONY : command_publishers/fast
+
+# Convenience name for target.
 ackermann_simulation/CMakeFiles/actionlib_generate_messages_lisp.dir/rule:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ackermann_simulation/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
 .PHONY : ackermann_simulation/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
@@ -1018,6 +1033,7 @@ src/command_publishers.o: src/command_publishers.cpp.o
 # target to build an object file
 src/command_publishers.cpp.o:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.o
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/command_publishers.dir/build.make ackermann_simulation/CMakeFiles/command_publishers.dir/src/command_publishers.cpp.o
 .PHONY : src/command_publishers.cpp.o
 
 src/command_publishers.i: src/command_publishers.cpp.i
@@ -1027,6 +1043,7 @@ src/command_publishers.i: src/command_publishers.cpp.i
 # target to preprocess a source file
 src/command_publishers.cpp.i:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.i
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/command_publishers.dir/build.make ackermann_simulation/CMakeFiles/command_publishers.dir/src/command_publishers.cpp.i
 .PHONY : src/command_publishers.cpp.i
 
 src/command_publishers.s: src/command_publishers.cpp.s
@@ -1036,6 +1053,7 @@ src/command_publishers.s: src/command_publishers.cpp.s
 # target to generate assembly for a file
 src/command_publishers.cpp.s:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/teleop.dir/build.make ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.s
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f ackermann_simulation/CMakeFiles/command_publishers.dir/build.make ackermann_simulation/CMakeFiles/command_publishers.dir/src/command_publishers.cpp.s
 .PHONY : src/command_publishers.cpp.s
 
 src/target_spawner.o: src/target_spawner.cpp.o
@@ -1158,6 +1176,7 @@ help:
 	@echo "... trajectory_msgs_generate_messages_lisp"
 	@echo "... trajectory_msgs_generate_messages_nodejs"
 	@echo "... trajectory_msgs_generate_messages_py"
+	@echo "... command_publishers"
 	@echo "... target_spawner"
 	@echo "... teleop"
 	@echo "... src/command_publishers.o"
