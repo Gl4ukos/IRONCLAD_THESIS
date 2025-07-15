@@ -17,6 +17,7 @@ brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/geom
 brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/geometry_msgs/TwistWithCovariance.h
 brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/geometry_msgs/Vector3.h
 brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/nav_msgs/Odometry.h
+brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/nav_msgs/Path.h
 brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/ros/advertise_options.h
 brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/ros/advertise_service_options.h
 brain/CMakeFiles/commander.dir/src/commander.cpp.o: /opt/ros/noetic/include/ros/assert.h

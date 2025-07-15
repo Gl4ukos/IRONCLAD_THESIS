@@ -6,6 +6,14 @@
   <!--  Start Gazebo with an empty world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch" />
 
+  <!-- Add robot state publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+  <!-- Adding tf publisher-->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="world_to_base_link"
+      args="0 0 0 0 0 0 world base_link" />
+
   <!--  Spawn the robot into Gazebo -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
         args="-param robot_description -urdf -model ackermann_car"
@@ -25,4 +33,11 @@
   <node name="target_spawner" pkg="ackermann_simulation" type="target_spawner" output="screen">
     <param name="urdf_path" value="$(arg model_path)"/>
   </node>
+
+  <!-- Adding pose to tf transform -->
+  <!--node name="pose_to_tf" pkg="ackermann_simulation" type="pose_to_tf" output="screen" -->
+  <!-- /node -->
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ackermann_simulation)/rviz/ironclad_sim.rviz" />
+
 </launch>

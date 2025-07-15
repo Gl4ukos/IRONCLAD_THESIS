@@ -2,16 +2,21 @@
 
 
 
-
+#include <ros/ros.h>
+#include <nav_msgs/Path.h>
 
 class Pure_pursuit{
     private:
     double wheelbase; //distance from rear to front wheels
     double target_x;
     double target_y;
-    double curr_dist_sq;
     double max_speed;
     double max_steering;
+
+    double curr_dist_sq;
+    double curr_dist;
+    double curvature;
+    double speed;
 
     double Kp = 1;
     double Kd = 0;
@@ -23,4 +28,6 @@ class Pure_pursuit{
     int set_target(double x, double y);
     double calc_speed();
     double calc_steering();
+    int get_trajectory(nav_msgs::Path *path_msg, double resolution);
+    
 };

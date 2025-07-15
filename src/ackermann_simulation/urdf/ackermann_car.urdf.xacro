@@ -10,6 +10,8 @@
   <xacro:property name="steering_link_length" value="0.6"/>
 
 
+
+
   <!-- Base Link -->
   <link name="base_link">
     <visual>
@@ -184,7 +186,6 @@
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
-
 
 
 <gazebo>

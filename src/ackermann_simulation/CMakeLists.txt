@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   geometry_msgs
+  nav_msgs
   gazebo_ros
   gazebo_msgs
   urdf
@@ -17,7 +18,7 @@ catkin_package(
   INCLUDE_DIRS 
     include
   CATKIN_DEPENDS
-    roscpp rospy std_msgs sensor_msgs
+    roscpp rospy std_msgs sensor_msgs nav_msgs
     gazebo_ros gazebo_msgs geometry_msgs urdf xacro
 )
 include_directories(
@@ -40,6 +41,11 @@ add_executable( target_spawner
   src/target_spawner.cpp
 )
 
+add_executable(pose_to_tf
+  src/pose_to_tf.cpp
+)
+
+
 # === Link Libraries ===
 
 target_include_directories(command_publishers
@@ -61,6 +67,10 @@ target_link_libraries(target_spawner
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries( pose_to_tf
+  ${catkin_LIBRARIES}
+)
+
 # === Install Targets ===
 catkin_package(
   INCLUDE_DIRS include
@@ -78,6 +88,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 install(TARGETS
   teleop
   target_spawner
+  pose_to_tf
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

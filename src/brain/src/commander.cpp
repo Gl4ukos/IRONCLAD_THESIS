@@ -4,6 +4,7 @@
 #include "control/pure_pursuit.hpp"
 #include <ros/console.h>
 #include <nav_msgs/Odometry.h>
+#include <nav_msgs/Path.h>
 
 double wheelbase = 1.0; //! probably not true  
 
@@ -27,16 +28,31 @@ int main(int argc, char** argv)
     ros::Rate rate(10);  // 10 Hz
 
     ros::Publisher spawn_target_pub =  nh.advertise<geometry_msgs::PoseStamped>("/target_spawner/target_pose", 10);
+    ros::Publisher trajectory_pub = nh.advertise<nav_msgs::Path>("commander/trajectory_path",1);
+    ros::Publisher target_pose_pub = nh.advertise<geometry_msgs::Pose>("commander/target",1);
+    ros::Publisher car_pose_pub = nh.advertise<geometry_msgs::Pose>("commander/car_pose",1);
+
+
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
 
     //setting up pose msg
-    geometry_msgs::PoseStamped target_pose_msg;
-    target_pose_msg.header.frame_id="map";
-    target_pose_msg.header.stamp = ros::Time::now();
-    target_pose_msg.pose.orientation.w=1.0;
-    target_pose_msg.pose.position.z=0.25;
-        
+    geometry_msgs::PoseStamped target_posest_msg;
+    target_posest_msg.header.frame_id="world";
+    target_posest_msg.header.stamp = ros::Time::now();
+    target_posest_msg.pose.orientation.w=1.0;
+    target_posest_msg.pose.position.z=0.25;
+
+    //setting up trajectory msg
+    nav_msgs::Path path_msg;
+    path_msg.header.frame_id = "world";
+
+    //setting up pose msgs
+    geometry_msgs::Pose car_pose_msg;
+    car_pose_msg.orientation.w=1.0;
+    geometry_msgs::Pose target_pose_msg;
+    target_pose_msg.orientation.w=1.0;
+
     
     double target_x,target_y;
     double speed, steering;
@@ -44,7 +60,7 @@ int main(int argc, char** argv)
 
     Pure_pursuit ctr_pure_pursuit(wheelbase, sim_pubs.get_max_speed(), sim_pubs.get_max_steer());
 
-
+    sim_pubs.reset_position();
     
     while(ros::ok()){
         std::cout<<"Enter Target Coords\n";
@@ -53,9 +69,14 @@ int main(int argc, char** argv)
         ros::spinOnce();
 
         //displaying target as object in gazebo
-        target_pose_msg.pose.position.x=target_x;
-        target_pose_msg.pose.position.y=target_y;
-        spawn_target_pub.publish(target_pose_msg);
+        target_posest_msg.pose.position.x=target_x;
+        target_posest_msg.pose.position.y=target_y;
+        spawn_target_pub.publish(target_posest_msg);
+
+        target_pose_msg.position.x = target_x;
+        target_pose_msg.position.y = target_y;
+        target_pose_pub.publish(target_pose_msg);    
+
 
         std::cout<<"TARGET SET\n";
         ctr_pure_pursuit.set_target(target_x-curr_x, target_y-curr_y);
@@ -64,18 +85,28 @@ int main(int argc, char** argv)
         
         std::cout<<"MOVING...\n";
 
+        int valid_move =0;
         while(abs(target_x-curr_x)>0.2 || abs(target_y-curr_y)>0.2 ){
             speed = ctr_pure_pursuit.calc_speed();
             steering = ctr_pure_pursuit.calc_steering();
+            valid_move = ctr_pure_pursuit.get_trajectory(&path_msg, 5);
+
+            //publish
+            car_pose_msg.position.x = curr_x;
+            car_pose_msg.position.y = curr_y;
+            car_pose_pub.publish(car_pose_msg);
             
-            
-            //sim_pubs.publishVelocity(speed);
-            //sim_pubs.publishSteering(steering);
+
+            sim_pubs.publishVelocity(speed);
+            sim_pubs.publishSteering(steering);
             std::cout<<"command published: "<<speed<<" "<<steering<<"\n";
-            sleep(1);
+            sleep(2);
             ros::spinOnce();
-            std::cout<<"Pos: "<<curr_x<< " - " <<curr_y<<"\n";
+            std::cout<<"Dist: "<<target_x-curr_x<< " - " <<target_y-curr_y<<"\n";
             ctr_pure_pursuit.set_target(target_x-curr_x, target_y-curr_y);
+        
+            std::cout << "Press enter to continue...";
+            std::cin.get();
         }
 
         std::cout<<"POSITION ACHIEVED!\n";
@@ -83,6 +114,8 @@ int main(int argc, char** argv)
         std::cout<<"RESETTING...\n";
         sleep(1);
         sim_pubs.reset_position();
+        curr_x=0;
+        curr_y=0;
 
     }
 
