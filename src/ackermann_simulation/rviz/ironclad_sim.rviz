@@ -6,6 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /IRONCLAD_ODOM1
+        - /IRONCLAD_ODOM1/Shape1
+        - /TARGET1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz/Selection
@@ -54,61 +57,73 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        dummy:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        left_front_steering_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_front_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_rear_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_front_steering_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_front_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_rear_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 10
+      Name: IRONCLAD_ODOM
+      Position Tolerance: 0.10000000149011612
+      Queue Size: 4
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 239; 41; 41
+        Head Length: 0.20000000298023224
+        Head Radius: 0.03999999910593033
+        Shaft Length: 0.05000000074505806
+        Shaft Radius: 0.03999999910593033
+        Value: Arrow
+      Topic: /pose
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz/Pose
+      Color: 92; 53; 102
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.15000000596046448
+      Name: TARGET
+      Queue Size: 10
+      Shaft Length: 0
+      Shaft Radius: 0.05000000074505806
+      Shape: Arrow
+      Topic: /commander/target
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
-    Background Color: 48; 48; 48
+    Background Color: 186; 189; 182
     Default Light: true
     Fixed Frame: world
     Frame Rate: 30
@@ -134,7 +149,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 21.108230590820312
+      Distance: 15.123180389404297
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -142,17 +157,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 1.2775096893310547
+        Y: 0.6358398199081421
+        Z: -1.3501766920089722
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.785398006439209
+      Pitch: 0.7903980016708374
       Target Frame: <Fixed Frame>
-      Yaw: 0.785398006439209
+      Yaw: 0.7503971457481384
     Saved:
       - Class: rviz/Orbit
         Distance: 21.108230590820312
@@ -190,5 +205,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 72
-  Y: 185
+  X: 112
+  Y: 189

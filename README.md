@@ -12,10 +12,10 @@ TODO:
 
     BASELINE:
     -> plot planned trajectory and actual trajectory in rviz 
-        -> the car movement in rviz is completely fucked the pose to tf is bad
-        -> Add some poses for target, current and trajectory
+        -> the car model's movement in rviz is completely fucked the pose to tf is bad
 
     OPTIONAL:
     -> Make model more realistic, use urdf from Fusion
     -> Make realistic city like environment
+    -> Adjust displayed odometry vector length in rviz, dynamically to the speed
     

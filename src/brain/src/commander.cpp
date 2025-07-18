@@ -29,14 +29,13 @@ int main(int argc, char** argv)
 
     ros::Publisher spawn_target_pub =  nh.advertise<geometry_msgs::PoseStamped>("/target_spawner/target_pose", 10);
     ros::Publisher trajectory_pub = nh.advertise<nav_msgs::Path>("commander/trajectory_path",1);
-    ros::Publisher target_pose_pub = nh.advertise<geometry_msgs::Pose>("commander/target",1);
-    ros::Publisher car_pose_pub = nh.advertise<geometry_msgs::Pose>("commander/car_pose",1);
+    ros::Publisher target_pose_pub = nh.advertise<geometry_msgs::PoseStamped>("commander/target",1);
 
 
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
 
-    //setting up pose msg
+    //setting up pose estimate msg
     geometry_msgs::PoseStamped target_posest_msg;
     target_posest_msg.header.frame_id="world";
     target_posest_msg.header.stamp = ros::Time::now();
@@ -47,11 +46,11 @@ int main(int argc, char** argv)
     nav_msgs::Path path_msg;
     path_msg.header.frame_id = "world";
 
-    //setting up pose msgs
-    geometry_msgs::Pose car_pose_msg;
-    car_pose_msg.orientation.w=1.0;
-    geometry_msgs::Pose target_pose_msg;
-    target_pose_msg.orientation.w=1.0;
+    //setting up target_pose_msg
+    geometry_msgs::PoseStamped target_pose_msg;
+    target_pose_msg.header.frame_id = "world";
+    target_pose_msg.header.stamp = ros::Time::now();
+    target_pose_msg.pose.orientation.w=1.0;
 
     
     double target_x,target_y;
@@ -73,8 +72,8 @@ int main(int argc, char** argv)
         target_posest_msg.pose.position.y=target_y;
         spawn_target_pub.publish(target_posest_msg);
 
-        target_pose_msg.position.x = target_x;
-        target_pose_msg.position.y = target_y;
+        target_pose_msg.pose.position.x = target_x;
+        target_pose_msg.pose.position.y = target_y;
         target_pose_pub.publish(target_pose_msg);    
 
 
@@ -92,21 +91,21 @@ int main(int argc, char** argv)
             valid_move = ctr_pure_pursuit.get_trajectory(&path_msg, 5);
 
             //publish
-            car_pose_msg.position.x = curr_x;
-            car_pose_msg.position.y = curr_y;
-            car_pose_pub.publish(car_pose_msg);
-            
-
             sim_pubs.publishVelocity(speed);
             sim_pubs.publishSteering(steering);
+
+            target_pose_msg.header.stamp = ros::Time::now();
+            target_pose_pub.publish(target_pose_msg);
+
             std::cout<<"command published: "<<speed<<" "<<steering<<"\n";
-            sleep(2);
+            sleep(1);
             ros::spinOnce();
+
             std::cout<<"Dist: "<<target_x-curr_x<< " - " <<target_y-curr_y<<"\n";
             ctr_pure_pursuit.set_target(target_x-curr_x, target_y-curr_y);
         
-            std::cout << "Press enter to continue...";
-            std::cin.get();
+            //std::cout << "Press enter to continue...";
+            //std::cin.get();
         }
 
         std::cout<<"POSITION ACHIEVED!\n";
