@@ -85,3 +85,8 @@ void command_publishers::reset_position(){
     }
     return;
 }
+
+
+void trajectory_visualizer(double horizon, double x, double y, double theta, double steer, double speed){
+    
+}

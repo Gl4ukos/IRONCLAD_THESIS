@@ -10,7 +10,7 @@ Pure_pursuit::Pure_pursuit(double wheelbase, double max_speed, double max_steeri
     }
 
 
-// expects the DISTANCE to target
+// expects the DISTANCE to target and DIFF in yaw
 int Pure_pursuit::set_target(double x, double y){
         //if target unachievable return -1
         target_x = x;

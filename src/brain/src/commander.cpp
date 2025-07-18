@@ -5,10 +5,13 @@
 #include <ros/console.h>
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/Path.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2/utils.h>
+
 
 double wheelbase = 1.0; //! probably not true  
 
-double curr_x, curr_y, curr_theta;
+double curr_x, curr_y, curr_z, curr_yaw;
 
 double eucl_dist(double t_x,double t_y){
     return sqrt(t_x*t_x + t_y*t_y);
@@ -16,7 +19,10 @@ double eucl_dist(double t_x,double t_y){
 
 void update_pose(nav_msgs::Odometry msg){
     curr_x = msg.pose.pose.position.x;
-    curr_y = msg.pose.pose.position.y; 
+    curr_y = msg.pose.pose.position.y;
+    curr_z = msg.pose.pose.position.z; 
+
+    curr_yaw = tf2::getYaw(msg.pose.pose.orientation);
 }
 
 
@@ -28,7 +34,6 @@ int main(int argc, char** argv)
     ros::Rate rate(10);  // 10 Hz
 
     ros::Publisher spawn_target_pub =  nh.advertise<geometry_msgs::PoseStamped>("/target_spawner/target_pose", 10);
-    ros::Publisher trajectory_pub = nh.advertise<nav_msgs::Path>("commander/trajectory_path",1);
     ros::Publisher target_pose_pub = nh.advertise<geometry_msgs::PoseStamped>("commander/target",1);
 
 
@@ -102,6 +107,7 @@ int main(int argc, char** argv)
             ros::spinOnce();
 
             std::cout<<"Dist: "<<target_x-curr_x<< " - " <<target_y-curr_y<<"\n";
+            std::cout<<"Yaw: "<<curr_yaw;
             ctr_pure_pursuit.set_target(target_x-curr_x, target_y-curr_y);
         
             //std::cout << "Press enter to continue...";
