@@ -15,6 +15,7 @@ class Pure_pursuit{
 
     double curr_dist_sq;
     double curr_dist;
+    double curr_yaw;
     double curvature;
     double speed;
 

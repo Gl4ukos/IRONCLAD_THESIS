@@ -66,10 +66,14 @@ int main(int argc, char** argv)
 
     sim_pubs.reset_position();
     
+    double x_diff,y_diff;
+
     while(ros::ok()){
         std::cout<<"Enter Target Coords\n";
         std::cin >> target_x >> target_y;
     
+        //target_y = -target_y; //gazebo has inverted coords in y axis
+
         ros::spinOnce();
 
         //displaying target as object in gazebo
@@ -83,9 +87,13 @@ int main(int argc, char** argv)
 
 
         std::cout<<"TARGET SET\n";
-        ctr_pure_pursuit.set_target(target_x-curr_x, target_y-curr_y);
-        ros::Duration(1).sleep();
 
+        //x and y distances rotated so the car is like heading to 0 angle
+        x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
+        y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
+        ctr_pure_pursuit.set_target(x_diff, y_diff);
+
+        ros::Duration(1).sleep();
         
         std::cout<<"MOVING...\n";
 
@@ -102,13 +110,17 @@ int main(int argc, char** argv)
             target_pose_msg.header.stamp = ros::Time::now();
             target_pose_pub.publish(target_pose_msg);
 
+        
+            //std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
+            std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
             std::cout<<"command published: "<<speed<<" "<<steering<<"\n";
-            sleep(1);
+            ros::Duration(0.2).sleep();
             ros::spinOnce();
 
-            std::cout<<"Dist: "<<target_x-curr_x<< " - " <<target_y-curr_y<<"\n";
-            std::cout<<"Yaw: "<<curr_yaw;
-            ctr_pure_pursuit.set_target(target_x-curr_x, target_y-curr_y);
+            //x and y distances rotated so the car is like heading to 0 angle
+            x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
+            y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
+            ctr_pure_pursuit.set_target(x_diff, y_diff);
         
             //std::cout << "Press enter to continue...";
             //std::cin.get();

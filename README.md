@@ -12,9 +12,6 @@ TODO:
 
     BASELINE:
 
-        CRITICAL:
-        -> ADD YAW IN CALCULATIONS IN COMMANDER (not control package algorithms)
-
     -> plot planned trajectory and actual trajectory in rviz 
         -> the car model's movement in rviz is completely fucked the pose to tf is bad
 
