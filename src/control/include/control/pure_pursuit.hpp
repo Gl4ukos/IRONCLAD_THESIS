@@ -29,6 +29,6 @@ class Pure_pursuit{
     int set_target(double x, double y);
     double calc_speed();
     double calc_steering();
-    int get_trajectory(nav_msgs::Path *path_msg, double resolution);
+    int get_trajectory(nav_msgs::Path *path_msg, double resolution,double  double_x,double  double_y ,double double_yaw);
     
 };

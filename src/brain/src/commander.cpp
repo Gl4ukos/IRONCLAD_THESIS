@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 
     ros::Publisher spawn_target_pub =  nh.advertise<geometry_msgs::PoseStamped>("/target_spawner/target_pose", 10);
     ros::Publisher target_pose_pub = nh.advertise<geometry_msgs::PoseStamped>("commander/target",1);
-
+    ros::Publisher path_publisher = nh.advertise<nav_msgs::Path>("/commander/predicted_path", 1);
 
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
         while(abs(target_x-curr_x)>0.2 || abs(target_y-curr_y)>0.2 ){
             speed = ctr_pure_pursuit.calc_speed();
             steering = ctr_pure_pursuit.calc_steering();
-            valid_move = ctr_pure_pursuit.get_trajectory(&path_msg, 5);
+            ctr_pure_pursuit.get_trajectory(&path_msg, 5, curr_x, curr_y, curr_yaw);
 
             //publish
             sim_pubs.publishVelocity(speed);
@@ -110,6 +110,8 @@ int main(int argc, char** argv)
             target_pose_msg.header.stamp = ros::Time::now();
             target_pose_pub.publish(target_pose_msg);
 
+            path_msg.header.stamp = ros::Time::now();
+            path_publisher.publish(path_msg);
         
             //std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";

@@ -9,6 +9,7 @@ Panels:
         - /IRONCLAD_ODOM1
         - /IRONCLAD_ODOM1/Shape1
         - /TARGET1
+        - /Path1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz/Selection
@@ -121,9 +122,33 @@ Visualization Manager:
       Topic: /commander/target
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 252; 233; 79
+      Enabled: true
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Queue Size: 10
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /commander/predicted_path
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
-    Background Color: 186; 189; 182
+    Background Color: 0; 0; 0
     Default Light: true
     Fixed Frame: world
     Frame Rate: 30
@@ -205,5 +230,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 112
-  Y: 189
+  X: 99
+  Y: 143
