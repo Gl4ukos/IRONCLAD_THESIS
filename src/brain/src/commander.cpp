@@ -77,9 +77,6 @@ int main(int argc, char** argv)
     while(ros::ok()){
         std::cout<<"Enter Target Coords\n";
         std::cin >> target_x >> target_y >> target_yaw;
-    
-        //target_y = -target_y; //gazebo has inverted coords in y axis
-
         ros::spinOnce();
 
         //displaying target as object in gazebo
@@ -100,7 +97,7 @@ int main(int argc, char** argv)
         x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
         y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
         
-        // ctr_pure_pursuit.set_target(x_diff, y_diff);
+        ctr_pure_pursuit.set_target(x_diff, y_diff);
         ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
 
         ros::Duration(1).sleep();
@@ -109,13 +106,13 @@ int main(int argc, char** argv)
 
         int valid_move =0;
         while(abs(target_x-curr_x)>0.2 || abs(target_y-curr_y)>0.2 ){
-            // speed = ctr_pure_pursuit.calc_speed();
-            // steering = ctr_pure_pursuit.calc_steering();
-            // ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+            speed = ctr_pure_pursuit.calc_speed();
+            steering = ctr_pure_pursuit.calc_steering();
+            ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
 
-            speed = ctr_lateral.calc_speed();
-            steering = ctr_lateral.calc_steering();
-            ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+            // speed = ctr_lateral.calc_speed();
+            // steering = ctr_lateral.calc_steering();
+            // ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
 
             //publish
             sim_pubs.publishVelocity(speed);
@@ -129,7 +126,7 @@ int main(int argc, char** argv)
         
             // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
-            std::cout<<"command published: "<<speed<<" "<<steering<<"\n";
+            std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
             ros::Duration(0.2).sleep();
             ros::spinOnce();
 
@@ -137,11 +134,10 @@ int main(int argc, char** argv)
             x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
             y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
             yaw_diff = target_yaw - curr_yaw;
-            // ctr_pure_pursuit.set_target(x_diff, y_diff);
-            ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
+            
+            ctr_pure_pursuit.set_target(x_diff, y_diff);
+            //ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
         
-            //std::cout << "Press enter to continue...";
-            //std::cin.get();
         }
 
         std::cout<<"POSITION ACHIEVED!\n";

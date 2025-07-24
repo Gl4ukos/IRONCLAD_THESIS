@@ -17,8 +17,8 @@ class Pure_pursuit{
     double curvature;
     double speed;
 
-    double Kp = 1;
-    double Kd = 0;
+    double Kp = 10;
+    double Kd = 1;
     double Ki = 0;
 
     public:

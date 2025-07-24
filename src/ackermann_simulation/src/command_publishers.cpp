@@ -79,6 +79,9 @@ void command_publishers::reset_position(){
     state.twist.angular.y = 0.0;
     state.twist.angular.z = 0.0;
 
+    publishSteering(0);
+    publishVelocity(0);
+    
     // Call the service
     if (set_model_state_client.call(set_model_state_srv)){
         ROS_INFO("CAR POSITION RESET.");

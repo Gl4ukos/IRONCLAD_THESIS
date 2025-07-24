@@ -2,7 +2,8 @@
 
 #include <ros/ros.h>
 #include <nav_msgs/Path.h>
-
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 
 class Lateral{
     private:
@@ -30,5 +31,5 @@ class Lateral{
     double calc_speed();
     double calc_steering();
     int get_trajectory(nav_msgs::Path *path_msg, double resolution,double  double_x,double  double_y ,double double_yaw);
-    
+    int getErrorMarkers(visualization_msgs::Marker target_yaw_marker, visualization_msgs::Marker target_y_marker, double r_x, double r_y, double r_yaw);
 };

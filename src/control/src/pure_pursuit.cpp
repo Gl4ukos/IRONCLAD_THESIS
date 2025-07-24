@@ -22,7 +22,7 @@ int Pure_pursuit::set_target(double x, double y){
 
 double Pure_pursuit::calc_speed(){
     curr_dist = sqrt(curr_dist_sq);
-    speed = std::min(max_speed, Kp*curr_dist - Kd*curr_dist); 
+    speed = std::min(max_speed, Kp*curr_dist - Kd*speed); 
     return speed;
 }
 

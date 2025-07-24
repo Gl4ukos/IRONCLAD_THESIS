@@ -110,7 +110,7 @@ Visualization Manager:
       Axes Length: 1
       Axes Radius: 0.10000000149011612
       Class: rviz/Pose
-      Color: 92; 53; 102
+      Color: 255; 255; 255
       Enabled: true
       Head Length: 0.30000001192092896
       Head Radius: 0.15000000596046448
@@ -231,4 +231,4 @@ Window Geometry:
     collapsed: false
   Width: 1200
   X: 99
-  Y: 143
+  Y: 185
