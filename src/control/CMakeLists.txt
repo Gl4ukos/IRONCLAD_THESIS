@@ -9,8 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_library( control_lib
   src/pure_pursuit.cpp
-  # add any other cpp here, Stanley/MPC  
-  
+  src/lateral.cpp
 )
 
 target_include_directories(control_lib

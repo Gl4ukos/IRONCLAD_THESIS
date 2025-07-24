@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "/home/maria/ironclad_ws/devel/lib/libcontrol_lib.pdb"
   "/home/maria/ironclad_ws/devel/lib/libcontrol_lib.so"
+  "CMakeFiles/control_lib.dir/src/lateral.cpp.o"
   "CMakeFiles/control_lib.dir/src/pure_pursuit.cpp.o"
 )
 

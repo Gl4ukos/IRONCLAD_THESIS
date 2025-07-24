@@ -426,6 +426,33 @@ rosgraph_msgs_generate_messages_py/fast:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
 .PHONY : rosgraph_msgs_generate_messages_py/fast
 
+src/lateral.o: src/lateral.cpp.o
+
+.PHONY : src/lateral.o
+
+# target to build an object file
+src/lateral.cpp.o:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/src/lateral.cpp.o
+.PHONY : src/lateral.cpp.o
+
+src/lateral.i: src/lateral.cpp.i
+
+.PHONY : src/lateral.i
+
+# target to preprocess a source file
+src/lateral.cpp.i:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/src/lateral.cpp.i
+.PHONY : src/lateral.cpp.i
+
+src/lateral.s: src/lateral.cpp.s
+
+.PHONY : src/lateral.s
+
+# target to generate assembly for a file
+src/lateral.cpp.s:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/src/lateral.cpp.s
+.PHONY : src/lateral.cpp.s
+
 src/pure_pursuit.o: src/pure_pursuit.cpp.o
 
 .PHONY : src/pure_pursuit.o
@@ -482,6 +509,9 @@ help:
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_py"
 	@echo "... control_lib"
+	@echo "... src/lateral.o"
+	@echo "... src/lateral.i"
+	@echo "... src/lateral.s"
 	@echo "... src/pure_pursuit.o"
 	@echo "... src/pure_pursuit.i"
 	@echo "... src/pure_pursuit.s"

@@ -28,6 +28,7 @@ float command_publishers::clip_steer(float val) {
 
 void command_publishers::publishSteering(double steer)
 {  
+    steer = clip_steer(steer);
     steer_cmd.data[0] = steer;
     steer_cmd.data[1] = steer;
     steering_pub.publish(steer_cmd);
@@ -35,6 +36,7 @@ void command_publishers::publishSteering(double steer)
 
 void command_publishers::publishVelocity(double vel)
 {
+    vel = clip_vel(vel);
     vel_cmd.data[0] = vel;
     vel_cmd.data[1] = vel;
     velocity_pub.publish(vel_cmd);
@@ -87,6 +89,3 @@ void command_publishers::reset_position(){
 }
 
 
-void trajectory_visualizer(double horizon, double x, double y, double theta, double steer, double speed){
-    
-}

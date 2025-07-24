@@ -6,21 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/maria/ironclad_ws/src/control/include/control/pure_pursuit.hpp
+/home/maria/ironclad_ws/src/control/include/control/lateral.hpp
 ros/ros.h
 -
 nav_msgs/Path.h
 -
 
-/home/maria/ironclad_ws/src/control/src/pure_pursuit.cpp
+/home/maria/ironclad_ws/src/control/src/lateral.cpp
 vector
 -
 cmath
 -
 iostream
 -
-control/pure_pursuit.hpp
-/home/maria/ironclad_ws/src/control/src/control/pure_pursuit.hpp
+control/lateral.hpp
+/home/maria/ironclad_ws/src/control/src/control/lateral.hpp
 tf2/utils.h
 -
 

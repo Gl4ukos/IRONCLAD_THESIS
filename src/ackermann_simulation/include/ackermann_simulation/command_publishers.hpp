@@ -32,6 +32,6 @@ private:
     std_msgs::Float64MultiArray vel_cmd;
     std_msgs::Float64MultiArray steer_cmd;
 
-    double abs_max_vel = 10;
-    double abs_max_steer = 0.9;
+    double abs_max_vel = 15;
+    double abs_max_steer = 0.75;
 };

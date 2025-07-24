@@ -2,10 +2,12 @@
 #include <geometry_msgs/PoseStamped.h>
 #include "ackermann_simulation/command_publishers.hpp"
 #include "control/pure_pursuit.hpp"
+#include "control/lateral.hpp"
 #include <ros/console.h>
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/Path.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2/LinearMath/Quaternion.h>
 #include <tf2/utils.h>
 
 
@@ -58,19 +60,23 @@ int main(int argc, char** argv)
     target_pose_msg.pose.orientation.w=1.0;
 
     
-    double target_x,target_y;
+    double target_x,target_y,target_yaw;
     double speed, steering;
-    command_publishers sim_pubs(nh);
+    double x_diff,y_diff,yaw_diff;
+    tf2::Quaternion quaternion;
 
+    command_publishers sim_pubs(nh);
     Pure_pursuit ctr_pure_pursuit(wheelbase, sim_pubs.get_max_speed(), sim_pubs.get_max_steer());
+    Lateral ctr_lateral(wheelbase, sim_pubs.get_max_speed(), sim_pubs.get_max_steer());
+
 
     sim_pubs.reset_position();
     
-    double x_diff,y_diff;
+
 
     while(ros::ok()){
         std::cout<<"Enter Target Coords\n";
-        std::cin >> target_x >> target_y;
+        std::cin >> target_x >> target_y >> target_yaw;
     
         //target_y = -target_y; //gazebo has inverted coords in y axis
 
@@ -81,17 +87,21 @@ int main(int argc, char** argv)
         target_posest_msg.pose.position.y=target_y;
         spawn_target_pub.publish(target_posest_msg);
 
+        quaternion.setRPY(0,0,target_yaw);
         target_pose_msg.pose.position.x = target_x;
         target_pose_msg.pose.position.y = target_y;
+        target_pose_msg.pose.orientation = tf2::toMsg(quaternion);
         target_pose_pub.publish(target_pose_msg);    
-
 
         std::cout<<"TARGET SET\n";
 
         //x and y distances rotated so the car is like heading to 0 angle
+        yaw_diff = target_yaw - curr_yaw;
         x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
         y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
-        ctr_pure_pursuit.set_target(x_diff, y_diff);
+        
+        // ctr_pure_pursuit.set_target(x_diff, y_diff);
+        ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
 
         ros::Duration(1).sleep();
         
@@ -99,9 +109,13 @@ int main(int argc, char** argv)
 
         int valid_move =0;
         while(abs(target_x-curr_x)>0.2 || abs(target_y-curr_y)>0.2 ){
-            speed = ctr_pure_pursuit.calc_speed();
-            steering = ctr_pure_pursuit.calc_steering();
-            ctr_pure_pursuit.get_trajectory(&path_msg, 5, curr_x, curr_y, curr_yaw);
+            // speed = ctr_pure_pursuit.calc_speed();
+            // steering = ctr_pure_pursuit.calc_steering();
+            // ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+
+            speed = ctr_lateral.calc_speed();
+            steering = ctr_lateral.calc_steering();
+            ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
 
             //publish
             sim_pubs.publishVelocity(speed);
@@ -113,7 +127,7 @@ int main(int argc, char** argv)
             path_msg.header.stamp = ros::Time::now();
             path_publisher.publish(path_msg);
         
-            //std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
+            // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
             std::cout<<"command published: "<<speed<<" "<<steering<<"\n";
             ros::Duration(0.2).sleep();
@@ -122,7 +136,9 @@ int main(int argc, char** argv)
             //x and y distances rotated so the car is like heading to 0 angle
             x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
             y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
-            ctr_pure_pursuit.set_target(x_diff, y_diff);
+            yaw_diff = target_yaw - curr_yaw;
+            // ctr_pure_pursuit.set_target(x_diff, y_diff);
+            ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
         
             //std::cout << "Press enter to continue...";
             //std::cin.get();
