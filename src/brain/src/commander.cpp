@@ -27,7 +27,6 @@ void update_pose(nav_msgs::Odometry msg){
     curr_yaw = tf2::getYaw(msg.pose.pose.orientation);
 }
 
-
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "vehicle_controller");
@@ -40,7 +39,6 @@ int main(int argc, char** argv)
     ros::Publisher path_publisher = nh.advertise<nav_msgs::Path>("/commander/predicted_path", 1);
 
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
-
 
     //setting up pose estimate msg
     geometry_msgs::PoseStamped target_posest_msg;
