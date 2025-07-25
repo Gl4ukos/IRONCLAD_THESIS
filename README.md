@@ -11,7 +11,6 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> fix trajectory generator output format 
         -> make load trajectory function
         -> make display trajectory function
         -> Code MPC

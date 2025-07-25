@@ -1,11 +1,11 @@
 
-import yaml
+import csv
 from tf.transformations import quaternion_from_euler
 import math
 trajectory = []
 
 print("Enter trajectory name: ")
-name = "src/brain/utils/trajectory_"+ input() +".yaml"
+name = "src/brain/utils/trajectory_"+ input() +".csv"
 
 pose_num = 0
 
@@ -54,6 +54,14 @@ for i in range(len(trajectory)):
     trajectory[i]['qz'] = qz
     trajectory[i]['qw'] = qw
 
-# Write to YAML file
-with open(name, 'w') as f:
-    yaml.dump({'trajectory': trajectory}, f)
+
+#writing csv file
+
+with open(name, mode='w', newline='') as file:
+    writer = csv.DictWriter(file, fieldnames = ['x', 'y', 'z', 'qx', 'qy', 'qz', 'qw'])
+    writer.writeheader()
+    for pose in trajectory:
+        writer.writerow(pose)
+
+
+print(f"Trajectory saved to {name}")
