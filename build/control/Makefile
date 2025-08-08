@@ -453,6 +453,33 @@ src/lateral.cpp.s:
 	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/src/lateral.cpp.s
 .PHONY : src/lateral.cpp.s
 
+src/mpc.o: src/mpc.cpp.o
+
+.PHONY : src/mpc.o
+
+# target to build an object file
+src/mpc.cpp.o:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/src/mpc.cpp.o
+.PHONY : src/mpc.cpp.o
+
+src/mpc.i: src/mpc.cpp.i
+
+.PHONY : src/mpc.i
+
+# target to preprocess a source file
+src/mpc.cpp.i:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/src/mpc.cpp.i
+.PHONY : src/mpc.cpp.i
+
+src/mpc.s: src/mpc.cpp.s
+
+.PHONY : src/mpc.s
+
+# target to generate assembly for a file
+src/mpc.cpp.s:
+	cd /home/maria/ironclad_ws/build && $(MAKE) $(MAKESILENT) -f control/CMakeFiles/control_lib.dir/build.make control/CMakeFiles/control_lib.dir/src/mpc.cpp.s
+.PHONY : src/mpc.cpp.s
+
 src/pure_pursuit.o: src/pure_pursuit.cpp.o
 
 .PHONY : src/pure_pursuit.o
@@ -512,6 +539,9 @@ help:
 	@echo "... src/lateral.o"
 	@echo "... src/lateral.i"
 	@echo "... src/lateral.s"
+	@echo "... src/mpc.o"
+	@echo "... src/mpc.i"
+	@echo "... src/mpc.s"
 	@echo "... src/pure_pursuit.o"
 	@echo "... src/pure_pursuit.i"
 	@echo "... src/pure_pursuit.s"

@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(control_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/maria/ironclad_ws/src/control/include " STREQUAL " ")
+if(NOT "/home/maria/ironclad_ws/src/control/include;/usr/include/eigen3 " STREQUAL " ")
   set(control_INCLUDE_DIRS "")
-  set(_include_dirs "/home/maria/ironclad_ws/src/control/include")
+  set(_include_dirs "/home/maria/ironclad_ws/src/control/include;/usr/include/eigen3")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")

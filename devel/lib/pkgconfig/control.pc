@@ -3,6 +3,6 @@ prefix=/home/maria/ironclad_ws/devel
 Name: control
 Description: Description of control
 Version: 0.0.0
-Cflags: -I/home/maria/ironclad_ws/src/control/include
+Cflags: -I/home/maria/ironclad_ws/src/control/include -I/usr/include/eigen3
 Libs: -L${prefix}/lib -lcontrol_lib
 Requires: roscpp std_msgs

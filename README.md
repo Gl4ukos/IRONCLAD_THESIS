@@ -6,17 +6,21 @@ Requirements:
         -> ros-noetic-ros-control
         -> ros-noetic-gazebo-ros-control
         -> ros-noetic-gazebo-msgs
+        -> libeigen3-dev
+
     -> UBUNTU FOCAL
     
 TODO:
 
     BASELINE:
+        -> Code MPC using a Gradient Descent optimizer
+        -> Code MPC using an Interior Point optimizer
         -> make load trajectory function
         -> make display trajectory function
-        -> Code MPC
         -> understand how rotation and translation math works
 
     OPTIONAL:
+    -> Add velocity error to cost calculation in mpc, so that max velocity is achieved
     -> make markers for Lateral that display the rot_error and lateral_error on rviz
     -> Tune/tweak Lateral (maybe add some other control parameter to steering)
     -> fix: the car model's movement in rviz is completely fucked the pose to tf is bad

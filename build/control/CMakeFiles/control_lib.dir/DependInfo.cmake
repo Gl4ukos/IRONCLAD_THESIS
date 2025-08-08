@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/maria/ironclad_ws/src/control/src/lateral.cpp" "/home/maria/ironclad_ws/build/control/CMakeFiles/control_lib.dir/src/lateral.cpp.o"
+  "/home/maria/ironclad_ws/src/control/src/mpc.cpp" "/home/maria/ironclad_ws/build/control/CMakeFiles/control_lib.dir/src/mpc.cpp.o"
   "/home/maria/ironclad_ws/src/control/src/pure_pursuit.cpp" "/home/maria/ironclad_ws/build/control/CMakeFiles/control_lib.dir/src/pure_pursuit.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
@@ -22,6 +23,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/maria/ironclad_ws/src/control/include"
   "/opt/ros/noetic/include"
   "/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
+  "/usr/include/eigen3"
   )
 
 # Targets to which this target links.
