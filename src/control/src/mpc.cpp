@@ -74,7 +74,6 @@ int Mpc::set_target(double x_diff, double y_diff, double yaw_diff){
 }
 
 void Mpc::print_controls() {
-    std::cout << "Optimized control sequence:\n";
     for (size_t i = 0; i < controls.size(); i++) {
         std::cout << "Step " << i
                   << " | vel: " << controls[i].vel
@@ -95,6 +94,11 @@ Command Mpc::get_command(State& start) {
 
     double prev_cost = evaluate_cost(controls, start);
     int n_params = horizon * 2;
+    
+    double max_grad_norm = 1.0;
+
+    std::cout<<"Initial control guess: \n";
+    print_controls();
 
     for (int iter = 0; iter < max_iterations; iter++) {
         // 1. Compute gradient
@@ -105,6 +109,14 @@ Command Mpc::get_command(State& start) {
             (p % 2 == 0) ? temp[p/2].vel += step : temp[p/2].steer += step;
             grad[p] = (evaluate_cost(temp, start) - prev_cost) / step;
         }
+
+        std::cout<<"GRAD : "<<grad<<"\n";
+        //normalizing gradient vector (SUPER IMPORTANT)
+        double grad_norm = grad.norm();
+        if (grad_norm > max_grad_norm) {
+            grad *= (max_grad_norm / grad_norm);
+        }
+
 
         // 2. Update controls with gradient descent
         for (int p = 0; p < n_params; p++) {
@@ -117,6 +129,9 @@ Command Mpc::get_command(State& start) {
                     std::min(max_steer, controls[p/2].steer + update));
             }
         }
+
+        std::cout<<"\niter: "<<iter<<" controls:\n";
+        print_controls();
 
         // 3. Check convergence
         double new_cost = evaluate_cost(controls, start);

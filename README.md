@@ -13,7 +13,9 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> MPC is fucked check cost function calculation first        
+        -> Make MPC algorithm stop pumping speed when car is in target position
+        -> Tune MPC parameters to avoid overshoot 
+        -> Tune MPC cost function to check orientation error as well
         -> make load trajectory function
         -> make display trajectory function
 

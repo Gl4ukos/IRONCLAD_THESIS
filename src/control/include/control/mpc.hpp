@@ -15,7 +15,7 @@ struct Command{
 };
 
 struct Weights{
-    double position=6;
+    double position=1;
     double orientation = 0;
     double steering = 0;
     double effort = 0;
@@ -30,12 +30,12 @@ class Mpc{
     std::vector<Command> controls;
     
     //hyperparameters
-    size_t horizon=10;
+    size_t horizon=2;
     double dt =0.2;
     double wheelbase;
     double max_speed;
     double max_steer;
-    int max_iterations = 300;
+    int max_iterations = 3;
 
 
 
