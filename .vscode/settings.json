@@ -59,6 +59,7 @@
         "cwctype": "cpp",
         "fstream": "cpp",
         "typeindex": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "core": "cpp"
     }
 }

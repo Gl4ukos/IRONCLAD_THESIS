@@ -1,5 +1,17 @@
 #include "control/mpc.hpp"
 
+Mpc::Mpc(double wheelbase, double max_speed, double max_steering){
+    this->wheelbase = wheelbase;
+    this->max_speed = max_speed;
+    this->max_steer = max_steering;
+    
+}
+
+double Mpc::get_dt(){
+    return dt;
+}
+
+
 State Mpc::predict_next_state(State& curr, double vel, double steering, double dt){
     State next;
     next.x = curr.x + vel * cos(curr.yaw) * dt;
@@ -22,11 +34,14 @@ double Mpc::compute_cost(std::vector<State>& states,
         double dy = s.y - target.y;
         cost += weights.position * (dx*dx + dy*dy);
 
-
         //orientation error
         double d_yaw = s.yaw - target.yaw;
-        cost += weights.orientation * d_yaw*d_yaw;
 
+        //wrap around
+        while (d_yaw > M_PI) d_yaw -= 2 * M_PI;
+        while (d_yaw < -M_PI) d_yaw += 2 * M_PI;
+
+        cost += weights.orientation * d_yaw*d_yaw;
         //control effort avoiding sharp turns if possible
         cost += weights.steering * steerings[i] * steerings[i];
 
@@ -57,82 +72,59 @@ int Mpc::set_target(double x_diff, double y_diff, double yaw_diff){
         target.yaw = yaw_diff;
         return 0;
 }
-Command Mpc::get_command(State& start){
-    controls.clear();
-    controls.resize(horizon, {max_speed*0.8, 0.0}); // initial guess
 
-    double eps = 1e-4;
-    double alpha = 1.0;
-    double tol = 1e-6;
+void Mpc::print_controls() {
+    std::cout << "Optimized control sequence:\n";
+    for (size_t i = 0; i < controls.size(); i++) {
+        std::cout << "Step " << i
+                  << " | vel: " << controls[i].vel
+                  << " | steer: " << controls[i].steer
+                  << "\n";
+    }
+}
+
+Command Mpc::get_command(State& start) {
+    controls.clear();
+    controls.resize(horizon, {max_speed*0.5, 0.0});
+
+    const double vel_d = 0.5;    // Finite difference step for velocity
+    const double steer_d = 0.1;   // Finite difference step for steering
+    double alpha = 0.1;           // Initial learning rate
+    const double tol = 1e-6;      // Convergence tolerance
+    const double min_alpha = 0.01; // Minimum step size
 
     double prev_cost = evaluate_cost(controls, start);
-
     int n_params = horizon * 2;
-    for (int iter = 0; iter < max_iterations; iter++){
+
+    for (int iter = 0; iter < max_iterations; iter++) {
+        // 1. Compute gradient
         Eigen::VectorXd grad(n_params);
-        Eigen::MatrixXd H(n_params, n_params);
+        for (int p = 0; p < n_params; p++) {
+            std::vector<Command> temp = controls;
+            double step = (p % 2 == 0) ? vel_d : steer_d;
+            (p % 2 == 0) ? temp[p/2].vel += step : temp[p/2].steer += step;
+            grad[p] = (evaluate_cost(temp, start) - prev_cost) / step;
+        }
 
-        // Compute gradient by finite differences
-        for (int p = 0; p < n_params; p++){
-            std::vector<Command> temp_controls = controls;
+        // 2. Update controls with gradient descent
+        for (int p = 0; p < n_params; p++) {
+            double update = -alpha * grad[p];  // Removed *step here
             if (p % 2 == 0) {
-                temp_controls[p / 2].vel += eps;
+                controls[p/2].vel = std::max(0.0, 
+                    std::min(max_speed, controls[p/2].vel + update));
             } else {
-                temp_controls[p / 2].steer += eps;
-            }
-            double cost_plus = evaluate_cost(temp_controls, start);
-            grad[p] = (cost_plus - prev_cost) / eps;
-        }
-
-        // Compute Hessian by finite differences (second derivatives)
-        for (int i = 0; i < n_params; i++){
-            for (int j = 0; j < n_params; j++){
-                std::vector<Command> temp_controls = controls;
-
-                if (i % 2 == 0) temp_controls[i / 2].vel += eps;
-                else temp_controls[i / 2].steer += eps;
-
-                if (j % 2 == 0) temp_controls[j / 2].vel += eps;
-                else temp_controls[j / 2].steer += eps;
-
-                double cost_pp = evaluate_cost(temp_controls, start);
-
-                temp_controls = controls;
-                if (i % 2 == 0) temp_controls[i / 2].vel += eps;
-                else temp_controls[i / 2].steer += eps;
-
-                double cost_p = evaluate_cost(temp_controls, start);
-
-                temp_controls = controls;
-                if (j % 2 == 0) temp_controls[j / 2].vel += eps;
-                else temp_controls[j / 2].steer += eps;
-
-                double cost_p2 = evaluate_cost(temp_controls, start);
-
-                double value = (cost_pp - cost_p - cost_p2 + prev_cost) / (eps * eps);
-                H(i, j) = value;
+                controls[p/2].steer = std::max(-max_steer,
+                    std::min(max_steer, controls[p/2].steer + update));
             }
         }
 
-        // Solve Newton step: H * delta_u = -grad
-        Eigen::VectorXd delta_u = H.ldlt().solve(-grad);
-
-        // Update controls using step size alpha
-        for (int p = 0; p < n_params; p++){
-            if (p % 2 == 0){
-                controls[p / 2].vel += alpha * delta_u[p];
-                // Optionally clamp velocity to allowed bounds here
-            } else {
-                controls[p / 2].steer += alpha * delta_u[p];
-                // Optionally clamp steering to allowed bounds here
-            }
-        }
-
+        // 3. Check convergence
         double new_cost = evaluate_cost(controls, start);
-        if (fabs(prev_cost - new_cost) < tol) {
-            break; // Converged
-        }
+        if (fabs(prev_cost - new_cost) < tol) break;
         prev_cost = new_cost;
+
+        // 4. Simple step size adaptation
+        alpha = std::max(min_alpha, alpha * (new_cost < prev_cost ? 1.1 : 0.9));
     }
 
     return controls.front();

@@ -15,10 +15,10 @@ struct Command{
 };
 
 struct Weights{
-    double position=1000;
-    double orientation = 100;
-    double steering = 10;
-    double effort = 100;
+    double position=6;
+    double orientation = 0;
+    double steering = 0;
+    double effort = 0;
 };
 
 class Mpc{
@@ -31,15 +31,16 @@ class Mpc{
     
     //hyperparameters
     size_t horizon=10;
-    double dt =0.1;
+    double dt =0.2;
     double wheelbase;
     double max_speed;
     double max_steer;
-    int max_iterations = 10;
+    int max_iterations = 300;
 
 
 
     public: 
+    Mpc(double wheelbase, double max_speed, double max_steering);
     State predict_next_state(State& curr, double vel, double steering, double dt);
     int set_target(double x, double y, double yaw);
     double compute_cost(std::vector<State>& states,
@@ -49,4 +50,6 @@ class Mpc{
     double evaluate_cost(std::vector<Command>& control_sequence, State& start);
     Command get_command(State& start);
     void generate_controls();
+    double get_dt();
+    void print_controls();
 };

@@ -13,11 +13,9 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> Code MPC using a Gradient Descent optimizer
-        -> Code MPC using an Interior Point optimizer
+        -> MPC is fucked check cost function calculation first        
         -> make load trajectory function
         -> make display trajectory function
-        -> understand how rotation and translation math works
 
     OPTIONAL:
     -> Add velocity error to cost calculation in mpc, so that max velocity is achieved
