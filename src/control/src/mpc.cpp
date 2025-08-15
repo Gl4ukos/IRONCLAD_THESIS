@@ -86,41 +86,41 @@ Command Mpc::get_command(State& start) {
     controls.clear();
     controls.resize(horizon, {max_speed*0.5, 0.0});
 
-    const double vel_d = 0.5;    // Finite difference step for velocity
-    const double steer_d = 0.1;   // Finite difference step for steering
+    const double vel_d = 1;    // Finite difference step for velocity
+    const double steer_d = 0.05;   // Finite difference step for steering
     double alpha = 0.1;           // Initial learning rate
     const double tol = 1e-6;      // Convergence tolerance
     const double min_alpha = 0.01; // Minimum step size
 
     double prev_cost = evaluate_cost(controls, start);
     int n_params = horizon * 2;
-    
+
     double max_grad_norm = 1.0;
+    double step;
 
-    std::cout<<"Initial control guess: \n";
-    print_controls();
-
+    Eigen::VectorXd grad(n_params);
+    
     for (int iter = 0; iter < max_iterations; iter++) {
         // 1. Compute gradient
-        Eigen::VectorXd grad(n_params);
         for (int p = 0; p < n_params; p++) {
             std::vector<Command> temp = controls;
-            double step = (p % 2 == 0) ? vel_d : steer_d;
+            step = (p % 2 == 0) ? vel_d : steer_d;
             (p % 2 == 0) ? temp[p/2].vel += step : temp[p/2].steer += step;
             grad[p] = (evaluate_cost(temp, start) - prev_cost) / step;
         }
-
-        std::cout<<"GRAD : "<<grad<<"\n";
+        
         //normalizing gradient vector (SUPER IMPORTANT)
         double grad_norm = grad.norm();
         if (grad_norm > max_grad_norm) {
             grad *= (max_grad_norm / grad_norm);
         }
-
+        //std::cout<<"GRAD : "<<grad<<"\n";
 
         // 2. Update controls with gradient descent
         for (int p = 0; p < n_params; p++) {
-            double update = -alpha * grad[p];  // Removed *step here
+            step = (p % 2 == 0) ? vel_d : steer_d;
+            int sign = (grad[p] > 0) - (grad[p] < 0);
+            double update = -(sign * step);  // needs tweaking
             if (p % 2 == 0) {
                 controls[p/2].vel = std::max(0.0, 
                     std::min(max_speed, controls[p/2].vel + update));
@@ -130,8 +130,8 @@ Command Mpc::get_command(State& start) {
             }
         }
 
-        std::cout<<"\niter: "<<iter<<" controls:\n";
-        print_controls();
+        // std::cout<<"\niter: "<<iter<<" controls:\n";
+        // print_controls();
 
         // 3. Check convergence
         double new_cost = evaluate_cost(controls, start);

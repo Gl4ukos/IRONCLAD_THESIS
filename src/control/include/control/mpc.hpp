@@ -30,12 +30,12 @@ class Mpc{
     std::vector<Command> controls;
     
     //hyperparameters
-    size_t horizon=2;
+    size_t horizon=3;
     double dt =0.2;
     double wheelbase;
     double max_speed;
     double max_steer;
-    int max_iterations = 3;
+    int max_iterations = 40;
 
 
 

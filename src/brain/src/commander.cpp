@@ -117,9 +117,9 @@ int main(int argc, char** argv)
         while(abs(target_x-curr_x)>0.2 || abs(target_y-curr_y)>0.2 ){
             
             mpc_command = ctr_mpc.get_command(mpc_start_state);
-            speed = mpc_command.vel;
+            speed = std::max(mpc_command.vel, 2.0); //applying lower limit to speed so the car doesnt stall when steering aggresively
             steering = mpc_command.steer;
-            
+
             //speed = ctr_pure_pursuit.calc_speed();
             //steering = ctr_pure_pursuit.calc_steering();
             //ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
@@ -158,6 +158,8 @@ int main(int argc, char** argv)
         }
 
         std::cout<<"POSITION ACHIEVED!\n";
+        sim_pubs.publishVelocity(0.0);
+        sim_pubs.publishSteering(0.0);
         sleep(2);
         std::cout<<"RESETTING...\n";
         sleep(1);
