@@ -16,7 +16,7 @@ struct Command{
 
 struct Weights{
     double position=1;
-    double orientation = 0;
+    double orientation = 0.2;
     double steering = 0;
     double effort = 0;
 };

@@ -13,12 +13,11 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> Tune MPC cost function to check orientation error as well
         -> make load trajectory function
         -> make display trajectory function
+        -> Code MPC Newton
 
     OPTIONAL:
-    -> MPC with gradient descend, will not fully steer when target is behind car for some reason
     -> Add velocity error to cost calculation in mpc, so that max velocity is achieved
     -> make markers for Lateral that display the rot_error and lateral_error on rviz
     -> Tune/tweak Lateral (maybe add some other control parameter to steering)
