@@ -60,6 +60,8 @@
         "fstream": "cpp",
         "typeindex": "cpp",
         "variant": "cpp",
-        "core": "cpp"
+        "core": "cpp",
+        "regex": "cpp",
+        "unordered_set": "cpp"
     }
 }

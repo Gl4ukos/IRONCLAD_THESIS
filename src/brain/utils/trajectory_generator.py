@@ -56,7 +56,6 @@ for i in range(len(trajectory)):
 
 
 #writing csv file
-
 with open(name, mode='w', newline='') as file:
     writer = csv.DictWriter(file, fieldnames = ['x', 'y', 'z', 'qx', 'qy', 'qz', 'qw'])
     writer.writeheader()

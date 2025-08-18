@@ -10,11 +10,54 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/utils.h>
+#include <fstream>
+
 
 
 double wheelbase = 1.0; //! probably not true  
 
 double curr_x, curr_y, curr_z, curr_yaw;
+
+
+
+int load_trajectory(nav_msgs::Path &trajectory, std::string filepath){
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        ROS_ERROR_STREAM("Failed to open CSV file: " << filepath);
+        return -1;
+    }
+
+    trajectory.poses.clear();
+    trajectory.header.frame_id = "world";
+    trajectory.header.stamp = ros::Time::now();
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        double x, y, z, qx, qy, qz, qw;
+        char comma;
+
+        if (!(ss >> x >> comma >> y >> comma >> z >> comma >> qx >> comma >> qy >> comma >> qz >> comma >> qw)) {
+            ROS_WARN_STREAM("Skipping invalid line: " << line);
+            continue;
+        }
+
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = "world";
+        pose.pose.position.x = x;
+        pose.pose.position.y = y;
+        pose.pose.position.z = z;
+        pose.pose.orientation.x = qx;
+        pose.pose.orientation.y = qy;
+        pose.pose.orientation.z = qz;
+        pose.pose.orientation.w = qw;
+
+        trajectory.poses.push_back(pose);
+    }
+
+    return 0;
+}
+
 
 double eucl_dist(double t_x,double t_y){
     return sqrt(t_x*t_x + t_y*t_y);
@@ -38,6 +81,7 @@ int main(int argc, char** argv)
     ros::Publisher spawn_target_pub =  nh.advertise<geometry_msgs::PoseStamped>("/target_spawner/target_pose", 10);
     ros::Publisher target_pose_pub = nh.advertise<geometry_msgs::PoseStamped>("commander/target",1);
     ros::Publisher path_publisher = nh.advertise<nav_msgs::Path>("/commander/predicted_path", 1);
+    ros::Publisher trajectory_publisher = nh.advertise<nav_msgs::Path>("/commander/goal_trajectory", 1, true);
 
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
@@ -48,9 +92,13 @@ int main(int argc, char** argv)
     target_posest_msg.pose.orientation.w=1.0;
     target_posest_msg.pose.position.z=0.25;
 
-    //setting up trajectory msg
+    //setting up executed path msg
     nav_msgs::Path path_msg;
     path_msg.header.frame_id = "world";
+
+    //setting up goal trajectory msg
+    nav_msgs::Path goal_trajectory_msg;
+    goal_trajectory_msg.header.frame_id = "world";
 
     //setting up target_pose_msg
     geometry_msgs::PoseStamped target_pose_msg;
@@ -79,13 +127,17 @@ int main(int argc, char** argv)
 
     sim_pubs.reset_position();
     
-
+    //loading the test trajectory
+    load_trajectory(goal_trajectory_msg, "src/brain/utils/trajectory_test.csv");
+    trajectory_publisher.publish(goal_trajectory_msg);
 
     while(ros::ok()){
         std::cout<<"Enter Target Coords\n";
         std::cin >> target_x >> target_y >> target_yaw;
         ros::spinOnce();
 
+        goal_trajectory_msg.header.stamp = ros::Time::now();
+        trajectory_publisher.publish(goal_trajectory_msg);
         //displaying target as object in gazebo
         target_posest_msg.pose.position.x=target_x;
         target_posest_msg.pose.position.y=target_y;
