@@ -13,8 +13,8 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> make load trajectory function
-        -> make display trajectory function
+        -> Add display trajectory to mpc
+        -> Add dynamic target assignment to intergrate trajectory
         -> Code MPC Newton
 
     OPTIONAL:

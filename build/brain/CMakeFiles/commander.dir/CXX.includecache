@@ -67,6 +67,12 @@ vector
 -
 Eigen/Dense
 -
+nav_msgs/Path.h
+-
+geometry_msgs/PoseStamped.h
+-
+tf2/utils.h
+-
 
 /home/maria/ironclad_ws/src/control/include/control/pure_pursuit.hpp
 ros/ros.h

@@ -2,6 +2,9 @@
 #include <cmath>
 #include <vector>
 #include <Eigen/Dense> 
+#include <nav_msgs/Path.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <tf2/utils.h>
 
 struct State{
     double x;
@@ -52,4 +55,5 @@ class Mpc{
     void generate_controls();
     double get_dt();
     void print_controls();
+    void get_trajectory(nav_msgs::Path *path_msg, double  robot_x, double  robot_y, double  robot_yaw);
 };

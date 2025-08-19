@@ -156,3 +156,33 @@ void Mpc::generate_controls(){
     }
 }
 
+
+void Mpc::get_trajectory(nav_msgs::Path *path_msg, double  robot_x, double  robot_y, double  robot_yaw){
+    path_msg->poses.clear();
+    path_msg->header.stamp = ros::Time::now();
+
+
+
+
+    State state;
+    double x,y;
+    tf2::Quaternion q;
+
+    for(int i=0; i<controls.size(); i++){
+        predict_next_state(state, controls[i].vel, controls[i].steer, this->dt);
+
+        x = robot_x + cos(controls[i].steer)*state.x - sin(controls[i].steer) * state.y;
+        y = robot_y + sin(controls[i].steer)*state.x + cos(controls[i].steer) * state.y;
+
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = path_msg->header.frame_id;
+        pose.header.stamp = path_msg->header.stamp;
+        pose.pose.position.x = x;
+        pose.pose.position.y = y;
+        pose.pose.position.z = 0.0;
+
+        q.setRPY(0, 0, state.yaw);
+        pose.pose.orientation = tf2::toMsg(q);
+        path_msg->poses.push_back(pose);
+    }
+}

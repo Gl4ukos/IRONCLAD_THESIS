@@ -129,7 +129,28 @@ int main(int argc, char** argv)
     
     //loading the test trajectory
     load_trajectory(goal_trajectory_msg, "src/brain/utils/trajectory_test.csv");
+    goal_trajectory_msg.header.stamp = ros::Time::now();
     trajectory_publisher.publish(goal_trajectory_msg);
+    
+    for(int i=0; i<goal_trajectory_msg.poses.size(); i++){
+        goal_trajectory_msg.poses[i].header.frame_id = "world";
+        goal_trajectory_msg.poses[i].header.stamp = ros::Time::now();
+    
+        spawn_target_pub.publish(goal_trajectory_msg.poses[i]);
+        target_pose_pub.publish(goal_trajectory_msg.poses[i]);
+
+        target_x = goal_trajectory_msg.poses[i].pose.position.x;
+        target_y = goal_trajectory_msg.poses[i].pose.position.y;
+
+        tf2::Quaternion q;
+        tf2::fromMsg(goal_trajectory_msg.poses[i].pose.orientation, q);
+        double roll, pitch;
+        tf2::Matrix3x3(q).getRPY(roll, pitch, target_yaw);
+
+
+        sleep(2);
+
+    }
 
     while(ros::ok()){
         std::cout<<"Enter Target Coords\n";
@@ -137,7 +158,6 @@ int main(int argc, char** argv)
         ros::spinOnce();
 
         goal_trajectory_msg.header.stamp = ros::Time::now();
-        trajectory_publisher.publish(goal_trajectory_msg);
         //displaying target as object in gazebo
         target_posest_msg.pose.position.x=target_x;
         target_posest_msg.pose.position.y=target_y;
@@ -167,17 +187,24 @@ int main(int argc, char** argv)
 
         int valid_move =0;
         while(abs(target_x-curr_x)>0.2 || abs(target_y-curr_y)>0.2 ){
-            
+        
+            // MPC 
+            ctr_mpc.set_target(x_diff, y_diff,yaw_diff);
+            sleep(ctr_mpc.get_dt());
             mpc_command = ctr_mpc.get_command(mpc_start_state);
             speed = std::max(mpc_command.vel, 2.0); //applying lower limit to speed so the car doesnt stall when steering aggresively
             steering = mpc_command.steer;
+            ctr_mpc.get_trajectory(&path_msg, curr_x, curr_y, curr_yaw);
 
-            //speed = ctr_pure_pursuit.calc_speed();
-            //steering = ctr_pure_pursuit.calc_steering();
-            //ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+            // PURE PURSUIT
+            // ctr_pure_pursuit.set_target(x_diff, y_diff);
+            // speed = ctr_pure_pursuit.calc_speed();
+            // steering = ctr_pure_pursuit.calc_steering();
+            // ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
 
 
             // STANLEY 
+            // ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
             // speed = ctr_lateral.calc_speed();
             // steering = ctr_lateral.calc_steering();
             // ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
@@ -189,7 +216,6 @@ int main(int argc, char** argv)
             target_pose_msg.header.stamp = ros::Time::now();
             target_pose_pub.publish(target_pose_msg);
 
-            path_msg.header.stamp = ros::Time::now();
             path_publisher.publish(path_msg);
         
             // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
@@ -202,10 +228,6 @@ int main(int argc, char** argv)
             y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
             yaw_diff = target_yaw - curr_yaw;
            
-            ctr_mpc.set_target(x_diff, y_diff,yaw_diff);
-            sleep(ctr_mpc.get_dt());
-            //ctr_pure_pursuit.set_target(x_diff, y_diff);
-            //ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
             
         }
 
