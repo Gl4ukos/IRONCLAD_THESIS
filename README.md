@@ -13,8 +13,9 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> Add display trajectory to mpc
-        -> Add dynamic target assignment to intergrate trajectory
+        -> Plot performance
+        -> Improve target acquisition
+        -> Add mpc prediction display
         -> Code MPC Newton
 
     OPTIONAL:
