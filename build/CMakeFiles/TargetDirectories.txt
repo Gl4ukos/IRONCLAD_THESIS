@@ -65,6 +65,14 @@
 /home/maria/ironclad_ws/build/embedded_system/CMakeFiles/rebuild_cache.dir
 /home/maria/ironclad_ws/build/embedded_system/CMakeFiles/edit_cache.dir
 /home/maria/ironclad_ws/build/embedded_system/CMakeFiles/test.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/install/strip.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/install/local.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/install.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/list_install_components.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/rebuild_cache.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/edit_cache.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/test.dir
+/home/maria/ironclad_ws/build/informatics/CMakeFiles/_catkin_empty_exported_target.dir
 /home/maria/ironclad_ws/build/ackermann_simulation/CMakeFiles/install/strip.dir
 /home/maria/ironclad_ws/build/ackermann_simulation/CMakeFiles/install.dir
 /home/maria/ironclad_ws/build/ackermann_simulation/CMakeFiles/list_install_components.dir

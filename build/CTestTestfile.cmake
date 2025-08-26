@@ -7,5 +7,6 @@
 subdirs("gtest")
 subdirs("control")
 subdirs("embedded_system")
+subdirs("informatics")
 subdirs("ackermann_simulation")
 subdirs("brain")

@@ -147,9 +147,6 @@ int main(int argc, char** argv)
         double roll, pitch;
         tf2::Matrix3x3(q).getRPY(roll, pitch, target_yaw);
 
-
-        sleep(2);
-
     }
 
     while(ros::ok()){
