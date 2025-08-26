@@ -106,7 +106,12 @@ int main(int argc, char** argv)
     target_pose_msg.header.stamp = ros::Time::now();
     target_pose_msg.pose.orientation.w=1.0;
 
-    
+    int controller_mode =0;
+    while(ros::ok() && !(controller_mode>=1 && controller_mode<=3)){
+        std::cout<<"TYPE TO SELECT CONTROLLER: \n-> 1 (Pure Pursuit)\n-> 2 (Lateral/Stanley)\n-> 3 (MPC Gradient Descend)\n$";
+        std::cin>>controller_mode;
+    }
+
     double target_x,target_y,target_yaw;
     double speed, steering;
     
@@ -132,113 +137,128 @@ int main(int argc, char** argv)
     goal_trajectory_msg.header.stamp = ros::Time::now();
     trajectory_publisher.publish(goal_trajectory_msg);
     
+
+    ros::Time start_time = ros::Time::now();
     for(int i=0; i<goal_trajectory_msg.poses.size(); i++){
+        //selecting current pose-target
         goal_trajectory_msg.poses[i].header.frame_id = "world";
         goal_trajectory_msg.poses[i].header.stamp = ros::Time::now();
     
+        //publishing current pose-target
         spawn_target_pub.publish(goal_trajectory_msg.poses[i]);
         target_pose_pub.publish(goal_trajectory_msg.poses[i]);
 
+        //acuiring target_x, target_y, target_yaw from current pose-target
         target_x = goal_trajectory_msg.poses[i].pose.position.x;
         target_y = goal_trajectory_msg.poses[i].pose.position.y;
-
         tf2::Quaternion q;
-        tf2::fromMsg(goal_trajectory_msg.poses[i].pose.orientation, q);
         double roll, pitch;
+        tf2::fromMsg(goal_trajectory_msg.poses[i].pose.orientation, q);
         tf2::Matrix3x3(q).getRPY(roll, pitch, target_yaw);
-
-    }
-
-    while(ros::ok()){
-        std::cout<<"Enter Target Coords\n";
-        std::cin >> target_x >> target_y >> target_yaw;
+        
         ros::spinOnce();
 
-        goal_trajectory_msg.header.stamp = ros::Time::now();
-        //displaying target as object in gazebo
+        //displaying target as object in gazebo (redundant)
         target_posest_msg.pose.position.x=target_x;
         target_posest_msg.pose.position.y=target_y;
         spawn_target_pub.publish(target_posest_msg);
-
-        quaternion.setRPY(0,0,target_yaw);
+        //displaying target as vector in rviz 
         target_pose_msg.pose.position.x = target_x;
         target_pose_msg.pose.position.y = target_y;
-        target_pose_msg.pose.orientation = tf2::toMsg(quaternion);
-        target_pose_pub.publish(target_pose_msg);    
+        target_pose_msg.pose.orientation = tf2::toMsg(q);
+        target_pose_pub.publish(target_pose_msg);
 
-        std::cout<<"TARGET SET\n";
-
-        //x and y distances rotated so the car is like heading to 0 angle
+        //updating target position (difference)
         yaw_diff = target_yaw - curr_yaw;
         x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
         y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
-        
-        
+    
+        //updating targets in control classes
         ctr_pure_pursuit.set_target(x_diff, y_diff);
         ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
         ctr_mpc.set_target(x_diff, y_diff, curr_yaw);
-
-        ros::Duration(1).sleep();
         
-        std::cout<<"MOVING...\n";
+        std::cout<<"TARGET AQCUIRED\nMOVING...\n";
 
-        int valid_move =0;
-        while(abs(target_x-curr_x)>0.2 || abs(target_y-curr_y)>0.2 ){
+        // executing the move
+        while((abs(x_diff)>0.2 || abs(y_diff)>0.2) && (ros::ok())){
         
-            // MPC 
-            ctr_mpc.set_target(x_diff, y_diff,yaw_diff);
-            sleep(ctr_mpc.get_dt());
-            mpc_command = ctr_mpc.get_command(mpc_start_state);
-            speed = std::max(mpc_command.vel, 2.0); //applying lower limit to speed so the car doesnt stall when steering aggresively
-            steering = mpc_command.steer;
-            ctr_mpc.get_trajectory(&path_msg, curr_x, curr_y, curr_yaw);
 
-            // PURE PURSUIT
-            // ctr_pure_pursuit.set_target(x_diff, y_diff);
-            // speed = ctr_pure_pursuit.calc_speed();
-            // steering = ctr_pure_pursuit.calc_steering();
-            // ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+            switch(controller_mode){
+                case 3:
+                    // MPC
+                    ctr_mpc.set_target(x_diff, y_diff,yaw_diff);
+                    sleep(ctr_mpc.get_dt());
+                    mpc_command = ctr_mpc.get_command(mpc_start_state);
+                    steering = mpc_command.steer;
+                    if(abs(steering) == sim_pubs.get_max_steer()){
+                        speed = sim_pubs.get_max_speed(); // to move with max steering the car will need a lot of torgue
+                    }else{
+                        speed = std::max(mpc_command.vel, 5.0); //applying lower limit to speed so the car doesnt stall when steering aggresively
+                    }
+                    ctr_mpc.get_trajectory(&path_msg, curr_x, curr_y, curr_yaw);
+                    break;
+                case 1:
+                    // PURE PURSUIT
+                    ctr_pure_pursuit.set_target(x_diff, y_diff);
+                    steering = ctr_pure_pursuit.calc_steering();
+                    if(abs(steering) == sim_pubs.get_max_steer()){
+                        speed = sim_pubs.get_max_speed();
+                    }else{
+                        speed = std::max(ctr_pure_pursuit.calc_speed(), 5.0);
+                    }
+                    ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+                    break;
+                case 2:
+                    // STANLEY 
+                    ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
+                    steering = ctr_lateral.calc_steering();
+                    if(steering == sim_pubs.get_max_steer()){
+                        speed = sim_pubs.get_max_speed();
+                    }else{
+                        speed = std::max(ctr_lateral.calc_speed(), 5.0);
+                    }
+                    ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+                    break;
+            }
 
-
-            // STANLEY 
-            // ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
-            // speed = ctr_lateral.calc_speed();
-            // steering = ctr_lateral.calc_steering();
-            // ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
-
-            //publish
+        
+            //publishing command
             sim_pubs.publishVelocity(speed);
             sim_pubs.publishSteering(steering);
-
+        
+            // this one may be redundant
             target_pose_msg.header.stamp = ros::Time::now();
             target_pose_pub.publish(target_pose_msg);
-
             path_publisher.publish(path_msg);
         
+            // (redundant) for debugging
             // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
             std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
-            ros::spinOnce();
+            
 
+            // updating target position
             //x and y distances rotated so the car is like heading to 0 angle
             x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
             y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
             yaw_diff = target_yaw - curr_yaw;
-           
-            
+            ros::spinOnce();
         }
-
-        std::cout<<"POSITION ACHIEVED!\n";
-        sim_pubs.publishVelocity(0.0);
-        sim_pubs.publishSteering(0.0);
-        sleep(2);
-        std::cout<<"RESETTING...\n";
-        sleep(1);
-        sim_pubs.reset_position();
-        curr_x=0;
-        curr_y=0;
-
     }
+    ros::Time end_time = ros::Time::now();
+    double duration = (end_time - start_time).toSec(); 
+    std::cout<<"TRAJECTORY COMPLETED!\n";
+    sim_pubs.publishVelocity(0.0);
+    sim_pubs.publishSteering(0.0);
+    sleep(1);
+    std::cout<<"TIME: ["<<duration<<"sec]\n";
+    sleep(2);
+    std::cout<<"RESETTING...\n";
+    sleep(1);
+    sim_pubs.reset_position();
+    curr_x=0;
+    curr_y=0;
 
     return 0;
 }

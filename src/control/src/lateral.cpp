@@ -27,7 +27,6 @@ double Lateral::calc_steering(){
     double k=2.5;
     if(speed>0){
         steering = target_yaw + atan2(k*target_y,speed);
-        std::cout<<"e_d:"<< target_y << "   er:" << target_yaw <<"\n";
     }else{
         steering =0;
     }
