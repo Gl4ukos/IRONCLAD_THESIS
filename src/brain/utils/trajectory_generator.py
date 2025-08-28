@@ -2,13 +2,13 @@
 import csv
 from tf.transformations import quaternion_from_euler
 import math
+
 trajectory = []
 
 print("Enter trajectory name: ")
-name = "src/brain/utils/trajectory_"+ input() +".csv"
+name = "src/informatics/pose_sequences/PLAN"+ input() +".csv"
 
 pose_num = 0
-
 
 
 #requesting and adding coordinates
@@ -57,7 +57,7 @@ for i in range(len(trajectory)):
 
 #writing csv file
 with open(name, mode='w', newline='') as file:
-    writer = csv.DictWriter(file, fieldnames = ['x', 'y', 'z', 'qx', 'qy', 'qz', 'qw'])
+    writer = csv.DictWriter(file)
     writer.writeheader()
     for pose in trajectory:
         writer.writerow(pose)

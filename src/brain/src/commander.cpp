@@ -133,7 +133,7 @@ int main(int argc, char** argv)
     sim_pubs.reset_position();
     
     //loading the test trajectory
-    load_trajectory(goal_trajectory_msg, "src/brain/utils/trajectory_test.csv");
+    load_trajectory(goal_trajectory_msg, "src/informatics/pose_sequences/PLAN.csv");
     goal_trajectory_msg.header.stamp = ros::Time::now();
     trajectory_publisher.publish(goal_trajectory_msg);
     

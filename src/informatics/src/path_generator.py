@@ -5,13 +5,13 @@ import random
 
 
 
-file_name = input("Give filename\n")
+file_name = "src/informatics/pose_sequences/" + str(input("Give filename\n"))
 noise = input("Give noise\n")
 
 path_file = open(file_name, mode = 'w')
 noisy_row = []
 
-with open('PLAN.csv', mode='r') as plan_file:
+with open('src/informatics/pose_sequences/PLAN.csv', mode='r') as plan_file:
     plan_file = csv.reader(plan_file)
     for lines in plan_file:
         if len(lines) != 7:

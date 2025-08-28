@@ -62,22 +62,21 @@ def deviation_calculator(plan:POSE_SEQUENCE, trajectory:POSE_SEQUENCE):
     
 
 
-PLAN = load_pose_sequence_from_csv("PLAN.csv")
-PURE_PURSUIT_TRAJECTORY = load_pose_sequence_from_csv("PP_TRAJ.csv")
-LATERAL_TRAJECTORY = load_pose_sequence_from_csv("LAT_TRAJ.csv")
-MPC_TRAJECTORY = load_pose_sequence_from_csv("MPC_TRAJ.csv")
+PLAN = load_pose_sequence_from_csv("src/informatics/pose_sequences/PLAN.csv")
+PURE_PURSUIT_TRAJECTORY = load_pose_sequence_from_csv("src/informatics/pose_sequences/PP_TRAJ.csv")
+LATERAL_TRAJECTORY = load_pose_sequence_from_csv("src/informatics/pose_sequences/LAT_TRAJ.csv")
+MPC_TRAJECTORY = load_pose_sequence_from_csv("src/informatics/pose_sequences/MPC_TRAJ.csv")
 
 
 pp_traj_dev = deviation_calculator(PLAN, PURE_PURSUIT_TRAJECTORY)
-print(pp_traj_dev)
 
 plt.figure()
 plt.bar([i for i in range(len(pp_traj_dev))], pp_traj_dev)
 plt.title("pp deviation")
 
 plt.figure()
-plt.plot(PLAN.x_list, PLAN.y_list, marker='o', linestyle='-', color='g')
-plt.plot(PURE_PURSUIT_TRAJECTORY.x_list, PURE_PURSUIT_TRAJECTORY.y_list, marker="x", linestyle = '-', color = 'c' )
+plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='g')
+plt.plot(PURE_PURSUIT_TRAJECTORY.y_list, PURE_PURSUIT_TRAJECTORY.x_list, marker="x", linestyle = '-', color = 'c' )
 plt.title("plan and trajectory")
 
 plt.show()
