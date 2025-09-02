@@ -41,8 +41,9 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ackermann_simulation)/rviz/ironclad_sim.rviz" />
 
   <!-- Adding rosbag to log position information for plotting results -->
-  <node pkg="rosbag" type="record" name="trajectory_log"
+  <!-- node pkg="rosbag" type="record" name="trajectory_log"
         args="-O /home/maria/ironclad_ws/src/informatics/src/raw_trajectory /pose" 
-        output = "screen"/>
+        output = "screen"/-->
+
 
 </launch>

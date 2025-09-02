@@ -20,6 +20,9 @@ PURE_PURSUIT_TRAJECTORY = POSE_SEQUENCE()
 LATERAL_TRAJECTORY = POSE_SEQUENCE()
 MPC_TRAJECTORY = POSE_SEQUENCE()
 
+
+
+
 def load_pose_sequence_from_csv(filename):
     NEW_POSE_SEQUENCE = POSE_SEQUENCE()
     file = open(filename,mode='r')
@@ -72,7 +75,7 @@ pp_traj_dev = deviation_calculator(PLAN, PURE_PURSUIT_TRAJECTORY)
 
 plt.figure()
 plt.bar([i for i in range(len(pp_traj_dev))], pp_traj_dev)
-plt.title("pp deviation")
+plt.title("deviation")
 
 plt.figure()
 plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='g')

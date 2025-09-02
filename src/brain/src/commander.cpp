@@ -11,11 +11,12 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/utils.h>
 #include <fstream>
+#include <vector>
 
 
 
 double wheelbase = 1.0; //! probably not true  
-
+int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
 
 
@@ -96,6 +97,12 @@ int main(int argc, char** argv)
     nav_msgs::Path path_msg;
     path_msg.header.frame_id = "world";
 
+    //setting up total executed path msg
+    std::vector<double> total_path_x;
+    std::vector<double> total_path_y;
+    std::vector<double> total_path_yaw;
+
+
     //setting up goal trajectory msg
     nav_msgs::Path goal_trajectory_msg;
     goal_trajectory_msg.header.frame_id = "world";
@@ -106,7 +113,6 @@ int main(int argc, char** argv)
     target_pose_msg.header.stamp = ros::Time::now();
     target_pose_msg.pose.orientation.w=1.0;
 
-    int controller_mode =0;
     while(ros::ok() && !(controller_mode>=1 && controller_mode<=3)){
         std::cout<<"TYPE TO SELECT CONTROLLER: \n-> 1 (Pure Pursuit)\n-> 2 (Lateral/Stanley)\n-> 3 (MPC Gradient Descend)\n$";
         std::cin>>controller_mode;
@@ -245,17 +251,48 @@ int main(int argc, char** argv)
             yaw_diff = target_yaw - curr_yaw;
             ros::spinOnce();
         }
+        //keeping the pose closest to target for plotting results
+        total_path_x.push_back(curr_x);
+        total_path_y.push_back(curr_y);
+        total_path_yaw.push_back(curr_yaw);
     }
     ros::Time end_time = ros::Time::now();
     double duration = (end_time - start_time).toSec(); 
     std::cout<<"TRAJECTORY COMPLETED!\n";
     sim_pubs.publishVelocity(0.0);
     sim_pubs.publishSteering(0.0);
-    sleep(1);
+    sleep(0.2);
     std::cout<<"TIME: ["<<duration<<"sec]\n";
-    sleep(2);
+    sleep(0.2);
     std::cout<<"RESETTING...\n";
+    sleep(0.5);
+    
+    std::cout<<"SAVING TRAJECTORY...\n";
+    
+    std::string final_traj_filename= "src/informatics/pose_sequences/PP_TRAJ.csv";
+    switch(controller_mode){
+        case 2:
+            final_traj_filename = "src/informatics/pose_sequences/LAT_TRAJ.csv";
+            break;
+        case 3:
+            final_traj_filename = "src/informatics/pose_sequences/MPC_TRAJ.csv";
+            break;            
+    }
+    std::ofstream traj_file(final_traj_filename);
+    traj_file << std::fixed << std::setprecision(6);
+    for( size_t i=0; i<total_path_x.size(); i++){
+        tf2::Quaternion q;
+        q.setRPY(0,0,total_path_yaw[i]);
+        geometry_msgs::Quaternion q_msg = tf2::toMsg(q);
+        traj_file<<total_path_x[i]<<","<<total_path_y[i]<<",0.0,"<<q_msg.x<<","<<q_msg.y<<","<<q_msg.z<<","<<q_msg.w<<"\n";
+    }
+    traj_file.close();
     sleep(1);
+    std::cout<<"DISPLAYING RESULTS...\n";
+    std::system("python3 src/informatics/src/plotter.py");
+
+    
+
     sim_pubs.reset_position();
     curr_x=0;
     curr_y=0;
