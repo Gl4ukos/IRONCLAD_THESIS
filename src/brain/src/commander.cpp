@@ -269,8 +269,10 @@ int main(int argc, char** argv)
     
     std::cout<<"SAVING TRAJECTORY...\n";
     
-    std::string final_traj_filename= "src/informatics/pose_sequences/PP_TRAJ.csv";
+    std::string final_traj_filename= "";
     switch(controller_mode){
+        case 1:
+            final_traj_filename = "src/informatics/pose_sequences/PP_TRAJ.csv";
         case 2:
             final_traj_filename = "src/informatics/pose_sequences/LAT_TRAJ.csv";
             break;
@@ -284,12 +286,13 @@ int main(int argc, char** argv)
         tf2::Quaternion q;
         q.setRPY(0,0,total_path_yaw[i]);
         geometry_msgs::Quaternion q_msg = tf2::toMsg(q);
-        traj_file<<total_path_x[i]<<","<<total_path_y[i]<<",0.0,"<<q_msg.x<<","<<q_msg.y<<","<<q_msg.z<<","<<q_msg.w<<"\n";
+        traj_file<<total_path_x[i]<<","<<total_path_y[i]<<",0.000000,"<<q_msg.x<<","<<q_msg.y<<","<<q_msg.z<<","<<q_msg.w<<"\n";
     }
     traj_file.close();
     sleep(1);
     std::cout<<"DISPLAYING RESULTS...\n";
-    std::system("python3 src/informatics/src/plotter.py");
+    std::string cmd = "python3 src/informatics/src/plotter.py "+ std::to_string(controller_mode);
+    std::system(cmd.c_str());
 
     
 

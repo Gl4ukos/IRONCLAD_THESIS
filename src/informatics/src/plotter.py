@@ -2,6 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import sys
 
 
 class POSE_SEQUENCE:
@@ -64,22 +65,36 @@ def deviation_calculator(plan:POSE_SEQUENCE, trajectory:POSE_SEQUENCE):
     return position_deviation
     
 
+controller_type = sys.argv[1]
 
+    
 PLAN = load_pose_sequence_from_csv("src/informatics/pose_sequences/PLAN.csv")
-PURE_PURSUIT_TRAJECTORY = load_pose_sequence_from_csv("src/informatics/pose_sequences/PP_TRAJ.csv")
-LATERAL_TRAJECTORY = load_pose_sequence_from_csv("src/informatics/pose_sequences/LAT_TRAJ.csv")
-MPC_TRAJECTORY = load_pose_sequence_from_csv("src/informatics/pose_sequences/MPC_TRAJ.csv")
+title = ""
+trajectory_filename = ""
+if controller_type == "1":
+    trajectory_filename += "src/informatics/pose_sequences/PP_TRAJ.csv"
+    title = "Pure Pursuit trajectory deviation"
+elif controller_type == "2": 
+    title = "Lateral trajectory deviation"
+    trajectory_filename += "src/informatics/pose_sequences/LAT_TRAJ.csv"
+elif controller_type == "3":
+    title = "MPC trajectory deviation"
+    trajectory_filename += "src/informatics/pose_sequences/MPC_TRAJ.csv"
+else:
+    print("Cant load trajectory")
+    print("controller type: ", controller_type)
+    exit()
 
-
-pp_traj_dev = deviation_calculator(PLAN, PURE_PURSUIT_TRAJECTORY)
+TRAJECTORY = load_pose_sequence_from_csv(trajectory_filename)
+traj_dev = deviation_calculator(PLAN, TRAJECTORY)
 
 plt.figure()
-plt.bar([i for i in range(len(pp_traj_dev))], pp_traj_dev)
+plt.bar([i for i in range(len(traj_dev))], traj_dev)
 plt.title("deviation")
 
 plt.figure()
 plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='g')
-plt.plot(PURE_PURSUIT_TRAJECTORY.y_list, PURE_PURSUIT_TRAJECTORY.x_list, marker="x", linestyle = '-', color = 'c' )
+plt.plot(TRAJECTORY.y_list, TRAJECTORY.x_list, marker="x", linestyle = '-', color = 'c' )
 plt.title("plan and trajectory")
 
 plt.show()
