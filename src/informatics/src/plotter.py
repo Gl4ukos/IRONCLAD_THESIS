@@ -71,21 +71,26 @@ controller_type = sys.argv[1]
 PLAN = load_pose_sequence_from_csv("src/informatics/pose_sequences/PLAN.csv")
 title = ""
 trajectory_filename = ""
+anal_trajectory_filename = ""
 if controller_type == "1":
     trajectory_filename += "src/informatics/pose_sequences/PP_TRAJ.csv"
+    anal_trajectory_filename += "src/informatics/pose_sequences/PP_TRAJ_ANAL.csv"
     title = "Pure Pursuit trajectory deviation"
 elif controller_type == "2": 
     title = "Lateral trajectory deviation"
     trajectory_filename += "src/informatics/pose_sequences/LAT_TRAJ.csv"
+    anal_trajectory_filename += "src/informatics/pose_sequences/LAT_TRAJ_ANAL.csv"
 elif controller_type == "3":
     title = "MPC trajectory deviation"
     trajectory_filename += "src/informatics/pose_sequences/MPC_TRAJ.csv"
+    anal_trajectory_filename += "src/informatics/pose_sequences/MPC_TRAJ_ANAL.csv"
 else:
     print("Cant load trajectory")
     print("controller type: ", controller_type)
     exit()
 
 TRAJECTORY = load_pose_sequence_from_csv(trajectory_filename)
+ANALYTICAL_TRAJECTORY = load_pose_sequence_from_csv(anal_trajectory_filename)
 traj_dev = deviation_calculator(PLAN, TRAJECTORY)
 
 plt.figure()
@@ -94,7 +99,8 @@ plt.title("deviation")
 
 plt.figure()
 plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='g')
-plt.plot(TRAJECTORY.y_list, TRAJECTORY.x_list, marker="x", linestyle = '-', color = 'c' )
+#plt.plot(TRAJECTORY.y_list, TRAJECTORY.x_list, marker="x", linestyle = '-', color = 'c' )
+plt.plot(ANALYTICAL_TRAJECTORY.y_list, ANALYTICAL_TRAJECTORY.x_list, marker='x', linestyle = '-', color = 'c', markersize=0)
 plt.title("plan and trajectory")
 
 plt.show()

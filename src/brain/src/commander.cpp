@@ -12,6 +12,7 @@
 #include <tf2/utils.h>
 #include <fstream>
 #include <vector>
+#include <gazebo_msgs/ModelStates.h>
 
 
 
@@ -102,6 +103,12 @@ int main(int argc, char** argv)
     std::vector<double> total_path_y;
     std::vector<double> total_path_yaw;
 
+    //setting up total executed path msg analytical
+    std::vector<double> anal_total_path_x;
+    std::vector<double> anal_total_path_y;
+    std::vector<double> anal_total_path_yaw;
+    
+
 
     //setting up goal trajectory msg
     nav_msgs::Path goal_trajectory_msg;
@@ -180,15 +187,21 @@ int main(int argc, char** argv)
         y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
     
         //updating targets in control classes
-        ctr_pure_pursuit.set_target(x_diff, y_diff);
-        ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
-        ctr_mpc.set_target(x_diff, y_diff, curr_yaw);
+        if(i/2==0){
+            ctr_pure_pursuit.set_target(x_diff, y_diff);
+            ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
+            ctr_mpc.set_target(x_diff, y_diff, curr_yaw);
+        }
         
         std::cout<<"TARGET AQCUIRED\nMOVING...\n";
 
         // executing the move
         while((abs(x_diff)>0.2 || abs(y_diff)>0.2) && (ros::ok())){
         
+            anal_total_path_x.push_back(curr_x);
+            anal_total_path_y.push_back(curr_y);
+            anal_total_path_yaw.push_back(curr_yaw);
+            
 
             switch(controller_mode){
                 case 3:
@@ -200,7 +213,11 @@ int main(int argc, char** argv)
                     if(abs(steering) == sim_pubs.get_max_steer()){
                         speed = sim_pubs.get_max_speed(); // to move with max steering the car will need a lot of torgue
                     }else{
-                        speed = std::max(mpc_command.vel, 5.0); //applying lower limit to speed so the car doesnt stall when steering aggresively
+                        if(i+1 == goal_trajectory_msg.poses.size()){ //if thats the last point
+                            speed = std::max(mpc_command.vel, 5.0); //applying lower limit to speed so the car doesnt stall when steering aggresively
+                        }else{ //otherwise keep it speedy
+                            speed = std::max(mpc_command.vel, 8.0);
+                        }
                     }
                     ctr_mpc.get_trajectory(&path_msg, curr_x, curr_y, curr_yaw);
                     break;
@@ -211,7 +228,11 @@ int main(int argc, char** argv)
                     if(abs(steering) == sim_pubs.get_max_steer()){
                         speed = sim_pubs.get_max_speed();
                     }else{
-                        speed = std::max(ctr_pure_pursuit.calc_speed(), 5.0);
+                        if(i+1 == goal_trajectory_msg.poses.size()){
+                            speed = std::max(ctr_pure_pursuit.calc_speed(), 5.0);
+                        }else{
+                            speed = std::max(ctr_pure_pursuit.calc_speed(), 8.0);
+                        }
                     }
                     ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
                     break;
@@ -222,7 +243,11 @@ int main(int argc, char** argv)
                     if(steering == sim_pubs.get_max_steer()){
                         speed = sim_pubs.get_max_speed();
                     }else{
-                        speed = std::max(ctr_lateral.calc_speed(), 5.0);
+                        if(i+1 == goal_trajectory_msg.poses.size()){
+                            speed = std::max(ctr_lateral.calc_speed(), 5.0);
+                        }else{
+                            speed = std::max(ctr_lateral.calc_speed(), 8.0);
+                        }
                     }
                     ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
                     break;
@@ -270,14 +295,20 @@ int main(int argc, char** argv)
     std::cout<<"SAVING TRAJECTORY...\n";
     
     std::string final_traj_filename= "";
+    std::string final_anal_traj_filename= "";
+    
     switch(controller_mode){
         case 1:
             final_traj_filename = "src/informatics/pose_sequences/PP_TRAJ.csv";
+            final_anal_traj_filename = "src/informatics/pose_sequences/PP_TRAJ_ANAL.csv";
+            break;
         case 2:
             final_traj_filename = "src/informatics/pose_sequences/LAT_TRAJ.csv";
+            final_anal_traj_filename = "src/informatics/pose_sequences/LAT_TRAJ_ANAL.csv";
             break;
         case 3:
             final_traj_filename = "src/informatics/pose_sequences/MPC_TRAJ.csv";
+            final_anal_traj_filename = "src/informatics/pose_sequences/MPC_TRAJ_ANAL.csv";
             break;            
     }
     std::ofstream traj_file(final_traj_filename);
@@ -289,6 +320,17 @@ int main(int argc, char** argv)
         traj_file<<total_path_x[i]<<","<<total_path_y[i]<<",0.000000,"<<q_msg.x<<","<<q_msg.y<<","<<q_msg.z<<","<<q_msg.w<<"\n";
     }
     traj_file.close();
+
+    std::ofstream traj_file_anal(final_anal_traj_filename);
+    traj_file_anal<<std::fixed<<std::setprecision(6);
+    for( size_t i=0; i<anal_total_path_x.size(); i++){
+        tf2::Quaternion q;
+        q.setRPY(0,0,anal_total_path_yaw[i]);
+        geometry_msgs::Quaternion q_msg = tf2::toMsg(q);
+        traj_file_anal<<anal_total_path_x[i]<<","<<anal_total_path_y[i]<<",0.000000,"<<q_msg.x<<","<<q_msg.y<<","<<q_msg.z<<","<<q_msg.w<<"\n";
+    }
+    traj_file_anal.close();
+
     sleep(1);
     std::cout<<"DISPLAYING RESULTS...\n";
     std::string cmd = "python3 src/informatics/src/plotter.py "+ std::to_string(controller_mode);

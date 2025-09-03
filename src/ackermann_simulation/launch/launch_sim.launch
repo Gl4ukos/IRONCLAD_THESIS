@@ -44,6 +44,4 @@
   <!-- node pkg="rosbag" type="record" name="trajectory_log"
         args="-O /home/maria/ironclad_ws/src/informatics/src/raw_trajectory /pose" 
         output = "screen"/-->
-
-
 </launch>

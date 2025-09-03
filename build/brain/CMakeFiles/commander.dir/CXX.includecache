@@ -49,6 +49,8 @@ fstream
 -
 vector
 -
+gazebo_msgs/ModelStates.h
+-
 
 /home/maria/ironclad_ws/src/control/include/control/lateral.hpp
 ros/ros.h
@@ -83,6 +85,26 @@ nav_msgs/Path.h
 -
 
 /opt/ros/noetic/include/gazebo_msgs/ModelState.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+geometry_msgs/Pose.h
+-
+geometry_msgs/Twist.h
+-
+
+/opt/ros/noetic/include/gazebo_msgs/ModelStates.h
 string
 -
 vector
