@@ -13,6 +13,7 @@
 #include <fstream>
 #include <vector>
 #include <gazebo_msgs/ModelStates.h>
+#include "command_transmitter.cpp"
 
 
 
@@ -86,6 +87,9 @@ int main(int argc, char** argv)
     ros::Publisher trajectory_publisher = nh.advertise<nav_msgs::Path>("/commander/goal_trajectory", 1, true);
 
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
+
+    CommandTransmitter transmitter("139.91.62.145",5005);
+
 
     //setting up pose estimate msg
     geometry_msgs::PoseStamped target_posest_msg;
@@ -257,6 +261,8 @@ int main(int argc, char** argv)
             //publishing command
             sim_pubs.publishVelocity(speed);
             sim_pubs.publishSteering(steering);
+            //transmitting command
+            transmitter.send_command(speed, steering);
         
             // this one may be redundant
             target_pose_msg.header.stamp = ros::Time::now();

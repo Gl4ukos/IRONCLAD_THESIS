@@ -6,7 +6,6 @@
 # testing this directory and lists subdirectories to be tested as well.
 subdirs("gtest")
 subdirs("control")
-subdirs("embedded_system")
 subdirs("informatics")
 subdirs("ackermann_simulation")
 subdirs("brain")

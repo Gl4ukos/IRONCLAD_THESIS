@@ -13,6 +13,13 @@ Requirements:
 TODO:
 
     BASELINE:
+        -> print mounts for rpi5, motor driver, cable organizers
+        -> make some cable for battery connection to rpi5, motordriver and servo
+        -> Add fishing line to servo and steer knuckles
+        -> Add mount for led screen to display  or at least some led lamps
+
+
+
         -> Improve target acquisition
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit
@@ -24,6 +31,3 @@ TODO:
     -> Make model more realistic, use urdf from Fusion
     -> Make realistic city like environment
     
-
-NOTES:
-    -> Should not give target directly behind the car (angle pi), the car will  never turn into place
