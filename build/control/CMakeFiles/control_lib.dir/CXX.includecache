@@ -6,25 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/maria/ironclad_ws/src/control/include/control/lateral.hpp
+/home/maria/ironclad_ws/src/control/include/control/pure_pursuit.hpp
 ros/ros.h
 -
 nav_msgs/Path.h
 -
-visualization_msgs/Marker.h
--
-visualization_msgs/MarkerArray.h
--
 
-/home/maria/ironclad_ws/src/control/src/lateral.cpp
+/home/maria/ironclad_ws/src/control/src/pure_pursuit.cpp
 vector
 -
 cmath
 -
 iostream
 -
-control/lateral.hpp
-/home/maria/ironclad_ws/src/control/src/control/lateral.hpp
+control/pure_pursuit.hpp
+/home/maria/ironclad_ws/src/control/src/control/pure_pursuit.hpp
 tf2/utils.h
 -
 
@@ -962,22 +958,6 @@ ros/forwards.h
 
 /opt/ros/noetic/include/rosconsole/macros_generated.h
 
-/opt/ros/noetic/include/std_msgs/ColorRGBA.h
-string
--
-vector
--
-memory
--
-ros/types.h
--
-ros/serialization.h
--
-ros/builtin_message_traits.h
--
-ros/message_operations.h
--
-
 /opt/ros/noetic/include/std_msgs/Header.h
 string
 -
@@ -1121,52 +1101,6 @@ array
 -
 ros/macros.h
 /opt/ros/noetic/include/tf2_geometry_msgs/ros/macros.h
-
-/opt/ros/noetic/include/visualization_msgs/Marker.h
-string
--
-vector
--
-memory
--
-ros/types.h
--
-ros/serialization.h
--
-ros/builtin_message_traits.h
--
-ros/message_operations.h
--
-std_msgs/Header.h
--
-geometry_msgs/Pose.h
--
-geometry_msgs/Vector3.h
--
-std_msgs/ColorRGBA.h
--
-geometry_msgs/Point.h
--
-std_msgs/ColorRGBA.h
--
-
-/opt/ros/noetic/include/visualization_msgs/MarkerArray.h
-string
--
-vector
--
-memory
--
-ros/types.h
--
-ros/serialization.h
--
-ros/builtin_message_traits.h
--
-ros/message_operations.h
--
-visualization_msgs/Marker.h
--
 
 /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
 ros/macros.h

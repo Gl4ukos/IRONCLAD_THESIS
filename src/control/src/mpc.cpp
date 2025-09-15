@@ -86,7 +86,7 @@ Command Mpc::get_command(State& start) {
     controls.clear();
     controls.resize(horizon, {max_speed*0.5, 0.0});
 
-    const double vel_d = 2;    // Finite difference step for velocity
+    const double vel_d = 1;    // Finite difference step for velocity
     const double steer_d = 0.05;   // Finite difference step for steering
     double alpha = 0.1;           // Initial learning rate
     const double tol = 1e-6;      // Convergence tolerance

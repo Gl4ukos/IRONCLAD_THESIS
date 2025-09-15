@@ -13,13 +13,10 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> print mounts for rpi5, motor driver, cable organizers
-        -> make some cable for battery connection to rpi5, motordriver and servo
-        -> Add fishing line to servo and steer knuckles
-        -> Add mount for led screen to display  or at least some led lamps
+        -> Integrate control code for servo and motor in a single command handler
 
-
-
+        -> Add some system to check for speed and steer value compatibility
+        -> Interpolate planned path with bezier
         -> Improve target acquisition
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit

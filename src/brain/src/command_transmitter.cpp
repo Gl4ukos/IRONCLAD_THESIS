@@ -28,7 +28,7 @@ public:
 
     // Send velocity and steering as two doubles
     void send_command(double velocity, double steering) {
-        double data[2] = {velocity, steering};
+        float data[2] = {(float)velocity, (float)steering};
         ssize_t sent = sendto(sock, data, sizeof(data), 0,
                               (const struct sockaddr*)&server_addr, sizeof(server_addr));
         if (sent != sizeof(data)) {

@@ -292,6 +292,14 @@ int main(int argc, char** argv)
     std::cout<<"TRAJECTORY COMPLETED!\n";
     sim_pubs.publishVelocity(0.0);
     sim_pubs.publishSteering(0.0);
+    sleep(0.5);
+    std::cout<<"ZEROING SPEED\n";
+
+    for(int o=0; o<4; o++){ //will this thing fucking stop?
+        transmitter.send_command(0, 0);
+        sleep(0.5);
+    }
+    transmitter.send_command(0, 0);
     sleep(0.2);
     std::cout<<"TIME: ["<<duration<<"sec]\n";
     sleep(0.2);
