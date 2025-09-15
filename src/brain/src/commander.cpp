@@ -356,5 +356,9 @@ int main(int argc, char** argv)
     curr_x=0;
     curr_y=0;
 
+    //make sure to remove the analytics bc they are too big for github
+    cmd = "rm -rf "+ final_anal_traj_filename;
+    std::system(cmd.c_str());
+
     return 0;
 }
