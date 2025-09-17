@@ -16,7 +16,7 @@
 #include "command_transmitter.cpp"
 
 
-
+int BOOST = 2;
 double wheelbase = 1.0; //! probably not true  
 int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
@@ -259,7 +259,7 @@ int main(int argc, char** argv)
 
         
             //publishing command
-            sim_pubs.publishVelocity(speed);
+            sim_pubs.publishVelocity(speed*BOOST);
             sim_pubs.publishSteering(steering);
             //transmitting command
             transmitter.send_command(speed, steering);

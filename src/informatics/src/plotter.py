@@ -1,3 +1,4 @@
+import statistics
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
@@ -94,13 +95,14 @@ ANALYTICAL_TRAJECTORY = load_pose_sequence_from_csv(anal_trajectory_filename)
 traj_dev = deviation_calculator(PLAN, TRAJECTORY)
 
 plt.figure()
-plt.bar([i for i in range(len(traj_dev))], traj_dev)
-plt.title("deviation")
+plt.bar([i for i in range(len(traj_dev))], traj_dev, color = 'red')
+
+plt.title("mean deviation: ", statistics.mean(traj_dev))
 
 plt.figure()
-plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='g')
+plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='k', markersize = 0.1)
 #plt.plot(TRAJECTORY.y_list, TRAJECTORY.x_list, marker="x", linestyle = '-', color = 'c' )
-plt.plot(ANALYTICAL_TRAJECTORY.y_list, ANALYTICAL_TRAJECTORY.x_list, marker='x', linestyle = '-', color = 'c', markersize=0)
+plt.plot(ANALYTICAL_TRAJECTORY.y_list, ANALYTICAL_TRAJECTORY.x_list, marker='x', linestyle = '-', color = 'r', markersize=0)
 plt.title("plan and trajectory")
 
 plt.show()

@@ -11,6 +11,10 @@ noise = input("Give noise\n")
 path_file = open(file_name, mode = 'w')
 noisy_row = []
 
+
+
+
+
 with open('src/informatics/pose_sequences/PLAN.csv', mode='r') as plan_file:
     plan_file = csv.reader(plan_file)
     for lines in plan_file:

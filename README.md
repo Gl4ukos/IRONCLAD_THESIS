@@ -13,10 +13,12 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> Integrate control code for servo and motor in a single command handler
+        -> Get a battery & charger
+        -> Solder a switch on the power distributor
+        -> Fix servo jitter
+        -> Print some cable organizer to screw on the elecmount2
 
         -> Add some system to check for speed and steer value compatibility
-        -> Interpolate planned path with bezier
         -> Improve target acquisition
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit
