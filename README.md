@@ -19,7 +19,7 @@ TODO:
         -> Print some cable organizer to screw on the elecmount2
 
         -> Add some system to check for speed and steer value compatibility
-        -> Improve target acquisition
+        -> Improve target acquisition add lookahead distance
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit
         -> Add trajectory scenarios

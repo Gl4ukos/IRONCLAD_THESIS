@@ -56,14 +56,25 @@ def load_pose_sequence_from_csv(filename):
     return NEW_POSE_SEQUENCE
 
 
-def deviation_calculator(plan:POSE_SEQUENCE, trajectory:POSE_SEQUENCE):
-    deviation = np.array(abs(plan.the_numbers - trajectory.the_numbers))
+def analytical_deviation_calculator(plan:POSE_SEQUENCE, trajectory:POSE_SEQUENCE):
+    last_index =0
+    min_diff = math.inf
+    deviation = []
+    sampled_trajectory_points = []
     
-    position_deviation = []
-    for i in range(len(plan.x_list)):
-        position_deviation.append(round(math.sqrt(deviation[i][0]**2 + deviation[i][1]**2),3))
-    
-    return position_deviation
+    for i in range(len(plan.x_list)): #for each point in the given plan
+        min_diff = math.inf
+        for j in range(last_index, len(trajectory.x_list)):
+            x_diff = plan.x_list[i] - trajectory.x_list[j]# find the one from final trajectory that is the closest
+            y_diff = plan.y_list[i] - trajectory.y_list[j]
+            diff = x_diff**2 + y_diff**2
+            if diff <= min_diff:
+                min_diff = diff
+                last_index = j #save the index so we dont interate again from the beginning
+        deviation.append(min_diff)
+        sampled_trajectory_points.append((trajectory.x_list[last_index], trajectory.y_list[last_index]))
+
+    return deviation, sampled_trajectory_points    
     
 
 controller_type = sys.argv[1]
@@ -92,17 +103,18 @@ else:
 
 TRAJECTORY = load_pose_sequence_from_csv(trajectory_filename)
 ANALYTICAL_TRAJECTORY = load_pose_sequence_from_csv(anal_trajectory_filename)
-traj_dev = deviation_calculator(PLAN, TRAJECTORY)
+anal_traj_dev, sampled_traj = analytical_deviation_calculator(PLAN, ANALYTICAL_TRAJECTORY)
+
 
 plt.figure()
-plt.bar([i for i in range(len(traj_dev))], traj_dev, color = 'red')
+plt.bar([i for i in range(len(anal_traj_dev))], anal_traj_dev, color = 'red')
+plt.title("mean deviation: " + str(str(statistics.mean(anal_traj_dev))))
 
-plt.title("mean deviation: ", statistics.mean(traj_dev))
 
 plt.figure()
 plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='k', markersize = 0.1)
-#plt.plot(TRAJECTORY.y_list, TRAJECTORY.x_list, marker="x", linestyle = '-', color = 'c' )
+plt.plot(sampled_traj[1], sampled_traj[0], marker="x", linestyle = '-', color = 'y' , markersize = 0.5)
 plt.plot(ANALYTICAL_TRAJECTORY.y_list, ANALYTICAL_TRAJECTORY.x_list, marker='x', linestyle = '-', color = 'r', markersize=0)
-plt.title("plan and trajectory")
+plt.title("plan, trajectory & target approximations")
 
 plt.show()

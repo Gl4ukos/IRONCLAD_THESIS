@@ -17,6 +17,7 @@
 
 
 int BOOST = 2;
+int LOOKAHEAD = 2;
 double wheelbase = 1.0; //! probably not true  
 int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
@@ -107,6 +108,11 @@ int main(int argc, char** argv)
     std::vector<double> total_path_y;
     std::vector<double> total_path_yaw;
 
+    //setting up sampled path (contains the points from the initial given plan that were used as targets, not all points are used bc of lookahead distance)
+    std::vector<double> sampled_path_x;
+    std::vector<double> sampled_path_y;
+    std::vector<double> sampled_path_yaw;
+
     //setting up total executed path msg analytical
     std::vector<double> anal_total_path_x;
     std::vector<double> anal_total_path_y;
@@ -156,7 +162,9 @@ int main(int argc, char** argv)
     
 
     ros::Time start_time = ros::Time::now();
-    for(int i=0; i<goal_trajectory_msg.poses.size(); i++){
+    int i=0;
+
+    while(i<goal_trajectory_msg.poses.size()){
         //selecting current pose-target
         goal_trajectory_msg.poses[i].header.frame_id = "world";
         goal_trajectory_msg.poses[i].header.stamp = ros::Time::now();
@@ -199,13 +207,14 @@ int main(int argc, char** argv)
         
         std::cout<<"TARGET AQCUIRED\nMOVING...\n";
 
+
         // executing the move
         while((abs(x_diff)>0.2 || abs(y_diff)>0.2) && (ros::ok())){
         
             anal_total_path_x.push_back(curr_x);
             anal_total_path_y.push_back(curr_y);
             anal_total_path_yaw.push_back(curr_yaw);
-            
+
 
             switch(controller_mode){
                 case 3:
@@ -273,7 +282,6 @@ int main(int argc, char** argv)
             // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
             std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
-            
 
             // updating target position
             //x and y distances rotated so the car is like heading to 0 angle
@@ -286,6 +294,8 @@ int main(int argc, char** argv)
         total_path_x.push_back(curr_x);
         total_path_y.push_back(curr_y);
         total_path_yaw.push_back(curr_yaw);
+
+        i+=1;
     }
     ros::Time end_time = ros::Time::now();
     double duration = (end_time - start_time).toSec(); 
