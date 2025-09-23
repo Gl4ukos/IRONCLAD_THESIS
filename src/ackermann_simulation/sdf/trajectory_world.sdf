@@ -1,0 +1,1364 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="mirror_edge_world">
+
+  <light name="sun" type="directional">
+    <pose>0 0 10 0 0 0</pose>
+    <diffuse>1 1 1 1</diffuse>
+    <specular>0.9 0.9 0.9 1</specular>
+    <direction>-0.5 0.5 -1</direction>
+    <cast_shadows>true</cast_shadows>
+  </light>
+
+  <model name="ground_plane">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>100 100</size>
+          </plane>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>100 100</size>
+          </plane>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.3 0.3 0.3 1</diffuse>
+          <specular>0.5 0.5 0.5 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+  </model>
+
+    <model name="block_0">
+      <static>true</static>
+      <link name="link">
+        <pose>16.5 -13.2 2.1452507903062092 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.8834199207583175 0.674359027405552 4.2905015806124185</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.8834199207583175 0.674359027405552 4.2905015806124185</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_1">
+      <static>true</static>
+      <link name="link">
+        <pose>-13.2 -3.3 2.8685802794728494 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.1157265339588156 1.3088076352369808 5.737160558945699</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.1157265339588156 1.3088076352369808 5.737160558945699</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_2">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 -9.899999999999999 1.9563397667168805 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.8879351432575806 1.3217603160125861 3.912679533433761</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.8879351432575806 1.3217603160125861 3.912679533433761</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_3">
+      <static>true</static>
+      <link name="link">
+        <pose>9.899999999999999 0.0 1.6650038749529537 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.756892064048246 2.389373645730638 3.3300077499059073</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.756892064048246 2.389373645730638 3.3300077499059073</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_4">
+      <static>true</static>
+      <link name="link">
+        <pose>-19.799999999999997 9.899999999999999 2.797542434787062 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.267448448318455 0.8334765311725283 5.595084869574124</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.267448448318455 0.8334765311725283 5.595084869574124</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_5">
+      <static>true</static>
+      <link name="link">
+        <pose>-16.5 -19.799999999999997 1.6758520378671444 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.6835232350607424 2.1158043318732345 3.351704075734289</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6835232350607424 2.1158043318732345 3.351704075734289</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_6">
+      <static>true</static>
+      <link name="link">
+        <pose>-9.899999999999999 -16.5 1.5375887081795776 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.0923777266304933 2.3484687107413067 3.075177416359155</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.0923777266304933 2.3484687107413067 3.075177416359155</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_7">
+      <static>true</static>
+      <link name="link">
+        <pose>13.2 13.2 1.2690384280077955 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.8891396348908103 1.8924243656296427 2.538076856015591</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.8891396348908103 1.8924243656296427 2.538076856015591</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_8">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 -13.2 0.6155658262038989 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.5023545643981726 0.5450552723267348 1.2311316524077978</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.5023545643981726 0.5450552723267348 1.2311316524077978</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_9">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 13.2 0.7633104813430607 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.859062130962712 1.1749275522685194 1.5266209626861214</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.859062130962712 1.1749275522685194 1.5266209626861214</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_10">
+      <static>true</static>
+      <link name="link">
+        <pose>16.5 19.799999999999997 2.596583510667661 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.497461826278907 1.3796629381282164 5.193167021335322</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.497461826278907 1.3796629381282164 5.193167021335322</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_11">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 9.899999999999999 0.8168450432628036 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.8249550542328885 1.199670977440693 1.6336900865256072</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.8249550542328885 1.199670977440693 1.6336900865256072</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_12">
+      <static>true</static>
+      <link name="link">
+        <pose>6.6 -16.5 1.2975659737483656 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.097519920097385 2.9236163422667873 2.595131947496731</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.097519920097385 2.9236163422667873 2.595131947496731</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_13">
+      <static>true</static>
+      <link name="link">
+        <pose>-3.3 -6.6 1.7855155004041974 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.883762425763764 2.342262441327228 3.5710310008083948</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.883762425763764 2.342262441327228 3.5710310008083948</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_14">
+      <static>true</static>
+      <link name="link">
+        <pose>3.3 13.2 2.4814582837522807 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.6463702286839474 2.029001932334384 4.9629165675045614</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.6463702286839474 2.029001932334384 4.9629165675045614</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_15">
+      <static>true</static>
+      <link name="link">
+        <pose>16.5 16.5 0.6953788095168061 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.685633851484161 1.2787797836365205 1.3907576190336122</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.685633851484161 1.2787797836365205 1.3907576190336122</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_16">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 -6.6 0.8317488554956516 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.5965509431361808 2.0251667975960226 1.6634977109913032</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.5965509431361808 2.0251667975960226 1.6634977109913032</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_17">
+      <static>true</static>
+      <link name="link">
+        <pose>-19.799999999999997 -6.6 1.4262295145809676 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.5735379098659689 1.4651639390338642 2.852459029161935</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.5735379098659689 1.4651639390338642 2.852459029161935</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_18">
+      <static>true</static>
+      <link name="link">
+        <pose>16.5 -19.799999999999997 2.8721815065344574 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.0784645064894975 1.346435020453242 5.744363013068915</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.0784645064894975 1.346435020453242 5.744363013068915</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_19">
+      <static>true</static>
+      <link name="link">
+        <pose>-3.3 -6.6 1.4447627252513093 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.5125674649160684 2.0196045572718115 2.8895254505026187</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.5125674649160684 2.0196045572718115 2.8895254505026187</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_20">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 9.899999999999999 1.730138260997975 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.5444442761701838 1.8032779597632203 3.46027652199595</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.5444442761701838 1.8032779597632203 3.46027652199595</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_21">
+      <static>true</static>
+      <link name="link">
+        <pose>3.3 -19.799999999999997 2.4461741524347307 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.6888780379156383 2.6060639564767927 4.892348304869461</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6888780379156383 2.6060639564767927 4.892348304869461</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_22">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 -3.3 0.9262448125604914 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.7396853981095943 2.9538798872187435 1.8524896251209828</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.7396853981095943 2.9538798872187435 1.8524896251209828</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_23">
+      <static>true</static>
+      <link name="link">
+        <pose>-3.3 -3.3 2.453875686086092 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.9827009381210423 1.1960896346442214 4.907751372172184</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.9827009381210423 1.1960896346442214 4.907751372172184</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_24">
+      <static>true</static>
+      <link name="link">
+        <pose>-3.3 16.5 0.7640118093367747 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.7305272852856621 2.781418789973174 1.5280236186735494</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.7305272852856621 2.781418789973174 1.5280236186735494</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_25">
+      <static>true</static>
+      <link name="link">
+        <pose>3.3 0.0 1.6032100866721506 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.9114222100993423 0.7991771425839442 3.206420173344301</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.9114222100993423 0.7991771425839442 3.206420173344301</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_26">
+      <static>true</static>
+      <link name="link">
+        <pose>-16.5 -13.2 2.9162166136216134 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.644921826545118 2.7174514959261398 5.832433227243227</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.644921826545118 2.7174514959261398 5.832433227243227</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_27">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 16.5 0.9588563320586303 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.9149273333302073 0.7499567764559354 1.9177126641172606</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.9149273333302073 0.7499567764559354 1.9177126641172606</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_28">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 9.899999999999999 0.7523948436012782 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.894731957815774 1.034188798035983 1.5047896872025563</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.894731957815774 1.034188798035983 1.5047896872025563</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_29">
+      <static>true</static>
+      <link name="link">
+        <pose>13.2 -6.6 1.2274609222949957 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.7755678093240022 1.4169962082996141 2.4549218445899914</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.7755678093240022 1.4169962082996141 2.4549218445899914</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_30">
+      <static>true</static>
+      <link name="link">
+        <pose>16.5 -6.6 1.7490327550714022 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.148251349431643 0.7967367942076302 3.4980655101428044</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.148251349431643 0.7967367942076302 3.4980655101428044</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_31">
+      <static>true</static>
+      <link name="link">
+        <pose>-16.5 6.6 1.2628501793815246 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.235277415765662 0.7176204205090637 2.525700358763049</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.235277415765662 0.7176204205090637 2.525700358763049</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_32">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 -19.799999999999997 2.6818853363509856 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.305510177316007 2.386517439889672 5.363770672701971</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.305510177316007 2.386517439889672 5.363770672701971</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_33">
+      <static>true</static>
+      <link name="link">
+        <pose>13.2 3.3 2.0308820194493626 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.341275994957626 1.2798256382428268 4.061764038898725</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.341275994957626 1.2798256382428268 4.061764038898725</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_34">
+      <static>true</static>
+      <link name="link">
+        <pose>-19.799999999999997 3.3 2.6925662768204903 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.9302478789587645 1.4543245477426656 5.385132553640981</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.9302478789587645 1.4543245477426656 5.385132553640981</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_35">
+      <static>true</static>
+      <link name="link">
+        <pose>19.799999999999997 0.0 1.2310564582026648 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.062353944609504 0.8399457758223623 2.4621129164053297</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.062353944609504 0.8399457758223623 2.4621129164053297</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_36">
+      <static>true</static>
+      <link name="link">
+        <pose>-3.3 -6.6 0.7622962311198873 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.650888797822887 1.6518771923899354 1.5245924622397746</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.650888797822887 1.6518771923899354 1.5245924622397746</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_37">
+      <static>true</static>
+      <link name="link">
+        <pose>-19.799999999999997 -9.899999999999999 1.346518982294521 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.6396732146564084 0.9267512645796181 2.693037964589042</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.6396732146564084 0.9267512645796181 2.693037964589042</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_38">
+      <static>true</static>
+      <link name="link">
+        <pose>-9.899999999999999 13.2 2.224012877302104 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.6354454154447 2.546775099020804 4.448025754604208</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.6354454154447 2.546775099020804 4.448025754604208</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_39">
+      <static>true</static>
+      <link name="link">
+        <pose>6.6 19.799999999999997 0.9995960002473215 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.8630612059450478 2.1134529500190755 1.999192000494643</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.8630612059450478 2.1134529500190755 1.999192000494643</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_41">
+      <static>true</static>
+      <link name="link">
+        <pose>-13.2 13.2 1.6472843381653453 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.187332406224213 1.0886753122100403 3.2945686763306905</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.187332406224213 1.0886753122100403 3.2945686763306905</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_42">
+      <static>true</static>
+      <link name="link">
+        <pose>3.3 9.899999999999999 1.136627605093131 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.9516103514950727 2.0396133248366066 2.273255210186262</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.9516103514950727 2.0396133248366066 2.273255210186262</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_43">
+      <static>true</static>
+      <link name="link">
+        <pose>-16.5 -16.5 0.7387270908121547 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.0011654310884848 1.3985206656183709 1.4774541816243094</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.0011654310884848 1.3985206656183709 1.4774541816243094</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_44">
+      <static>true</static>
+      <link name="link">
+        <pose>-3.3 -9.899999999999999 2.1382818188964716 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.096689943606475 2.7021368776754793 4.276563637792943</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.096689943606475 2.7021368776754793 4.276563637792943</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_45">
+      <static>true</static>
+      <link name="link">
+        <pose>3.3 9.899999999999999 2.9978687872450935 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.4472851972442287 0.8880986129655267 5.995737574490187</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.4472851972442287 0.8880986129655267 5.995737574490187</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_46">
+      <static>true</static>
+      <link name="link">
+        <pose>-9.899999999999999 -16.5 0.5725540665715524 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4547032708426757 1.5887784243325749 1.1451081331431048</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4547032708426757 1.5887784243325749 1.1451081331431048</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_47">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.6 -9.899999999999999 1.2412416243782518 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.602488244651389 1.3038588355836556 2.4824832487565036</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.602488244651389 1.3038588355836556 2.4824832487565036</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_48">
+      <static>true</static>
+      <link name="link">
+        <pose>-13.2 -19.799999999999997 2.74891777087626 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.2092180761700493 2.4761631250073304 5.49783554175252</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2092180761700493 2.4761631250073304 5.49783554175252</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="block_49">
+      <static>true</static>
+      <link name="link">
+        <pose>13.2 19.799999999999997 2.9498207035609956 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.7455004797466156 1.812990191140522 5.899641407121991</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.7455004797466156 1.812990191140522 5.899641407121991</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.05 0.05 0.05 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    </world>
+</sdf>

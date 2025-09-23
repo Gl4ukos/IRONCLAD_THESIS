@@ -13,12 +13,13 @@ Requirements:
 TODO:
 
     BASELINE:
+        -> ! BEFORE TESTING HARDWARE: Add some system to check for speed and steer value compatibility
         -> Get a battery & charger
         -> Solder a switch on the power distributor
-        -> Fix servo jitter
+        -> Fix servo jitter - hook in servo driver (WITHOUT BURNING IT THIS TIME)
         -> Print some cable organizer to screw on the elecmount2
 
-        -> Add some system to check for speed and steer value compatibility
+
         -> Something looks off on the deviation graphs
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit
