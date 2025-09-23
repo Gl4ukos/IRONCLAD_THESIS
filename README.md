@@ -19,7 +19,7 @@ TODO:
         -> Print some cable organizer to screw on the elecmount2
 
         -> Add some system to check for speed and steer value compatibility
-        -> Improve target acquisition add lookahead distance
+        -> Something looks off on the deviation graphs
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit
         -> Add trajectory scenarios
@@ -30,3 +30,6 @@ TODO:
     -> Make model more realistic, use urdf from Fusion
     -> Make realistic city like environment
     
+
+    ! NOTES:
+    -> MPC struggles A LOT when target is in bad position. It needs some straying to "find" the target

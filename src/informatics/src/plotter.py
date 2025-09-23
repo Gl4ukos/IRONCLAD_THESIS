@@ -108,7 +108,7 @@ anal_traj_dev, sampled_traj = analytical_deviation_calculator(PLAN, ANALYTICAL_T
 
 plt.figure()
 plt.bar([i for i in range(len(anal_traj_dev))], anal_traj_dev, color = 'red')
-plt.title("mean deviation: " + str(str(statistics.mean(anal_traj_dev))))
+plt.title("mean deviation (per target): " + str(str(statistics.mean(anal_traj_dev))))
 
 
 plt.figure()
@@ -116,5 +116,6 @@ plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='k', markers
 plt.plot(sampled_traj[1], sampled_traj[0], marker="x", linestyle = '-', color = 'y' , markersize = 0.5)
 plt.plot(ANALYTICAL_TRAJECTORY.y_list, ANALYTICAL_TRAJECTORY.x_list, marker='x', linestyle = '-', color = 'r', markersize=0)
 plt.title("plan, trajectory & target approximations")
+plt.axis('equal') 
 
 plt.show()

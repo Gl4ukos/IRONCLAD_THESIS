@@ -17,11 +17,19 @@
 
 
 int BOOST = 2;
-int LOOKAHEAD = 2;
+double LOOKAHEAD = 1.0;
 double wheelbase = 1.0; //! probably not true  
 int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
 
+double MAX_SPEED_PP = 10.0;
+double MIN_SPEED_PP = 2.0;
+
+double MAX_SPEED_LAT = 10.0;
+double MIN_SPEED_LAT = 2.0;
+
+double MAX_SPEED_MPC = 10.0;
+double MIN_SPEED_MPC = 2.0;
 
 
 int load_trajectory(nav_msgs::Path &trajectory, std::string filepath){
@@ -162,9 +170,8 @@ int main(int argc, char** argv)
     
 
     ros::Time start_time = ros::Time::now();
-    int i=0;
 
-    while(i<goal_trajectory_msg.poses.size()){
+    for (int i=0; i<goal_trajectory_msg.poses.size(); i++){
         //selecting current pose-target
         goal_trajectory_msg.poses[i].header.frame_id = "world";
         goal_trajectory_msg.poses[i].header.stamp = ros::Time::now();
@@ -199,22 +206,32 @@ int main(int argc, char** argv)
         y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
     
         //updating targets in control classes
-        if(i/2==0){
+        //if(i/2==0){
             ctr_pure_pursuit.set_target(x_diff, y_diff);
             ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
             ctr_mpc.set_target(x_diff, y_diff, curr_yaw);
-        }
+        //}
         
-        std::cout<<"TARGET AQCUIRED\nMOVING...\n";
+        std::cout<<"TARGET["<< i<<"/"<< goal_trajectory_msg.poses.size() <<"] AQCUIRED\nMOVING...\n";
 
+        // if last move, make sure to achieve it with good accuracy
+        if(i+1 == (int)goal_trajectory_msg.poses.size()){
+            std::cout<<"APPROACHING FINAL TARGET\nADJUSTING SPEED...\n";
+            LOOKAHEAD = 0.2;
+            MAX_SPEED_PP = 5.0;
+            MIN_SPEED_PP = 1.0;
+            MAX_SPEED_LAT = 5.0;
+            MIN_SPEED_LAT = 1.0;
+            MAX_SPEED_MPC = 5.0;
+            MIN_SPEED_MPC = 1.0;
+        }
 
         // executing the move
-        while((abs(x_diff)>0.2 || abs(y_diff)>0.2) && (ros::ok())){
-        
+        while((abs(x_diff)>LOOKAHEAD || abs(y_diff)>LOOKAHEAD) && (ros::ok())){
+
             anal_total_path_x.push_back(curr_x);
             anal_total_path_y.push_back(curr_y);
             anal_total_path_yaw.push_back(curr_yaw);
-
 
             switch(controller_mode){
                 case 3:
@@ -226,11 +243,7 @@ int main(int argc, char** argv)
                     if(abs(steering) == sim_pubs.get_max_steer()){
                         speed = sim_pubs.get_max_speed(); // to move with max steering the car will need a lot of torgue
                     }else{
-                        if(i+1 == goal_trajectory_msg.poses.size()){ //if thats the last point
-                            speed = std::max(mpc_command.vel, 5.0); //applying lower limit to speed so the car doesnt stall when steering aggresively
-                        }else{ //otherwise keep it speedy
-                            speed = std::max(mpc_command.vel, 8.0);
-                        }
+                        speed= std::min(std::max(mpc_command.vel, MIN_SPEED_MPC),MAX_SPEED_MPC);
                     }
                     ctr_mpc.get_trajectory(&path_msg, curr_x, curr_y, curr_yaw);
                     break;
@@ -241,11 +254,7 @@ int main(int argc, char** argv)
                     if(abs(steering) == sim_pubs.get_max_steer()){
                         speed = sim_pubs.get_max_speed();
                     }else{
-                        if(i+1 == goal_trajectory_msg.poses.size()){
-                            speed = std::max(ctr_pure_pursuit.calc_speed(), 5.0);
-                        }else{
-                            speed = std::max(ctr_pure_pursuit.calc_speed(), 8.0);
-                        }
+                        speed = std::min(std::max(ctr_pure_pursuit.calc_speed(), MIN_SPEED_PP), MAX_SPEED_PP); //applying upper and lower bound to speed, so its speedy enough and doesnt stall
                     }
                     ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
                     break;
@@ -256,11 +265,7 @@ int main(int argc, char** argv)
                     if(steering == sim_pubs.get_max_steer()){
                         speed = sim_pubs.get_max_speed();
                     }else{
-                        if(i+1 == goal_trajectory_msg.poses.size()){
-                            speed = std::max(ctr_lateral.calc_speed(), 5.0);
-                        }else{
-                            speed = std::max(ctr_lateral.calc_speed(), 8.0);
-                        }
+                        speed = std::min(std::max(ctr_lateral.calc_speed(), MIN_SPEED_LAT), MAX_SPEED_LAT);
                     }
                     ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
                     break;
@@ -280,8 +285,8 @@ int main(int argc, char** argv)
         
             // (redundant) for debugging
             // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
-            std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
-            std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
+            //std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
+            //std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
 
             // updating target position
             //x and y distances rotated so the car is like heading to 0 angle
@@ -294,8 +299,6 @@ int main(int argc, char** argv)
         total_path_x.push_back(curr_x);
         total_path_y.push_back(curr_y);
         total_path_yaw.push_back(curr_yaw);
-
-        i+=1;
     }
     ros::Time end_time = ros::Time::now();
     double duration = (end_time - start_time).toSec(); 
