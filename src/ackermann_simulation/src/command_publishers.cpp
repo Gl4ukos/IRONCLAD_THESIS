@@ -63,7 +63,7 @@ void command_publishers::reset_position(){
     // Set desired position
     state.pose.position.x = 0.0;
     state.pose.position.y = 0.0;
-    state.pose.position.z = 0.0;
+    state.pose.position.z = 0.2;
 
     // Set desired orientation (no rotation)
     state.pose.orientation.x = 0.0;

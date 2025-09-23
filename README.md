@@ -29,8 +29,6 @@ TODO:
     -> Tune/tweak Lateral (maybe add some other control parameter to steering)
     -> fix: the car model's movement in rviz is completely fucked the pose to tf is bad
     -> Make model more realistic, use urdf from Fusion
-    -> Make realistic city like environment
-    
 
     ! NOTES:
     -> MPC struggles A LOT when target is in bad position. It needs some straying to "find" the target

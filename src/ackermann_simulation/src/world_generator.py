@@ -1,14 +1,25 @@
 import random
-
+import csv
+import math
 # Parameters
 num_blocks = 50
 min_size = 0.5
 max_size = 3.0
 min_spacing = 0.3
 world_file = "src/ackermann_simulation/sdf/trajectory_world.sdf"
+trajectory_file = "src/informatics/pose_sequences/PLAN.csv"
 
-# Trajectory corridor (empty space) - list of (x,y) points
-trajectory_corridor = [(0,0), (5,0), (10,5), (15,10)]
+# Trajectory corridor (empty space) - list of (x,y) points (loading from csv)
+trajectory_corridor = []
+file = open(trajectory_file,mode='r')
+data = csv.reader(file)
+for lines in data:
+    if len(lines) != 7:
+            continue
+    trajectory_corridor.append((round(float(lines[0]),3), round(float(lines[1]),3)))
+
+
+
 
 def collides_with_corridor(x, y, size):
     for tx, ty in trajectory_corridor:
@@ -63,6 +74,46 @@ sdf_str += """
     </link>
   </model>
 """
+
+# Add trajectory highlight plane
+
+corridor_radius = 1.5  # half of corridor width
+corridor_height = 0.01
+for i in range(len(trajectory_corridor)-1):
+    x1, y1 = trajectory_corridor[i]
+    x2, y2 = trajectory_corridor[i+1]
+
+    dist = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+    num_segments = max(int(dist / corridor_radius), 1)
+
+    for j in range(num_segments):
+        t = j / num_segments
+        cx = x1 + t * (x2 - x1)
+        cy = y1 + t * (y2 - y1)
+        sdf_str += f"""
+        <model name="corridor_hex_{i}_{j}">
+          <static>true</static>
+          <link name="link">
+            <pose>{cx} {cy} {corridor_height/2} 0 0 0</pose>
+            <visual name="visual">
+              <geometry>
+                <cylinder>
+                  <radius>{corridor_radius}</radius>
+                  <length>{corridor_height}</length>
+                  <segments>6</segments>
+                </cylinder>
+              </geometry>
+              <material>
+                <ambient>0.5 0.5 0.5 1</ambient>
+                <diffuse>0.5 0.5 0.5 1</diffuse>
+                <specular>0.3 0.3 0.3 1</specular>
+                <emissive>0 0 0 1</emissive>
+              </material>
+            </visual>
+          </link>
+        </model>
+        """
+
 
 # Generate blocks (grid-based for tight packing)
 grid_step = max_size + min_spacing

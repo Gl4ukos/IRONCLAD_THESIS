@@ -177,7 +177,7 @@ int main(int argc, char** argv)
         goal_trajectory_msg.poses[i].header.stamp = ros::Time::now();
     
         //publishing current pose-target
-        spawn_target_pub.publish(goal_trajectory_msg.poses[i]);
+        //spawn_target_pub.publish(goal_trajectory_msg.poses[i]);
         target_pose_pub.publish(goal_trajectory_msg.poses[i]);
 
         //acuiring target_x, target_y, target_yaw from current pose-target
@@ -193,7 +193,7 @@ int main(int argc, char** argv)
         //displaying target as object in gazebo (redundant)
         target_posest_msg.pose.position.x=target_x;
         target_posest_msg.pose.position.y=target_y;
-        spawn_target_pub.publish(target_posest_msg);
+        //spawn_target_pub.publish(target_posest_msg);
         //displaying target as vector in rviz 
         target_pose_msg.pose.position.x = target_x;
         target_pose_msg.pose.position.y = target_y;

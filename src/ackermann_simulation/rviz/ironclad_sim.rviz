@@ -90,7 +90,7 @@ Visualization Manager:
           Value: true
         Value: true
       Enabled: true
-      Keep: 10
+      Keep: 2000
       Name: IRONCLAD_ODOM
       Position Tolerance: 0.10000000149011612
       Queue Size: 4
@@ -199,7 +199,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 20.63947105407715
+      Distance: 30.480398178100586
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -207,17 +207,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.2775096893310547
-        Y: 0.6358398199081421
-        Z: -1.3501766920089722
+        X: 1.6523290872573853
+        Y: 5.931512832641602
+        Z: -1.472142219543457
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7903980016708374
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 0.7503971457481384
+      Yaw: 3.188572406768799
     Saved:
       - Class: rviz/Orbit
         Distance: 21.108230590820312
