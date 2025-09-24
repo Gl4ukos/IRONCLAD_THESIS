@@ -203,6 +203,37 @@ for i in range(len(trajectory_corridor)-1):
         </model>
         """
 
+# adding a highlighted trajectory path 
+highlighted_corridor_radius = 0.02 # half of corridor width
+highlighted_corridor_height = 0.03
+for i in range(len(trajectory_corridor)):
+    x1, y1 = trajectory_corridor[i]
+
+    sdf_str += f"""
+    <model name="highlighted_corridor_hex_{i}">
+      <static>true</static>
+      <link name="link">
+        <pose>{x1} {y1} {highlighted_corridor_height/2} 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>{highlighted_corridor_radius}</radius>
+              <length>{highlighted_corridor_height}</length>
+              <segments>6</segments>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+            <specular>0.3 0.3 0.3 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    """
+
+
 extra_corridor_radius = 0.3
 
 # # #Adding pavement to extra trajectories

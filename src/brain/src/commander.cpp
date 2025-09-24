@@ -18,14 +18,16 @@
 
 int BOOST = 1;
 double MAX_SPEED = 10.0;
-double MAX_STEER = 0.75;
-double LOOKAHEAD = 1.0;
+double MAX_STEER = 0.70;
+double LOOKAHEAD = 2.0;
 double wheelbase = 1.0; //! probably not true  
 int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
 
-double MAX_SPEED_PP = 10.0;
+double MAX_SPEED_PP = 30.0;
 double MIN_SPEED_PP = 2.0;
+double MAX_STEER_PP = 0.75;
+
 
 double MAX_SPEED_LAT = 10.0;
 double MIN_SPEED_LAT = 2.0;
@@ -154,7 +156,7 @@ int main(int argc, char** argv)
 
     command_publishers sim_pubs(nh);
     
-    Pure_pursuit ctr_pure_pursuit(wheelbase, MAX_SPEED, MAX_STEER);
+    Pure_pursuit ctr_pure_pursuit(wheelbase, MAX_SPEED_PP, MAX_STEER_PP);
     Lateral ctr_lateral(wheelbase, MAX_SPEED, MAX_STEER);
     Mpc ctr_mpc(wheelbase, MAX_SPEED, MAX_STEER);
 
@@ -213,12 +215,12 @@ int main(int argc, char** argv)
         if(i+1 == (int)goal_trajectory_msg.poses.size()){
             std::cout<<"APPROACHING FINAL TARGET\nADJUSTING SPEED...\n";
             LOOKAHEAD = 0.2;
-            MAX_SPEED_PP = 5.0;
-            MIN_SPEED_PP = 1.0;
+            ctr_pure_pursuit.set_max_speed(5.0);
             MAX_SPEED_LAT = 5.0;
             MIN_SPEED_LAT = 1.0;
             MAX_SPEED_MPC = 5.0;
             MIN_SPEED_MPC = 1.0;
+            
         }
 
         // executing the move
@@ -246,10 +248,9 @@ int main(int argc, char** argv)
                     // PURE PURSUIT
                     ctr_pure_pursuit.set_target(x_diff, y_diff);
                     steering = ctr_pure_pursuit.calc_steering();
+                    speed = ctr_pure_pursuit.calc_speed();
                     if(abs(steering) == MAX_STEER){
-                        speed = std::min(std::max(ctr_pure_pursuit.calc_speed(), 0.5), 10.0);
-                    }else{
-                        speed = std::min(std::max(ctr_pure_pursuit.calc_speed(), MIN_SPEED_PP), MAX_SPEED_PP); //applying upper and lower bound to speed, so its speedy enough and doesnt stall
+                        std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
                     ctr_pure_pursuit.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
                     break;
@@ -268,7 +269,7 @@ int main(int argc, char** argv)
 
         
             //publishing command
-            sim_pubs.publishVelocity(speed*BOOST);
+            sim_pubs.publishVelocity(speed);
             sim_pubs.publishSteering(steering);
             //transmitting command
             transmitter.send_command(speed, steering);
@@ -281,7 +282,7 @@ int main(int argc, char** argv)
             // (redundant) for debugging
             // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             //std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
-            //std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
+            std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
 
             // updating target position
             //x and y distances rotated so the car is like heading to 0 angle

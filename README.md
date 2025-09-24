@@ -19,7 +19,6 @@ TODO:
         -> Fix servo jitter - hook in servo driver (WITHOUT BURNING IT THIS TIME)
 
 
-        -> Increase speed in pure pursuit
         -> Graphs are too heavy to calculate
         -> Stanley doensnt work that well
         -> Add mpc prediction display
@@ -34,3 +33,4 @@ TODO:
 
     ! NOTES:
     -> MPC struggles A LOT when target is in bad position. It needs some straying to "find" the target
+    -> Pure pursuit: LOOKAHEAD>> & MAX_SPEED>> -> faster & less accurate (and the opposite)

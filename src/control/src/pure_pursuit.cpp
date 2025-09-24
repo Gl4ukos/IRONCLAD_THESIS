@@ -20,15 +20,26 @@ int Pure_pursuit::set_target(double x, double y){
         return 0;
 }
 
+double Pure_pursuit::clip_speed(double val) {
+    return std::max(std::min(max_speed, val),0.0); 
+}
+
+double Pure_pursuit::clip_steering(double val) {
+    if (val < -max_steering) return -max_steering;
+    else if (val > max_steering) return max_steering;
+    else return val;
+}
+
 double Pure_pursuit::calc_speed(){
     curr_dist = sqrt(curr_dist_sq);
-    speed = std::min(max_speed, Kp*curr_dist - Kd*speed); 
-    return speed;
+    speed = Kp*curr_dist - Kd*speed;
+    return clip_speed(speed);
 }
 
 double Pure_pursuit::calc_steering(){
     curvature = (2*target_y)/curr_dist_sq;
-    return atan(wheelbase * curvature);
+    double steering = atan(wheelbase * curvature);
+    return clip_steering(steering);
 }
 
 void Pure_pursuit::set_max_speed(double new_max){
