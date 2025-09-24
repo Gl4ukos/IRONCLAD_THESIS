@@ -25,6 +25,8 @@ class Pure_pursuit{
     Pure_pursuit(double wheelbase, double max_speed, double max_steering);
     // expects the DISTANCE to target
     int set_target(double x, double y);
+    void set_max_speed(double new_max);
+    void set_max_steer(double new_max);
     double calc_speed();
     double calc_steering();
     int get_trajectory(nav_msgs::Path *path_msg, double resolution,double  double_x,double  double_y ,double double_yaw);

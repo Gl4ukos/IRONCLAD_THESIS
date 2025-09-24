@@ -4,6 +4,9 @@
 #include <iostream>
 #include "ackermann_simulation/command_publishers.hpp"
 
+double MAX_SPEED = 30.0;
+double MAX_STEER = 1.0;
+
 char getKey()
 {
     struct termios oldt, newt;
@@ -16,6 +19,18 @@ char getKey()
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);   // restore old settings
     return ch;
 }
+
+double clip_vel(double val){
+    if (val < -MAX_SPEED) return -MAX_SPEED;
+    else if (val > MAX_SPEED) return MAX_SPEED;
+    else return val;
+}
+double clip_steer(double val){
+    if (val < -MAX_STEER) return -MAX_STEER;
+    else if (val > MAX_STEER) return MAX_STEER;
+    else return val;
+}
+
 
 int main(int argc, char** argv)
 {
@@ -39,19 +54,19 @@ int main(int argc, char** argv)
             switch (c)
             {
                 case 'w':{
-                    curr_speed = sim_pubs.clip_vel(curr_speed+5);
+                    curr_speed = clip_vel(curr_speed+5);
                     sim_pubs.publishVelocity(curr_speed); break;
                 } 
                 case 's': {
-                    curr_speed = sim_pubs.clip_vel(curr_speed-5);
+                    curr_speed = clip_vel(curr_speed-5);
                     sim_pubs.publishVelocity(curr_speed); break;
                 }
                 case 'a': { 
-                    curr_steer = sim_pubs.clip_steer(curr_steer+=0.1);
+                    curr_steer = clip_steer(curr_steer+=0.1);
                     sim_pubs.publishSteering(curr_steer); break;
                 }
                 case 'd': {
-                    curr_steer = sim_pubs.clip_steer(curr_steer-0.1);
+                    curr_steer = clip_steer(curr_steer-0.1);
                     sim_pubs.publishSteering(curr_steer); break;
                 }
                 case 'x':{

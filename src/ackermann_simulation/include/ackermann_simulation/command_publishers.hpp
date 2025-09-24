@@ -15,17 +15,10 @@ public:
 
     void publishVelocity(double vel);
     void publishSteering(double steer);
-    float clip_vel(float val);
-    float clip_steer(float val);
 
     void reset_position();
 
     ros::ServiceClient set_model_state_client;
-
-    double get_max_speed();
-    double set_max_speed(double new_speed);
-    double set_max_steer(double new_steer);
-    double get_max_steer();
 
 private:
     ros::Publisher velocity_pub;
@@ -34,6 +27,4 @@ private:
     std_msgs::Float64MultiArray vel_cmd;
     std_msgs::Float64MultiArray steer_cmd;
 
-    double abs_max_vel = 10;
-    double abs_max_steer = 0.75;
 };

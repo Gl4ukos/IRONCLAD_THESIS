@@ -74,7 +74,17 @@ ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.o: /opt/ro
 ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/command_publishers.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
 
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /home/maria/ironclad_ws/src/ackermann_simulation/include/ackermann_simulation/command_publishers.hpp
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /home/maria/ironclad_ws/src/ackermann_simulation/src/teleop.cpp
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/gazebo_msgs/ModelState.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/gazebo_msgs/SetModelState.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/gazebo_msgs/SetModelStateRequest.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/gazebo_msgs/SetModelStateResponse.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/geometry_msgs/Point.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/geometry_msgs/Pose.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/geometry_msgs/Quaternion.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/geometry_msgs/Twist.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/geometry_msgs/Vector3.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/advertise_options.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/advertise_service_options.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/assert.h
@@ -93,6 +103,7 @@ ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/inc
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/message.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/message_event.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/message_forward.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/message_operations.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/message_traits.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/names.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/node_handle.h
@@ -130,6 +141,9 @@ ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/inc
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/wall_timer.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/ros/wall_timer_options.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/rosconsole/macros_generated.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/std_msgs/Float64MultiArray.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/std_msgs/MultiArrayDimension.h
+ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/std_msgs/MultiArrayLayout.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
 ackermann_simulation/CMakeFiles/teleop.dir/src/teleop.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
 

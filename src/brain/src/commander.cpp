@@ -17,6 +17,8 @@
 
 
 int BOOST = 1;
+double MAX_SPEED = 10.0;
+double MAX_STEER = 0.75;
 double LOOKAHEAD = 1.0;
 double wheelbase = 1.0; //! probably not true  
 int controller_mode =0;
@@ -152,20 +154,17 @@ int main(int argc, char** argv)
 
     command_publishers sim_pubs(nh);
     
-    Pure_pursuit ctr_pure_pursuit(wheelbase, sim_pubs.get_max_speed(), sim_pubs.get_max_steer());
-    Lateral ctr_lateral(wheelbase, sim_pubs.get_max_speed(), sim_pubs.get_max_steer());
-    Mpc ctr_mpc(wheelbase, sim_pubs.get_max_speed(), sim_pubs.get_max_steer());
+    Pure_pursuit ctr_pure_pursuit(wheelbase, MAX_SPEED, MAX_STEER);
+    Lateral ctr_lateral(wheelbase, MAX_SPEED, MAX_STEER);
+    Mpc ctr_mpc(wheelbase, MAX_SPEED, MAX_STEER);
 
     sim_pubs.reset_position();
-    sim_pubs.set_max_speed(10*BOOST);
 
-    
     //loading the test trajectory
     load_trajectory(goal_trajectory_msg, "src/informatics/pose_sequences/PLAN.csv");
     goal_trajectory_msg.header.stamp = ros::Time::now();
     trajectory_publisher.publish(goal_trajectory_msg);
     
-
     ros::Time start_time = ros::Time::now();
 
     for (int i=0; i<goal_trajectory_msg.poses.size(); i++){
@@ -236,8 +235,8 @@ int main(int argc, char** argv)
                     sleep(ctr_mpc.get_dt());
                     mpc_command = ctr_mpc.get_command(mpc_start_state);
                     steering = mpc_command.steer;
-                    if(abs(steering) == sim_pubs.get_max_steer()){
-                        speed = sim_pubs.get_max_speed(); // to move with max steering the car will need a lot of torgue
+                    if(abs(steering) == MAX_STEER){
+                        speed = MAX_SPEED; // to move with max steering the car will need a lot of torgue
                     }else{
                         speed= std::min(std::max(mpc_command.vel, MIN_SPEED_MPC),MAX_SPEED_MPC);
                     }
@@ -247,7 +246,7 @@ int main(int argc, char** argv)
                     // PURE PURSUIT
                     ctr_pure_pursuit.set_target(x_diff, y_diff);
                     steering = ctr_pure_pursuit.calc_steering();
-                    if(abs(steering) == sim_pubs.get_max_steer()){
+                    if(abs(steering) == MAX_STEER){
                         speed = std::min(std::max(ctr_pure_pursuit.calc_speed(), 0.5), 10.0);
                     }else{
                         speed = std::min(std::max(ctr_pure_pursuit.calc_speed(), MIN_SPEED_PP), MAX_SPEED_PP); //applying upper and lower bound to speed, so its speedy enough and doesnt stall
@@ -258,8 +257,8 @@ int main(int argc, char** argv)
                     // STANLEY 
                     ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
                     steering = ctr_lateral.calc_steering();
-                    if(steering == sim_pubs.get_max_steer()){
-                        speed = sim_pubs.get_max_speed();
+                    if(steering == MAX_STEER){
+                        speed = MAX_SPEED;
                     }else{
                         speed = std::min(std::max(ctr_lateral.calc_speed(), MIN_SPEED_LAT), MAX_SPEED_LAT);
                     }
@@ -341,8 +340,6 @@ int main(int argc, char** argv)
     std::cout<<"DISPLAYING RESULTS...\n";
     std::string cmd = "python3 src/informatics/src/plotter.py "+ std::to_string(controller_mode);
     std::system(cmd.c_str());
-
-    
 
     sim_pubs.reset_position();
     curr_x=0;

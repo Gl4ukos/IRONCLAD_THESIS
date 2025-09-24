@@ -20,7 +20,15 @@ gazebo_msgs/ModelState.h
 gazebo_msgs/SetModelState.h
 -
 
-/home/maria/ironclad_ws/src/ackermann_simulation/src/command_publishers.cpp
+/home/maria/ironclad_ws/src/ackermann_simulation/src/teleop.cpp
+ros/ros.h
+-
+termios.h
+-
+unistd.h
+-
+iostream
+-
 ackermann_simulation/command_publishers.hpp
 /home/maria/ironclad_ws/src/ackermann_simulation/src/ackermann_simulation/command_publishers.hpp
 

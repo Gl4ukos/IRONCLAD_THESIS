@@ -13,28 +13,9 @@ command_publishers::command_publishers(ros::NodeHandle& nh)
 
 }
 
-double command_publishers::set_max_speed(double new_speed){
-    abs_max_vel = abs(new_speed);
-}
-double command_publishers::set_max_steer(double new_steer){
-    abs_max_steer = abs(new_steer);
-}
-
-float command_publishers::clip_vel(float val) {
-    if (val < -abs_max_vel) return -abs_max_vel;
-    else if (val > abs_max_vel) return abs_max_vel;
-    else return val;
-}
-
-float command_publishers::clip_steer(float val) {
-    if (val < -abs_max_steer) return -abs_max_steer;
-    else if (val > abs_max_steer) return abs_max_steer;
-    else return val;
-}
 
 void command_publishers::publishSteering(double steer)
 {  
-    steer = clip_steer(steer);
     steer_cmd.data[0] = steer;
     steer_cmd.data[1] = steer;
     steering_pub.publish(steer_cmd);
@@ -42,19 +23,9 @@ void command_publishers::publishSteering(double steer)
 
 void command_publishers::publishVelocity(double vel)
 {
-    vel = clip_vel(vel);
     vel_cmd.data[0] = vel;
     vel_cmd.data[1] = vel;
     velocity_pub.publish(vel_cmd);
-}
-
-
-double command_publishers::get_max_speed(){
-    return abs_max_vel;
-}
-
-double command_publishers::get_max_steer(){
-    return abs_max_steer;
 }
 
 

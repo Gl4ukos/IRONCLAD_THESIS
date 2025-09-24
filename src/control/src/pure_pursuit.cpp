@@ -31,7 +31,13 @@ double Pure_pursuit::calc_steering(){
     return atan(wheelbase * curvature);
 }
 
+void Pure_pursuit::set_max_speed(double new_max){
+    max_speed = new_max;
+}
 
+void Pure_pursuit::set_max_steer(double new_max){
+    max_steering = new_max;
+}
 
 int Pure_pursuit::get_trajectory(nav_msgs::Path *path_msg, double resolution, double  robot_x, double  robot_y, double  robot_yaw){
     
