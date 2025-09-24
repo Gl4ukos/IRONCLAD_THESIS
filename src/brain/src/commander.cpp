@@ -16,7 +16,7 @@
 #include "command_transmitter.cpp"
 
 
-int BOOST = 2;
+int BOOST = 1;
 double LOOKAHEAD = 1.0;
 double wheelbase = 1.0; //! probably not true  
 int controller_mode =0;
@@ -111,11 +111,6 @@ int main(int argc, char** argv)
     nav_msgs::Path path_msg;
     path_msg.header.frame_id = "world";
 
-    //setting up total executed path msg
-    std::vector<double> total_path_x;
-    std::vector<double> total_path_y;
-    std::vector<double> total_path_yaw;
-
     //setting up sampled path (contains the points from the initial given plan that were used as targets, not all points are used bc of lookahead distance)
     std::vector<double> sampled_path_x;
     std::vector<double> sampled_path_y;
@@ -162,6 +157,8 @@ int main(int argc, char** argv)
     Mpc ctr_mpc(wheelbase, sim_pubs.get_max_speed(), sim_pubs.get_max_steer());
 
     sim_pubs.reset_position();
+    sim_pubs.set_max_speed(10*BOOST);
+
     
     //loading the test trajectory
     load_trajectory(goal_trajectory_msg, "src/informatics/pose_sequences/PLAN.csv");
@@ -205,12 +202,11 @@ int main(int argc, char** argv)
         x_diff = std::cos(-curr_yaw) * (target_x - curr_x) - std::sin(-curr_yaw) * (target_y - curr_y);
         y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
     
-        //updating targets in control classes
-        //if(i/2==0){
-            ctr_pure_pursuit.set_target(x_diff, y_diff);
-            ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
-            ctr_mpc.set_target(x_diff, y_diff, curr_yaw);
-        //}
+
+        ctr_pure_pursuit.set_target(x_diff, y_diff);
+        ctr_lateral.set_target(x_diff, y_diff, curr_yaw);
+        ctr_mpc.set_target(x_diff, y_diff, curr_yaw);
+        
         
         std::cout<<"TARGET["<< i<<"/"<< goal_trajectory_msg.poses.size() <<"] AQCUIRED\nMOVING...\n";
 
@@ -252,7 +248,7 @@ int main(int argc, char** argv)
                     ctr_pure_pursuit.set_target(x_diff, y_diff);
                     steering = ctr_pure_pursuit.calc_steering();
                     if(abs(steering) == sim_pubs.get_max_steer()){
-                        speed = sim_pubs.get_max_speed();
+                        speed = std::min(std::max(ctr_pure_pursuit.calc_speed(), 0.5), 10.0);
                     }else{
                         speed = std::min(std::max(ctr_pure_pursuit.calc_speed(), MIN_SPEED_PP), MAX_SPEED_PP); //applying upper and lower bound to speed, so its speedy enough and doesnt stall
                     }
@@ -295,10 +291,6 @@ int main(int argc, char** argv)
             yaw_diff = target_yaw - curr_yaw;
             ros::spinOnce();
         }
-        //keeping the pose closest to target for plotting results
-        total_path_x.push_back(curr_x);
-        total_path_y.push_back(curr_y);
-        total_path_yaw.push_back(curr_yaw);
     }
     ros::Time end_time = ros::Time::now();
     double duration = (end_time - start_time).toSec(); 
@@ -321,32 +313,19 @@ int main(int argc, char** argv)
     
     std::cout<<"SAVING TRAJECTORY...\n";
     
-    std::string final_traj_filename= "";
     std::string final_anal_traj_filename= "";
     
     switch(controller_mode){
         case 1:
-            final_traj_filename = "src/informatics/pose_sequences/PP_TRAJ.csv";
             final_anal_traj_filename = "src/informatics/pose_sequences/PP_TRAJ_ANAL.csv";
             break;
         case 2:
-            final_traj_filename = "src/informatics/pose_sequences/LAT_TRAJ.csv";
             final_anal_traj_filename = "src/informatics/pose_sequences/LAT_TRAJ_ANAL.csv";
             break;
         case 3:
-            final_traj_filename = "src/informatics/pose_sequences/MPC_TRAJ.csv";
             final_anal_traj_filename = "src/informatics/pose_sequences/MPC_TRAJ_ANAL.csv";
             break;            
     }
-    std::ofstream traj_file(final_traj_filename);
-    traj_file << std::fixed << std::setprecision(6);
-    for( size_t i=0; i<total_path_x.size(); i++){
-        tf2::Quaternion q;
-        q.setRPY(0,0,total_path_yaw[i]);
-        geometry_msgs::Quaternion q_msg = tf2::toMsg(q);
-        traj_file<<total_path_x[i]<<","<<total_path_y[i]<<",0.000000,"<<q_msg.x<<","<<q_msg.y<<","<<q_msg.z<<","<<q_msg.w<<"\n";
-    }
-    traj_file.close();
 
     std::ofstream traj_file_anal(final_anal_traj_filename);
     traj_file_anal<<std::fixed<<std::setprecision(6);

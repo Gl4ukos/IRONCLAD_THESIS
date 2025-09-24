@@ -23,6 +23,8 @@ public:
     ros::ServiceClient set_model_state_client;
 
     double get_max_speed();
+    double set_max_speed(double new_speed);
+    double set_max_steer(double new_steer);
     double get_max_steer();
 
 private:

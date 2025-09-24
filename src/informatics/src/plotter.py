@@ -56,25 +56,36 @@ def load_pose_sequence_from_csv(filename):
     return NEW_POSE_SEQUENCE
 
 
-def analytical_deviation_calculator(plan:POSE_SEQUENCE, trajectory:POSE_SEQUENCE):
-    last_index =0
-    min_diff = math.inf
+
+def analytical_deviation_calculator(plan: POSE_SEQUENCE, trajectory: POSE_SEQUENCE):
+    last_index = 0
     deviation = []
     sampled_trajectory_points = []
     
-    for i in range(len(plan.x_list)): #for each point in the given plan
+    for i in range(len(plan.x_list)):  # for each point in the given plan
         min_diff = math.inf
+        best_index = last_index  # temporary best index
+        
         for j in range(last_index, len(trajectory.x_list)):
-            x_diff = plan.x_list[i] - trajectory.x_list[j]# find the one from final trajectory that is the closest
+            x_diff = plan.x_list[i] - trajectory.x_list[j]
             y_diff = plan.y_list[i] - trajectory.y_list[j]
-            diff = x_diff**2 + y_diff**2
+            diff = x_diff**2 + y_diff**2  # squared distance
+            
             if diff <= min_diff:
                 min_diff = diff
-                last_index = j #save the index so we dont interate again from the beginning
-        deviation.append(min_diff)
-        sampled_trajectory_points.append((trajectory.x_list[last_index], trajectory.y_list[last_index]))
+                best_index = j
+        
+        # update last_index to avoid backtracking
+        last_index = best_index
+        
+        # store deviation (sqrt if you want actual distance)
+        deviation.append(math.sqrt(min_diff))  
+        sampled_trajectory_points.append(
+            (trajectory.x_list[best_index], trajectory.y_list[best_index])
+        )
 
-    return deviation, sampled_trajectory_points    
+    return deviation, sampled_trajectory_points
+
     
 
 controller_type = sys.argv[1]
@@ -82,26 +93,21 @@ controller_type = sys.argv[1]
     
 PLAN = load_pose_sequence_from_csv("src/informatics/pose_sequences/PLAN.csv")
 title = ""
-trajectory_filename = ""
 anal_trajectory_filename = ""
 if controller_type == "1":
-    trajectory_filename += "src/informatics/pose_sequences/PP_TRAJ.csv"
     anal_trajectory_filename += "src/informatics/pose_sequences/PP_TRAJ_ANAL.csv"
     title = "Pure Pursuit trajectory deviation"
 elif controller_type == "2": 
     title = "Lateral trajectory deviation"
-    trajectory_filename += "src/informatics/pose_sequences/LAT_TRAJ.csv"
     anal_trajectory_filename += "src/informatics/pose_sequences/LAT_TRAJ_ANAL.csv"
 elif controller_type == "3":
     title = "MPC trajectory deviation"
-    trajectory_filename += "src/informatics/pose_sequences/MPC_TRAJ.csv"
     anal_trajectory_filename += "src/informatics/pose_sequences/MPC_TRAJ_ANAL.csv"
 else:
     print("Cant load trajectory")
     print("controller type: ", controller_type)
     exit()
 
-TRAJECTORY = load_pose_sequence_from_csv(trajectory_filename)
 ANALYTICAL_TRAJECTORY = load_pose_sequence_from_csv(anal_trajectory_filename)
 anal_traj_dev, sampled_traj = analytical_deviation_calculator(PLAN, ANALYTICAL_TRAJECTORY)
 
@@ -113,9 +119,23 @@ plt.title("mean deviation (per target): " + str(str(statistics.mean(anal_traj_de
 
 plt.figure()
 plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='k', markersize = 0.1)
-plt.plot(sampled_traj[1], sampled_traj[0], marker="x", linestyle = '-', color = 'y' , markersize = 0.5)
 plt.plot(ANALYTICAL_TRAJECTORY.y_list, ANALYTICAL_TRAJECTORY.x_list, marker='x', linestyle = '-', color = 'r', markersize=0)
-plt.title("plan, trajectory & target approximations")
+plt.title("plan & trajectory")
 plt.axis('equal') 
 
+plt.figure()
+plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color="gray", markersize = 0.1)
+x_samples, y_samples = zip(*sampled_traj)
+plt.scatter(y_samples, x_samples, marker="x", color="r", s=15, label="Approximations")
+plt.scatter(PLAN.y_list, PLAN.x_list, marker="x", color="black", s=15, label="Targets")
+for k, (xs, ys, xp, yp) in enumerate(zip(x_samples, y_samples, PLAN.x_list, PLAN.y_list)):
+    if k == 0:
+        plt.plot([ys, yp], [xs, xp], color="gray", linestyle="--", linewidth=1.2, label="Deviation")
+    else:
+        plt.plot([ys, yp], [xs, xp], color="gray", linestyle="--", linewidth=1.2, label="_nolegend_")
+
+plt.title("Targets & Approximations & Deviations")
+plt.axis('equal')
+
+plt.legend()
 plt.show()

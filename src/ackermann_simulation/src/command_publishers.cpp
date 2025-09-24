@@ -13,6 +13,12 @@ command_publishers::command_publishers(ros::NodeHandle& nh)
 
 }
 
+double command_publishers::set_max_speed(double new_speed){
+    abs_max_vel = abs(new_speed);
+}
+double command_publishers::set_max_steer(double new_steer){
+    abs_max_steer = abs(new_steer);
+}
 
 float command_publishers::clip_vel(float val) {
     if (val < -abs_max_vel) return -abs_max_vel;
