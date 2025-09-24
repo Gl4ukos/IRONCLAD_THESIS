@@ -19,8 +19,8 @@ TODO:
         -> Fix servo jitter - hook in servo driver (WITHOUT BURNING IT THIS TIME)
 
 
-        -> Graphs are too heavy to calculate
-        -> Stanley doensnt work that well
+        -> Fix lateral error display orientation (in lateral.cpp getErrorMarkers) 
+        -> Graphs are very computationally expensive
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit
         -> Add trajectory scenarios
@@ -34,3 +34,6 @@ TODO:
     ! NOTES:
     -> MPC struggles A LOT when target is in bad position. It needs some straying to "find" the target
     -> Pure pursuit: LOOKAHEAD>> & MAX_SPEED>> -> faster & less accurate (and the opposite)
+    -> Stanley: SPEED<< -> VERY AGRESSIVE STEERING 
+    -> Stanley: REAAALLY does not perform well with high LOOKAHEAD, it oscillates a lot due to lateral error
+    -> Stanley: Oscilalates a lot in sharp turns, bc lateral and yaw error may become contradicting

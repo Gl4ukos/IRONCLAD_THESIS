@@ -11,6 +11,9 @@ Panels:
         - /TARGET1
         - /Path1
         - /Path2
+        - /Marker1
+        - /Marker2
+        - /Marker2/Status1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz/Selection
@@ -171,6 +174,22 @@ Visualization Manager:
       Topic: /commander/goal_trajectory
       Unreliable: false
       Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /commander/target_yaw_marker
+      Name: Marker
+      Namespaces:
+        lateral_error: true
+      Queue Size: 1
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /commander/lateral_error_marker
+      Name: Marker
+      Namespaces:
+        target_yaw: true
+      Queue Size: 1
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -199,7 +218,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 30.480398178100586
+      Distance: 10.621455192565918
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -207,17 +226,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.6523290872573853
-        Y: 5.931512832641602
-        Z: -1.472142219543457
+        X: -0.7901002764701843
+        Y: 2.306063413619995
+        Z: -1.2441245317459106
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.5247963666915894
       Target Frame: <Fixed Frame>
-      Yaw: 3.188572406768799
+      Yaw: 3.2785723209381104
     Saved:
       - Class: rviz/Orbit
         Distance: 21.108230590820312

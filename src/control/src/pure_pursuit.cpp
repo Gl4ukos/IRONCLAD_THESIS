@@ -25,10 +25,9 @@ double Pure_pursuit::clip_speed(double val) {
 }
 
 double Pure_pursuit::clip_steering(double val) {
-    if (val < -max_steering) return -max_steering;
-    else if (val > max_steering) return max_steering;
-    else return val;
+    return std::max(std::min(val, max_steering), -max_steering);
 }
+
 
 double Pure_pursuit::calc_speed(){
     curr_dist = sqrt(curr_dist_sq);

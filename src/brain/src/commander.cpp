@@ -14,24 +14,32 @@
 #include <vector>
 #include <gazebo_msgs/ModelStates.h>
 #include "command_transmitter.cpp"
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 
-
+// GENERAL PARAMETERS
 int BOOST = 1;
+double LOOKAHEAD = 0.0;
 double MAX_SPEED = 10.0;
 double MAX_STEER = 0.70;
-double LOOKAHEAD = 2.0;
 double wheelbase = 1.0; //! probably not true  
 int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
 
+// PURE PURSUIT PARAMETERS
+double LOOKAHEAD_PP = 2.0;
 double MAX_SPEED_PP = 30.0;
 double MIN_SPEED_PP = 2.0;
 double MAX_STEER_PP = 0.75;
 
-
+// STANLEY PARAMETERS
+double LOOKAHEAD_LAT = 1.0;
 double MAX_SPEED_LAT = 10.0;
 double MIN_SPEED_LAT = 2.0;
+double MAX_STEER_LAT = 0.70;
 
+// MPC PARAMETERS
+double LOOKAHEAD_MPC = 0.2;
 double MAX_SPEED_MPC = 10.0;
 double MIN_SPEED_MPC = 2.0;
 
@@ -98,18 +106,12 @@ int main(int argc, char** argv)
     ros::Publisher target_pose_pub = nh.advertise<geometry_msgs::PoseStamped>("commander/target",1);
     ros::Publisher path_publisher = nh.advertise<nav_msgs::Path>("/commander/predicted_path", 1);
     ros::Publisher trajectory_publisher = nh.advertise<nav_msgs::Path>("/commander/goal_trajectory", 1, true);
-
+    ros::Publisher lateral_error_publisher = nh.advertise<visualization_msgs::Marker>("/commander/lateral_error_marker", 1);
+    ros::Publisher target_yaw_publisher = nh.advertise<visualization_msgs::Marker>("/commander/target_yaw_marker", 1);
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
     CommandTransmitter transmitter("139.91.62.145",5005);
-
-
-    //setting up pose estimate msg
-    geometry_msgs::PoseStamped target_posest_msg;
-    target_posest_msg.header.frame_id="world";
-    target_posest_msg.header.stamp = ros::Time::now();
-    target_posest_msg.pose.orientation.w=1.0;
-    target_posest_msg.pose.position.z=0.25;
+    command_publishers sim_pubs(nh);
 
     //setting up executed path msg
     nav_msgs::Path path_msg;
@@ -125,8 +127,6 @@ int main(int argc, char** argv)
     std::vector<double> anal_total_path_y;
     std::vector<double> anal_total_path_yaw;
     
-
-
     //setting up goal trajectory msg
     nav_msgs::Path goal_trajectory_msg;
     goal_trajectory_msg.header.frame_id = "world";
@@ -144,21 +144,25 @@ int main(int argc, char** argv)
 
     double target_x,target_y,target_yaw;
     double speed, steering;
+    double x_diff,y_diff,yaw_diff;
+    tf2::Quaternion quaternion;
     
+    
+    Pure_pursuit ctr_pure_pursuit(wheelbase, MAX_SPEED_PP, MAX_STEER_PP);
+    
+    //setting up stanley controller
+    Lateral ctr_lateral(wheelbase, MAX_SPEED, MAX_STEER);
+    visualization_msgs::Marker lateral_error_marker;
+    visualization_msgs::Marker target_yaw_marker;
+
+
+    //setting up mpc controller
+    Mpc ctr_mpc(wheelbase, MAX_SPEED, MAX_STEER);
     Command mpc_command;
     State mpc_start_state;
     mpc_start_state.x = 0.0;
     mpc_start_state.y =0.0;
     mpc_start_state.yaw =0.0;
-
-    double x_diff,y_diff,yaw_diff;
-    tf2::Quaternion quaternion;
-
-    command_publishers sim_pubs(nh);
-    
-    Pure_pursuit ctr_pure_pursuit(wheelbase, MAX_SPEED_PP, MAX_STEER_PP);
-    Lateral ctr_lateral(wheelbase, MAX_SPEED, MAX_STEER);
-    Mpc ctr_mpc(wheelbase, MAX_SPEED, MAX_STEER);
 
     sim_pubs.reset_position();
 
@@ -168,6 +172,19 @@ int main(int argc, char** argv)
     trajectory_publisher.publish(goal_trajectory_msg);
     
     ros::Time start_time = ros::Time::now();
+
+    switch(controller_mode){
+        case 1:
+            LOOKAHEAD = LOOKAHEAD_PP;
+            break;
+        case 2:
+            LOOKAHEAD = LOOKAHEAD_LAT;
+            break;
+        case 3:
+            LOOKAHEAD = LOOKAHEAD_MPC;
+            break;
+    }
+
 
     for (int i=0; i<goal_trajectory_msg.poses.size(); i++){
         //selecting current pose-target
@@ -188,10 +205,6 @@ int main(int argc, char** argv)
         
         ros::spinOnce();
 
-        //displaying target as object in gazebo (redundant)
-        target_posest_msg.pose.position.x=target_x;
-        target_posest_msg.pose.position.y=target_y;
-        //spawn_target_pub.publish(target_posest_msg);
         //displaying target as vector in rviz 
         target_pose_msg.pose.position.x = target_x;
         target_pose_msg.pose.position.y = target_y;
@@ -257,11 +270,14 @@ int main(int argc, char** argv)
                 case 2:
                     // STANLEY 
                     ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
+                    ctr_lateral.getErrorMarkers(lateral_error_marker, target_yaw_marker, curr_x, curr_y, curr_yaw);
+                    lateral_error_publisher.publish(lateral_error_marker);
+                    target_yaw_publisher.publish(target_yaw_marker);
                     steering = ctr_lateral.calc_steering();
+                    speed = ctr_pure_pursuit.calc_speed();
                     if(steering == MAX_STEER){
                         speed = MAX_SPEED;
-                    }else{
-                        speed = std::min(std::max(ctr_lateral.calc_speed(), MIN_SPEED_LAT), MAX_SPEED_LAT);
+                        std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
                     ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
                     break;
