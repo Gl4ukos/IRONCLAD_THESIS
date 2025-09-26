@@ -20,7 +20,6 @@ TODO:
 
 
         -> Add mpc prediction display
-        -> Fix prediction display on Pure Pursuit
         -> Add trajectory scenarios
 
     OPTIONAL:
@@ -31,8 +30,15 @@ TODO:
     -> Make model more realistic, use urdf from Fusion
 
     ! NOTES:
-    -> MPC struggles A LOT when target is in bad position. It needs some straying to "find" the target
-    -> Pure pursuit: LOOKAHEAD>> & MAX_SPEED>> -> faster & less accurate (and the opposite)
-    -> Stanley: SPEED<< -> VERY AGRESSIVE STEERING 
-    -> Stanley: REAAALLY does not perform well with high LOOKAHEAD, it oscillates a lot due to lateral error
-    -> Stanley: Oscilalates a lot in sharp turns, bc lateral and yaw error may become contradicting
+    -> MPC:
+        ->struggles A LOT when target is in bad position. It needs some straying to "find" the target
+    
+    -> Pure pursuit: 
+        ->LOOKAHEAD>> & MAX_SPEED>> -> faster & less accurate (and the opposite)
+        -> When a semicomplete circle is displayed on RVIZ it actually means that there is no possible trajectory for the current target, bc the angle needed surpasses the steering cap.
+    
+    -> Stanley: 
+        ->SPEED<< -> VERY AGRESSIVE STEERING 
+        -> REAAALLY does not perform well with high LOOKAHEAD, it oscillates a lot due to lateral error
+        -> Oscilalates a lot in sharp turns, bc lateral and yaw error may become contradicting
+    

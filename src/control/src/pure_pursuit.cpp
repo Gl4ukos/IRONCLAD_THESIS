@@ -78,16 +78,15 @@ int Pure_pursuit::get_trajectory(nav_msgs::Path *path_msg, double resolution, do
         return 0;
     }
 
+    
     double radius = 1.0 / curvature;
-    double total_angle = curvature * curr_dist; // total arc angle
+    double total_angle = 2.0 * asin(curr_dist / (2.0 * (radius)));
+    //double total_angle = curvature * curr_dist; // total arc angle
+
     double angle_increment = total_angle / (resolution - 1);
 
     double xc = 0.0;
     double yc = radius;
-
-    if (curvature < 0) {
-        yc = -radius;
-    }
 
     for (int i = 0; i < resolution; i++){
         double angle = (angle_increment * i);

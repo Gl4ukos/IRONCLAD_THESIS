@@ -285,8 +285,8 @@ int main(int argc, char** argv)
 
         
             //publishing command
-            sim_pubs.publishVelocity(speed);
-            sim_pubs.publishSteering(steering);
+            //sim_pubs.publishVelocity(speed);
+            //sim_pubs.publishSteering(steering);
             //transmitting command
             transmitter.send_command(speed, steering);
         
@@ -298,7 +298,7 @@ int main(int argc, char** argv)
             // (redundant) for debugging
             // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             //std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
-            std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
+            //std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
 
             // updating target position
             //x and y distances rotated so the car is like heading to 0 angle
