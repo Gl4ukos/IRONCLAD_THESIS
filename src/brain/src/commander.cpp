@@ -39,9 +39,10 @@ double MIN_SPEED_LAT = 2.0;
 double MAX_STEER_LAT = 0.70;
 
 // MPC PARAMETERS
-double LOOKAHEAD_MPC = 0.2;
-double MAX_SPEED_MPC = 10.0;
-double MIN_SPEED_MPC = 2.0;
+double LOOKAHEAD_MPC = 1.0;
+double MAX_SPEED_MPC = 30.0;
+double MIN_SPEED_MPC = 1.0;
+double MAX_STEER_MPC = 0.75;
 
 
 int load_trajectory(nav_msgs::Path &trajectory, std::string filepath){
@@ -157,7 +158,7 @@ int main(int argc, char** argv)
 
 
     //setting up mpc controller
-    Mpc ctr_mpc(wheelbase, MAX_SPEED, MAX_STEER);
+    Mpc ctr_mpc(wheelbase, MAX_SPEED_MPC, MAX_STEER_MPC);
     Command mpc_command;
     State mpc_start_state;
     mpc_start_state.x = 0.0;
@@ -231,9 +232,11 @@ int main(int argc, char** argv)
             ctr_pure_pursuit.set_max_speed(5.0);
             MAX_SPEED_LAT = 5.0;
             MIN_SPEED_LAT = 1.0;
+            ctr_lateral.set_max_speed(MAX_SPEED_LAT);
+            
             MAX_SPEED_MPC = 5.0;
             MIN_SPEED_MPC = 1.0;
-            
+            ctr_mpc.set_max_speed(MAX_SPEED_MPC);
         }
 
         // executing the move
@@ -246,14 +249,18 @@ int main(int argc, char** argv)
             switch(controller_mode){
                 case 3:
                     // MPC
-                    ctr_mpc.set_target(x_diff, y_diff,yaw_diff);
                     sleep(ctr_mpc.get_dt());
+                    ctr_mpc.set_target(x_diff, y_diff,yaw_diff);
                     mpc_command = ctr_mpc.get_command(mpc_start_state);
                     steering = mpc_command.steer;
+                    //speed from mpc
+                    //speed= std::min(std::max(mpc_command.vel, MIN_SPEED_MPC),MAX_SPEED_MPC);
+                    
+                    //speed from pid
+                    speed = ctr_mpc.calc_speed_pid();
+
                     if(abs(steering) == MAX_STEER){
-                        speed = MAX_SPEED; // to move with max steering the car will need a lot of torgue
-                    }else{
-                        speed= std::min(std::max(mpc_command.vel, MIN_SPEED_MPC),MAX_SPEED_MPC);
+                        std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
                     ctr_mpc.get_trajectory(&path_msg, curr_x, curr_y, curr_yaw);
                     break;
@@ -279,14 +286,14 @@ int main(int argc, char** argv)
                         speed = MAX_SPEED;
                         std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
-                    ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
+                    //ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
                     break;
             }
 
         
             //publishing command
-            //sim_pubs.publishVelocity(speed);
-            //sim_pubs.publishSteering(steering);
+            sim_pubs.publishVelocity(speed);
+            sim_pubs.publishSteering(steering);
             //transmitting command
             transmitter.send_command(speed, steering);
         

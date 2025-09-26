@@ -20,14 +20,12 @@ State Mpc::predict_next_state(State& curr, double vel, double steering, double d
     return next;
 }
 
-double Mpc::compute_cost(std::vector<State>& states,
-                        std::vector<double>& steerings,
-                        std::vector<double>& velocities)
+double Mpc::compute_cost(std::vector<double>& steerings, std::vector<double>& velocities)
 {
     double cost = 0.0;
 
-    for (size_t i =0; i<states.size(); i++){
-        State s = states[i];
+    for (size_t i =0; i<current_states.size(); i++){
+        State s = current_states[i];
 
         //position error
         double dx = s.x - target.x;
@@ -52,24 +50,27 @@ double Mpc::compute_cost(std::vector<State>& states,
 
 
 double Mpc::evaluate_cost(std::vector<Command>& control_sequence, State& start){
-    std::vector<State> states;
     std::vector<double> steers;
     std::vector<double> vels;
+    current_states.clear();
 
     State s = start;
     for(size_t i=0;  i<control_sequence.size(); i++){
         s = predict_next_state(s, control_sequence[i].vel, control_sequence[i].steer, dt);
-        states.push_back(s);
+        current_states.push_back(s);
         steers.push_back(control_sequence[i].steer);
         vels.push_back(control_sequence[i].vel);
     }
-    return compute_cost(states,steers,vels);
+    
+    return compute_cost(steers,vels);
 }
 
 int Mpc::set_target(double x_diff, double y_diff, double yaw_diff){
         target.x = x_diff;
         target.y = y_diff;
         target.yaw = yaw_diff;
+
+        curr_dist_sq = (x_diff*x_diff) + (y_diff*y_diff);
         return 0;
 }
 
@@ -80,6 +81,16 @@ void Mpc::print_controls() {
                   << " | steer: " << controls[i].steer
                   << "\n";
     }
+}
+
+void Mpc::set_max_speed(double val){
+    max_speed = val;
+}
+
+double Mpc::calc_speed_pid(){
+    double curr_dist = sqrt(curr_dist_sq);
+    speed_pid = std::max(std::min(max_speed, Kp*curr_dist - Kd*speed_pid),0.0); 
+    return speed_pid;
 }
 
 Command Mpc::get_command(State& start) {
@@ -135,7 +146,11 @@ Command Mpc::get_command(State& start) {
 
         // 3. Check convergence
         double new_cost = evaluate_cost(controls, start);
-        if (fabs(prev_cost - new_cost) < tol) break;
+        if (fabs(prev_cost - new_cost) < tol){
+            break;
+        } 
+        resulting_states.clear();
+        resulting_states = current_states;
         prev_cost = new_cost;
 
         // 4. Simple step size adaptation
@@ -157,31 +172,61 @@ void Mpc::generate_controls(){
 }
 
 
+// void Mpc::get_trajectory(nav_msgs::Path *path_msg, double  robot_x, double  robot_y, double  robot_yaw){
+//     path_msg->poses.clear();
+//     path_msg->header.stamp = ros::Time::now();
+
+//     State state;
+//     double x,y;
+//     tf2::Quaternion q;
+
+//     for(int i=0; i<controls.size(); i++){
+//         predict_next_state(state, controls[i].vel, controls[i].steer, this->dt);
+
+//         x = robot_x + cos(controls[i].steer)*state.x - sin(controls[i].steer) * state.y;
+//         y = robot_y + sin(controls[i].steer)*state.x + cos(controls[i].steer) * state.y;
+
+//         geometry_msgs::PoseStamped pose;
+//         pose.header.frame_id = path_msg->header.frame_id;
+//         pose.header.stamp = path_msg->header.stamp;
+//         pose.pose.position.x = x;
+//         pose.pose.position.y = y;
+//         pose.pose.position.z = 0.0;
+
+//         q.setRPY(0, 0, state.yaw);
+//         pose.pose.orientation = tf2::toMsg(q);
+//         path_msg->poses.push_back(pose);
+//     }
+// }
+
+
 void Mpc::get_trajectory(nav_msgs::Path *path_msg, double  robot_x, double  robot_y, double  robot_yaw){
     path_msg->poses.clear();
     path_msg->header.stamp = ros::Time::now();
 
-
-
-
-    State state;
-    double x,y;
     tf2::Quaternion q;
 
-    for(int i=0; i<controls.size(); i++){
-        predict_next_state(state, controls[i].vel, controls[i].steer, this->dt);
+    geometry_msgs::PoseStamped initial_pose;
+    initial_pose.header.frame_id = path_msg->header.frame_id;
+    initial_pose.header.stamp = path_msg->header.stamp;
+    initial_pose.pose.position.x = robot_x;
+    initial_pose.pose.position.y = robot_y;
+    initial_pose.pose.position.z = 0.0;
+    q.setRPY(0, 0, robot_yaw);
+    initial_pose.pose.orientation = tf2::toMsg(q);
+    path_msg->poses.push_back(initial_pose);
 
-        x = robot_x + cos(controls[i].steer)*state.x - sin(controls[i].steer) * state.y;
-        y = robot_y + sin(controls[i].steer)*state.x + cos(controls[i].steer) * state.y;
-
+    for(int i=0; i<resulting_states.size(); i++){
         geometry_msgs::PoseStamped pose;
         pose.header.frame_id = path_msg->header.frame_id;
         pose.header.stamp = path_msg->header.stamp;
-        pose.pose.position.x = x;
-        pose.pose.position.y = y;
+        
+        pose.pose.position.x = robot_x + resulting_states[i].x * cos(robot_yaw) - resulting_states[i].y * sin(robot_yaw);
+        pose.pose.position.y = robot_y + resulting_states[i].x * sin(robot_yaw) + resulting_states[i].y * cos(robot_yaw);
         pose.pose.position.z = 0.0;
 
-        q.setRPY(0, 0, state.yaw);
+        // orientation may be kinda useless here
+        q.setRPY(0, 0, resulting_states[i].yaw);
         pose.pose.orientation = tf2::toMsg(q);
         path_msg->poses.push_back(pose);
     }

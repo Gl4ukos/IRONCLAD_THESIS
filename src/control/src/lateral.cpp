@@ -29,7 +29,7 @@ double Lateral::clip_speed(double val){
 
 double Lateral::calc_speed(){
     curr_dist = sqrt(curr_dist_sq);
-    speed = std::min(max_speed, Kp*curr_dist - Kd*speed); 
+    speed = Kp*curr_dist - Kd*speed; 
     return clip_speed(speed);
 }
 
@@ -156,10 +156,6 @@ int Lateral::get_trajectory(nav_msgs::Path *path_msg, double resolution, double 
     double angle_increment = total_angle / (resolution - 1);
 
     double yc = radius;
-
-    if (curvature < 0) {
-        yc = -radius;
-    }
 
     for (int i = 0; i < resolution; i++){
         double angle = (angle_increment * i);

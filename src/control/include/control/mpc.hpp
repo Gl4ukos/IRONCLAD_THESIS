@@ -29,8 +29,12 @@ class Mpc{
     //variables
     State curr_state;
     State target;
+    double curr_dist_sq;
+    double speed_pid;
     Weights weights;
     std::vector<Command> controls;
+    std::vector<State> resulting_states;
+    std::vector<State> current_states;
     
     //hyperparameters
     size_t horizon=3;
@@ -39,6 +43,9 @@ class Mpc{
     double max_speed;
     double max_steer;
     int max_iterations = 40;
+    double Kp = 10;
+    double Kd = 1;
+    double Ki = 0;
 
 
 
@@ -46,12 +53,11 @@ class Mpc{
     Mpc(double wheelbase, double max_speed, double max_steering);
     State predict_next_state(State& curr, double vel, double steering, double dt);
     int set_target(double x, double y, double yaw);
-    double compute_cost(std::vector<State>& states,
-                        std::vector<double>& steerings,
-                        std::vector<double>& velocities
-    );
+    double compute_cost(std::vector<double>& steerings, std::vector<double>& velocities);
     double evaluate_cost(std::vector<Command>& control_sequence, State& start);
     Command get_command(State& start);
+    double calc_speed_pid();
+    void set_max_speed(double val);
     void generate_controls();
     double get_dt();
     void print_controls();

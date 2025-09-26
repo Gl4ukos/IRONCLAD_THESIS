@@ -18,20 +18,18 @@ TODO:
         -> Solder a switch on the power distributor
         -> Fix servo jitter - hook in servo driver (WITHOUT BURNING IT THIS TIME)
 
-
-        -> Add mpc prediction display
-        -> Add trajectory scenarios
+        -> Play with speeds-PID params-Lookaheads and trajectory, get some results on the paper
 
     OPTIONAL:
     -> Graphs are very computationally expensive
     -> Print some cable organizer to screw on the elecmount2
-    -> Tune/tweak Lateral (maybe add some other control parameter to steering)
     -> fix: the car model's movement in rviz is completely fucked the pose to tf is bad
     -> Make model more realistic, use urdf from Fusion
 
     ! NOTES:
     -> MPC:
-        ->struggles A LOT when target is in bad position. It needs some straying to "find" the target
+        -> struggles A LOT when target is in bad position. It needs some straying to "find" the target
+        -> Speed calculation is kinda problematic sometimes, bc the error gets calculated for the final state and not the first one (so it gets low speed results, eventhough it could be higher)
     
     -> Pure pursuit: 
         ->LOOKAHEAD>> & MAX_SPEED>> -> faster & less accurate (and the opposite)
