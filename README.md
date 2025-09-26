@@ -19,13 +19,12 @@ TODO:
         -> Fix servo jitter - hook in servo driver (WITHOUT BURNING IT THIS TIME)
 
 
-        -> Fix lateral error display orientation (in lateral.cpp getErrorMarkers) 
-        -> Graphs are very computationally expensive
         -> Add mpc prediction display
         -> Fix prediction display on Pure Pursuit
         -> Add trajectory scenarios
 
     OPTIONAL:
+    -> Graphs are very computationally expensive
     -> Print some cable organizer to screw on the elecmount2
     -> Tune/tweak Lateral (maybe add some other control parameter to steering)
     -> fix: the car model's movement in rviz is completely fucked the pose to tf is bad

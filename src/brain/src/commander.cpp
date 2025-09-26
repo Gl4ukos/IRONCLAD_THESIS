@@ -270,7 +270,7 @@ int main(int argc, char** argv)
                 case 2:
                     // STANLEY 
                     ctr_lateral.set_target(x_diff, y_diff, yaw_diff);
-                    ctr_lateral.getErrorMarkers(lateral_error_marker, target_yaw_marker, curr_x, curr_y, curr_yaw);
+                    ctr_lateral.getErrorMarkers(target_yaw_marker, lateral_error_marker, curr_x, curr_y, curr_yaw);
                     lateral_error_publisher.publish(lateral_error_marker);
                     target_yaw_publisher.publish(target_yaw_marker);
                     steering = ctr_lateral.calc_steering();

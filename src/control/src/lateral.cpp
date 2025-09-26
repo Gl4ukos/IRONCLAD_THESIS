@@ -66,9 +66,14 @@ int Lateral::getErrorMarkers(visualization_msgs::Marker &target_yaw_marker, visu
 
     // End at lateral error along Y-axis in robot frame
     geometry_msgs::Point end;
-    end.x = r_x + 0;          // along x = 0 (forward)
-    end.y = r_y + target_y;   // lateral error
+    double x_global = r_x + 0;          // along x = 0 (forward)
+    double y_global = r_y + target_y;   // lateral error
     end.z = 0;
+
+
+    //rotating for r_yaw, around the robot
+    end.x = r_x + target_y * (-sin(r_yaw));
+    end.y = r_y + target_y * ( cos(r_yaw));
 
     target_y_marker.points.clear();
     target_y_marker.points.push_back(start);
@@ -77,9 +82,9 @@ int Lateral::getErrorMarkers(visualization_msgs::Marker &target_yaw_marker, visu
     target_y_marker.scale.x = 0.05; // shaft diameter
     target_y_marker.scale.y = 0.1;  // head diameter
     target_y_marker.scale.z = 0.1;  // head length
-    target_y_marker.color.r = 1.0;
-    target_y_marker.color.g = 1.0;
-    target_y_marker.color.b = 0.0;
+    target_y_marker.color.r = 0.8;
+    target_y_marker.color.g = 0.9;
+    target_y_marker.color.b = 0.2;
     target_y_marker.color.a = 1.0;
 
     // ----- Target orientation vector -----
