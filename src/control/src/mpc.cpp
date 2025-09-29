@@ -87,9 +87,17 @@ void Mpc::set_max_speed(double val){
     max_speed = val;
 }
 
-double Mpc::calc_speed_pid(){
+double Mpc::calc_speed_pid(double dt){
     double curr_dist = sqrt(curr_dist_sq);
-    speed_pid = std::max(std::min(max_speed, Kp*curr_dist - Kd*speed_pid),0.0); 
+    double derivative = 0.0;
+
+    if (dt > 1e-6) { // only compute if dt is sane
+            derivative = (curr_dist - pid_prev_error) / dt;
+    }
+    double output = Kp*curr_dist + Kd*derivative;
+    pid_prev_error = curr_dist;
+
+    speed_pid = std::max(std::min(max_speed,output),0.0); 
     return speed_pid;
 }
 

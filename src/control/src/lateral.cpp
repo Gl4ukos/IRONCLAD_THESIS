@@ -27,11 +27,26 @@ double Lateral::clip_speed(double val){
     return std::max(std::min(val,max_speed),0.0);
 }
 
-double Lateral::calc_speed(){
+
+double Lateral::calc_speed(double dt){
     curr_dist = sqrt(curr_dist_sq);
-    speed = Kp*curr_dist - Kd*speed; 
-    return clip_speed(speed);
+
+    double error = curr_dist; 
+    double derivative = 0.0;
+
+        if (dt > 1e-6) { // only compute if dt is sane
+            derivative = (error - prev_error) / dt;
+        }
+
+    // PID output
+    double output = Kp*error + Kd*derivative;
+
+    prev_error = error;
+
+    return clip_speed(output);
 }
+
+
 
 double Lateral::clip_steering(double val){
     return std::max(std::min(val, max_steering), -max_steering);

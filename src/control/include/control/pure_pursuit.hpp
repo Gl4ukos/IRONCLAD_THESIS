@@ -22,6 +22,7 @@ class Pure_pursuit{
     double curr_yaw;
     double curvature;
     double speed;
+    double prev_error;
 
 
 
@@ -33,7 +34,7 @@ class Pure_pursuit{
     void set_max_steer(double new_max);
     double clip_speed(double speed);
     double clip_steering(double steering);
-    double calc_speed();
+    double calc_speed(double dt);
     double calc_steering();
     int get_trajectory(nav_msgs::Path *path_msg, double resolution,double  double_x,double  double_y ,double double_yaw);
     

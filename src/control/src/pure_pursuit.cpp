@@ -28,12 +28,27 @@ double Pure_pursuit::clip_steering(double val) {
     return std::max(std::min(val, max_steering), -max_steering);
 }
 
-
-double Pure_pursuit::calc_speed(){
+double Pure_pursuit::calc_speed(double dt){
     curr_dist = sqrt(curr_dist_sq);
-    speed = Kp*curr_dist - Kd*speed;
-    return clip_speed(speed);
+
+    // Error = how far we are from target distance
+    double error = curr_dist;  // or (desired_dist - curr_dist) if you want convergence
+
+    // Derivative
+    double derivative = 0;
+    
+    if (dt > 1e-6){
+        derivative = (error - prev_error) / dt;
+    }
+
+    // PID output
+    double output = Kp*error + Kd*derivative;
+
+    prev_error = error;
+
+    return clip_speed(output);
 }
+
 
 double Pure_pursuit::calc_steering(){
     curvature = (2*target_y)/curr_dist_sq;

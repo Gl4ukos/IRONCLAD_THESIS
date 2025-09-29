@@ -42,10 +42,12 @@ class Mpc{
     double wheelbase;
     double max_speed;
     double max_steer;
+
     int max_iterations = 40;
     double Kp = 10;
     double Kd = 1;
     double Ki = 0;
+    double pid_prev_error;
 
 
 
@@ -56,7 +58,7 @@ class Mpc{
     double compute_cost(std::vector<double>& steerings, std::vector<double>& velocities);
     double evaluate_cost(std::vector<Command>& control_sequence, State& start);
     Command get_command(State& start);
-    double calc_speed_pid();
+    double calc_speed_pid(double dt);
     void set_max_speed(double val);
     void generate_controls();
     double get_dt();

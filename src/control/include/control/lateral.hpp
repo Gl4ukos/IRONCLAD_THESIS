@@ -21,9 +21,10 @@ class Lateral{
     double curr_yaw;
     double speed;
     double steering;
+    double prev_error;
 
-    double Kp = 4;
-    double Kd = 0.1;
+    double Kp = 8;
+    double Kd = 1;
     double Ki = 0;
 
     public:
@@ -34,7 +35,7 @@ class Lateral{
     void set_max_steering(double val);
     double clip_speed(double val);
     double clip_steering(double val);
-    double calc_speed();
+    double calc_speed(double dt);
     double calc_steering();
     int get_trajectory(nav_msgs::Path *path_msg, double resolution,double  double_x,double  double_y ,double double_yaw);
     int getErrorMarkers(visualization_msgs::Marker &target_yaw_marker, visualization_msgs::Marker &target_y_marker, double r_x, double r_y, double r_yaw);

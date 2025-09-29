@@ -17,7 +17,6 @@ TODO:
         -> Get a battery & charger
         -> Solder a switch on the power distributor
 
-        -> Every second command has 0 speed, this fucks up ironclad's movement
         -> Play with speeds-PID params-Lookaheads and trajectory, get some results on the paper
 
     OPTIONAL:

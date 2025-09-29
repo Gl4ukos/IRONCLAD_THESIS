@@ -199,7 +199,9 @@ int main(int argc, char** argv)
     //         std::cout<<"Calibrating embedded...\n";
     // }
 
-
+    ros::Time now;
+    ros::Time last_time;
+    double dt;
 
     for (int i=0; i<goal_trajectory_msg.poses.size(); i++){
         //selecting current pose-target
@@ -271,7 +273,7 @@ int main(int argc, char** argv)
                     //speed= std::min(std::max(mpc_command.vel, MIN_SPEED_MPC),MAX_SPEED_MPC);
                     
                     //speed from pid
-                    speed = ctr_mpc.calc_speed_pid();
+                    speed = ctr_mpc.calc_speed_pid(dt);
 
                     if(abs(steering) == MAX_STEER){
                         std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
@@ -282,7 +284,11 @@ int main(int argc, char** argv)
                     // PURE PURSUIT
                     ctr_pure_pursuit.set_target(x_diff, y_diff);
                     steering = ctr_pure_pursuit.calc_steering();
-                    speed = ctr_pure_pursuit.calc_speed();
+                    now = ros::Time::now();
+                    dt = (now - last_time).toSec();
+                    last_time = now;
+                    speed = ctr_pure_pursuit.calc_speed(dt);
+
                     if(abs(steering) == MAX_STEER){
                         std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
@@ -295,9 +301,11 @@ int main(int argc, char** argv)
                     lateral_error_publisher.publish(lateral_error_marker);
                     target_yaw_publisher.publish(target_yaw_marker);
                     steering = ctr_lateral.calc_steering();
-                    speed = ctr_pure_pursuit.calc_speed();
+                    now = ros::Time::now();
+                    dt = (now - last_time).toSec();
+                    last_time = now;
+                    speed = ctr_lateral.calc_speed(dt);
                     if(steering == MAX_STEER){
-                        speed = MAX_SPEED;
                         std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
                     //ctr_lateral.get_trajectory(&path_msg, 20, curr_x, curr_y, curr_yaw);
