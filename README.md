@@ -13,9 +13,9 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> ! BEFORE TESTING HARDWARE: Adsend_speed_by_indexd some system to check for speed and steer value compatibility
         -> Get a battery & charger
         -> Solder a switch on the power distributor
+        -> Add some stabilizer on the servo and steer knuckles
 
         -> Play with speeds-PID params-Lookaheads and trajectory, get some results on the paper
 
