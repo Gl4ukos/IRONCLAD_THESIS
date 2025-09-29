@@ -67,6 +67,8 @@ visualization_msgs/Marker.h
 -
 visualization_msgs/MarkerArray.h
 -
+cmath
+-
 
 /home/maria/ironclad_ws/src/control/include/control/lateral.hpp
 ros/ros.h

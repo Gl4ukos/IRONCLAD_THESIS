@@ -16,6 +16,7 @@
 #include "command_transmitter.cpp"
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <cmath>
 
 // GENERAL PARAMETERS
 int BOOST = 1;
@@ -111,7 +112,8 @@ int main(int argc, char** argv)
     ros::Publisher target_yaw_publisher = nh.advertise<visualization_msgs::Marker>("/commander/target_yaw_marker", 1);
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
-    CommandTransmitter transmitter("139.91.62.145",5005);
+    CommandTransmitter transmitter("139.91.61.63",5005);
+
     command_publishers sim_pubs(nh);
 
     //setting up executed path msg
@@ -174,17 +176,29 @@ int main(int argc, char** argv)
     
     ros::Time start_time = ros::Time::now();
 
+    double max_speed_for_embedded =0.0;
     switch(controller_mode){
         case 1:
             LOOKAHEAD = LOOKAHEAD_PP;
+            max_speed_for_embedded = MAX_SPEED_PP;
             break;
         case 2:
             LOOKAHEAD = LOOKAHEAD_LAT;
+            max_speed_for_embedded = MAX_SPEED_LAT;
             break;
         case 3:
             LOOKAHEAD = LOOKAHEAD_MPC;
+            max_speed_for_embedded = MAX_SPEED_MPC;
             break;
     }
+
+    // // transmitting max speed to embedded:
+    // for(int k=0; k<3; k++){
+    //         transmitter.send_command(max_speed_for_embedded, 999); //the embedded system will look for a "999" steering transmittion to identify that its for the max speed
+    //         sleep(1);
+    //         std::cout<<"Calibrating embedded...\n";
+    // }
+
 
 
     for (int i=0; i<goal_trajectory_msg.poses.size(); i++){
@@ -297,15 +311,19 @@ int main(int argc, char** argv)
             //transmitting command
             transmitter.send_command(speed, steering);
         
+            // (redundant) for debugging
+            // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
+            //std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
+            //double degrees = steering * (180.0 / M_PI);
+            std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
+
+
+
             // this one may be redundant
             target_pose_msg.header.stamp = ros::Time::now();
             target_pose_pub.publish(target_pose_msg);
             path_publisher.publish(path_msg);
         
-            // (redundant) for debugging
-            // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
-            //std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
-            //std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
 
             // updating target position
             //x and y distances rotated so the car is like heading to 0 angle
