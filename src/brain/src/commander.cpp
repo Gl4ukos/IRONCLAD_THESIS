@@ -84,7 +84,6 @@ int load_trajectory(nav_msgs::Path &trajectory, std::string filepath){
     return 0;
 }
 
-
 double eucl_dist(double t_x,double t_y){
     return sqrt(t_x*t_x + t_y*t_y);
 }
@@ -112,7 +111,7 @@ int main(int argc, char** argv)
     ros::Publisher target_yaw_publisher = nh.advertise<visualization_msgs::Marker>("/commander/target_yaw_marker", 1);
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
-    CommandTransmitter transmitter("139.91.61.63",5005);
+    CommandTransmitter transmitter("10.234.190.77",5005);
 
     command_publishers sim_pubs(nh);
 
@@ -202,6 +201,7 @@ int main(int argc, char** argv)
     ros::Time now;
     ros::Time last_time;
     double dt;
+    double iter_delay = 0.0;
 
     for (int i=0; i<goal_trajectory_msg.poses.size(); i++){
         //selecting current pose-target
@@ -339,6 +339,7 @@ int main(int argc, char** argv)
             y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
             yaw_diff = target_yaw - curr_yaw;
             ros::spinOnce();
+            sleep(iter_delay);
         }
     }
     ros::Time end_time = ros::Time::now();
@@ -349,9 +350,9 @@ int main(int argc, char** argv)
     sleep(0.5);
     std::cout<<"ZEROING SPEED\n";
 
-    for(int o=0; o<4; o++){ //will this thing fucking stop?
+    for(int o=0; o<10; o++){ //will this thing fucking stop?
         transmitter.send_command(0, 0);
-        sleep(0.5);
+        sleep(0.2);
     }
     transmitter.send_command(0, 0);
     sleep(0.2);

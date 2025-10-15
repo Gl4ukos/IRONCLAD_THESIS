@@ -4,7 +4,7 @@ import time
 import math
 import sys, select, termios, tty
 
-RPI_IP   = "139.91.61.63"
+RPI_IP   = "139.91.61.87"
 RPI_PORT = 5005
 
 # Initial commands

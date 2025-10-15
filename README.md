@@ -13,11 +13,11 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> Get a battery & charger
-        -> Solder a switch on the power distributor
-        -> Add some stabilizer on the servo and steer knuckles
+        -> print a new engine cog
+        -> print a bumper
 
         -> Play with speeds-PID params-Lookaheads and trajectory, get some results on the paper
+        -> Play with values for the physical thing as well
 
     OPTIONAL:
     -> Graphs are very computationally expensive
