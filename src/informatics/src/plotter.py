@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 import sys
-
+from time import sleep
 
 class POSE_SEQUENCE:
     def __init__(self):
@@ -139,3 +139,5 @@ plt.axis('equal')
 
 plt.legend()
 plt.show()
+
+

@@ -65,7 +65,7 @@ print(len(x), len(headings))
 
 # Plot
 plt.plot(trajectory[:, 1], trajectory[:, 0], 'ro--', label='waypoints')
-plt.plot(y, x, 'b-', label='spline path')
+plt.plot(y, x, 'b-', label='Interpolated path')
 plt.axis('equal')
 plt.legend()
 plt.show()

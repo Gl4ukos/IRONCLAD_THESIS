@@ -3,7 +3,7 @@
   <param name="robot_description"
          command="$(find xacro)/xacro '$(find ackermann_simulation)/urdf/ackermann_car.urdf.xacro'" />
 
-  <!--  Start Gazebo with an empty world -->
+  <!--  Start Gazebo -->
   <arg name="generated_world" default="$(find ackermann_simulation)/sdf/trajectory_world.sdf"/>
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg generated_world)"/>

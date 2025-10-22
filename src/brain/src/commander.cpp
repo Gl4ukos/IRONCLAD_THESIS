@@ -28,7 +28,7 @@ int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
 
 // PURE PURSUIT PARAMETERS
-double LOOKAHEAD_PP = 2.0;
+double LOOKAHEAD_PP = 0.2;
 double MAX_SPEED_PP = 30.0;
 double MIN_SPEED_PP = 2.0;
 double MAX_STEER_PP = 0.75;
@@ -314,14 +314,14 @@ int main(int argc, char** argv)
 
         
             //publishing command
-            sim_pubs.publishVelocity(speed);
-            sim_pubs.publishSteering(steering);
+            //sim_pubs.publishVelocity(speed);
+            //sim_pubs.publishSteering(steering);
             //transmitting command
             transmitter.send_command(speed, steering);
         
             // (redundant) for debugging
-            // std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
-            //std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
+            std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
+            std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";
             //double degrees = steering * (180.0 / M_PI);
             std::cout<<"published velocity: "<<speed<<" steering:"<<steering<<"\n\n";
 
