@@ -13,8 +13,12 @@ Requirements:
 TODO:
 
     BASELINE:
+        -> Add correct wheelbase
+
         -> Play with speeds-PID params-Lookaheads and trajectory, get some results on the paper
         -> Play with values for the physical thing as well
+
+        
 
     OPTIONAL:
     -> Graphs are very computationally expensive

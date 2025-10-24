@@ -28,7 +28,7 @@ int BOOST = 1;
 double LOOKAHEAD = 0.0;
 double MAX_SPEED = 10.0;
 double MAX_STEER = 0.70;
-double wheelbase = 1.0; //! probably not true  
+double wheelbase = 1.0; //! probably not true (its 0.23, it was 1.0)
 int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
 
