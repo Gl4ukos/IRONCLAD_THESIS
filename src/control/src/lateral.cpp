@@ -53,7 +53,7 @@ double Lateral::clip_steering(double val){
 }
 
 double Lateral::calc_steering(){
-    double k= 0.5;
+    double k= 40;
     if(speed>0){
         steering = target_yaw + atan2(k*target_y,speed);
     }else{

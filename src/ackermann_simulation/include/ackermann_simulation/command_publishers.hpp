@@ -17,12 +17,17 @@ public:
     void publishSteering(double steer);
 
     void reset_position();
+    double get_published_speed();
+    double get_published_steering();
 
     ros::ServiceClient set_model_state_client;
 
 private:
     ros::Publisher velocity_pub;
     ros::Publisher steering_pub;
+
+    double speed;
+    double steering;
 
     std_msgs::Float64MultiArray vel_cmd;
     std_msgs::Float64MultiArray steer_cmd;

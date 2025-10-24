@@ -17,6 +17,11 @@
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <cmath>
+#include <std_msgs/Float64.h>
+#include <std_msgs/Float64MultiArray.h>
+
+
+std::string IP_FROM_SPARK = "10.234.190.31";
 
 // GENERAL PARAMETERS
 int BOOST = 1;
@@ -28,7 +33,7 @@ int controller_mode =0;
 double curr_x, curr_y, curr_z, curr_yaw;
 
 // PURE PURSUIT PARAMETERS
-double LOOKAHEAD_PP = 0.2;
+double LOOKAHEAD_PP = 2.0;
 double MAX_SPEED_PP = 30.0;
 double MIN_SPEED_PP = 2.0;
 double MAX_STEER_PP = 0.75;
@@ -111,7 +116,7 @@ int main(int argc, char** argv)
     ros::Publisher target_yaw_publisher = nh.advertise<visualization_msgs::Marker>("/commander/target_yaw_marker", 1);
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
-    CommandTransmitter transmitter("10.234.190.77",5005);
+    CommandTransmitter transmitter("10.234.190.31",5005);
 
     command_publishers sim_pubs(nh);
 
@@ -203,6 +208,10 @@ int main(int argc, char** argv)
     double dt;
     double iter_delay = 0.0;
 
+    int demo_iter =0;
+    double demo_speed =15;
+    double demo_steering=75;
+
     for (int i=0; i<goal_trajectory_msg.poses.size(); i++){
         //selecting current pose-target
         goal_trajectory_msg.poses[i].header.frame_id = "world";
@@ -263,6 +272,11 @@ int main(int argc, char** argv)
             anal_total_path_yaw.push_back(curr_yaw);
 
             switch(controller_mode){
+                case 4:
+                    //teleop
+                    //speed = 0;
+                    //steering = 0;
+                    break;
                 case 3:
                     // MPC
                     sleep(ctr_mpc.get_dt());
@@ -314,11 +328,40 @@ int main(int argc, char** argv)
 
         
             //publishing command
-            //sim_pubs.publishVelocity(speed);
-            //sim_pubs.publishSteering(steering);
-            //transmitting command
+            sim_pubs.publishVelocity(speed);
+            sim_pubs.publishSteering(steering);
+            
+            // transmitter.send_command(demo_speed, demo_steering);
+            // sleep(10);
+            // transmitter.send_command(demo_speed, -demo_steering);
+            // sleep(10);
+
             transmitter.send_command(speed, steering);
-        
+            //transmitting published command
+
+
+            // ONLY IF TELEOPERATED
+            //extracting command from publisher of teleop
+            // boost::shared_ptr<const std_msgs::Float64MultiArray> msg_ptr;
+            // msg_ptr = ros::topic::waitForMessage<std_msgs::Float64MultiArray>(
+            //     "/ack/front_steering_controller/command", nh);
+
+            // double published_steering = 0.0;
+            // if(!msg_ptr->data.empty())
+            //     published_steering = msg_ptr->data[0];
+
+            // boost::shared_ptr<const std_msgs::Float64MultiArray> msg_ptr2;
+            // msg_ptr2 = ros::topic::waitForMessage<std_msgs::Float64MultiArray>(
+            //     "/ack/rear_drive_controller/command", nh);
+            // double published_speed = 0.0;
+            // if(!msg_ptr2->data.empty())
+            //     published_speed = msg_ptr2->data[0];
+
+            // Get the float value
+            //double published_steering = msg_ptr->data;
+
+            //transmitter.send_command(published_speed, published_steering);
+
             // (redundant) for debugging
             std::cout<<"coords: "<<curr_x<<","<<curr_y<<" yaw: "<<curr_yaw<<"\n";
             std::cout<<"target: "<<x_diff<<", "<<y_diff<<"\n";

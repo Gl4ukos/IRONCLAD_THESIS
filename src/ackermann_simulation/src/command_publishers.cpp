@@ -16,6 +16,7 @@ command_publishers::command_publishers(ros::NodeHandle& nh)
 
 void command_publishers::publishSteering(double steer)
 {  
+    steering = steer;
     steer_cmd.data[0] = steer;
     steer_cmd.data[1] = steer;
     steering_pub.publish(steer_cmd);
@@ -23,9 +24,17 @@ void command_publishers::publishSteering(double steer)
 
 void command_publishers::publishVelocity(double vel)
 {
+    speed = vel;
     vel_cmd.data[0] = vel;
     vel_cmd.data[1] = vel;
     velocity_pub.publish(vel_cmd);
+}
+
+double command_publishers::get_published_speed(){
+    return speed;
+}
+double command_publishers::get_published_steering(){
+    return steering;
 }
 
 
