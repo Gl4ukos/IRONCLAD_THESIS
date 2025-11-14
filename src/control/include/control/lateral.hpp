@@ -23,6 +23,7 @@ class Lateral{
     double steering;
     double prev_error;
 
+    double k= 1.0;
     double Kp = 8;
     double Kd = 1;
     double Ki = 0;

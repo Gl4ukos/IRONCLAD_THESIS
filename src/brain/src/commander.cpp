@@ -19,9 +19,11 @@
 #include <cmath>
 #include <std_msgs/Float64.h>
 #include <std_msgs/Float64MultiArray.h>
+#include <thread>
+#include <chrono>
 
 
-std::string IP_FROM_SPARK = "10.234.190.31";
+std::string MACHINES_IP = "192.168.88.237";
 
 // GENERAL PARAMETERS
 int BOOST = 1;
@@ -40,7 +42,7 @@ double MAX_STEER_PP = 0.75;
 
 // STANLEY PARAMETERS
 double LOOKAHEAD_LAT = 1.0;
-double MAX_SPEED_LAT = 10.0;
+double MAX_SPEED_LAT = 20.0;
 double MIN_SPEED_LAT = 2.0;
 double MAX_STEER_LAT = 0.70;
 
@@ -94,11 +96,11 @@ double eucl_dist(double t_x,double t_y){
 }
 
 void update_pose(nav_msgs::Odometry msg){
-    curr_x = msg.pose.pose.position.x;
-    curr_y = msg.pose.pose.position.y;
+    curr_x = msg.pose.pose.position.x;// + ((float)rand() / RAND_MAX) * 4.0f - 2.0f;
+    curr_y = msg.pose.pose.position.y;// + ((float)rand() / RAND_MAX) * 4.0f - 2.0f;
     curr_z = msg.pose.pose.position.z; 
 
-    curr_yaw = tf2::getYaw(msg.pose.pose.orientation);
+    curr_yaw = tf2::getYaw(msg.pose.pose.orientation);// + ((float)rand() / RAND_MAX) * 2.0f - 1.0f;
 }
 
 int main(int argc, char** argv)
@@ -116,7 +118,7 @@ int main(int argc, char** argv)
     ros::Publisher target_yaw_publisher = nh.advertise<visualization_msgs::Marker>("/commander/target_yaw_marker", 1);
     ros::Subscriber odometry = nh.subscribe("/pose", 10, update_pose);
 
-    CommandTransmitter transmitter("10.234.190.31",5005);
+    CommandTransmitter transmitter(MACHINES_IP,5005);
 
     command_publishers sim_pubs(nh);
 
@@ -202,11 +204,11 @@ int main(int argc, char** argv)
     //         sleep(1);
     //         std::cout<<"Calibrating embedded...\n";
     // }
-
     ros::Time now;
     ros::Time last_time;
     double dt;
-    double iter_delay = 0.0;
+    int iter_delay = 00; // in milliseconds
+ 
 
     int demo_iter =0;
     double demo_speed =15;
@@ -288,7 +290,8 @@ int main(int argc, char** argv)
                     
                     //speed from pid
                     speed = ctr_mpc.calc_speed_pid(dt);
-
+                    speed = std::max(speed, MIN_SPEED_MPC);
+                    
                     if(abs(steering) == MAX_STEER){
                         std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
@@ -302,6 +305,7 @@ int main(int argc, char** argv)
                     dt = (now - last_time).toSec();
                     last_time = now;
                     speed = ctr_pure_pursuit.calc_speed(dt);
+                    speed = std::max(speed, MIN_SPEED_PP);
 
                     if(abs(steering) == MAX_STEER){
                         std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
@@ -319,6 +323,10 @@ int main(int argc, char** argv)
                     dt = (now - last_time).toSec();
                     last_time = now;
                     speed = ctr_lateral.calc_speed(dt);
+
+                    // faster goddamnit
+                    speed = std::max(speed, MIN_SPEED_LAT);
+
                     if(steering == MAX_STEER){
                         std::cout<<"WARN: MAX STEER REACHED \tMAY STALL\n";
                     }
@@ -336,6 +344,7 @@ int main(int argc, char** argv)
             // transmitter.send_command(demo_speed, -demo_steering);
             // sleep(10);
 
+            
             transmitter.send_command(speed, steering);
             //transmitting published command
 
@@ -382,7 +391,7 @@ int main(int argc, char** argv)
             y_diff = std::sin(-curr_yaw) * (target_x - curr_x) + std::cos(-curr_yaw) * (target_y - curr_y);
             yaw_diff = target_yaw - curr_yaw;
             ros::spinOnce();
-            sleep(iter_delay);
+            std::this_thread::sleep_for(std::chrono::milliseconds(iter_delay));
         }
     }
     ros::Time end_time = ros::Time::now();

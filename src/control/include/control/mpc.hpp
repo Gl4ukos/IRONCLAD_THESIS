@@ -38,7 +38,7 @@ class Mpc{
     
     //hyperparameters
     size_t horizon=3;
-    double dt =0.2;
+    double dt =0.1;
     double wheelbase;
     double max_speed;
     double max_steer;

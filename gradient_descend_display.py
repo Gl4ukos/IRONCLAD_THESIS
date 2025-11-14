@@ -26,6 +26,10 @@ def ackermann_cost(v_, delta_):
     vel_term = w_v * (v_ - v_ref)**2
     return vel_term + steer_term + stability_term
 
+
+
+
+
 J = ackermann_cost(V, D)
 
 def grad_cost(v_, delta_):
@@ -79,16 +83,22 @@ ax.legend()
 ax.view_init(elev=35, azim=-60)
 
 def update(frame):
-    # frame runs from 0..len(path_v)-1 ; show up to that step
+    # update GD path
     line.set_data(path_v[:frame], path_d[:frame])
     line.set_3d_properties(path_J[:frame])
-    # plot current point
     point.set_data([path_v[frame]], [path_d[frame]])
     point.set_3d_properties([path_J[frame]])
+    
+    # rotate camera
+    azim = -60 + frame * 2  # change 2 to adjust rotation speed
+    ax.view_init(elev=35, azim=azim)
+    
     return line, point
+
 
 anim = FuncAnimation(fig, update, frames=len(path_v), interval=200, blit=True)
 
 
 plt.tight_layout()
+
 plt.show()

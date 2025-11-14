@@ -46,16 +46,21 @@ double Lateral::calc_speed(double dt){
     return clip_speed(output);
 }
 
-
+static inline double wrapAngle(double a)
+{
+    while (a > M_PI)  a -= 2.0 * M_PI;
+    while (a < -M_PI) a += 2.0 * M_PI;
+    return a;
+}
 
 double Lateral::clip_steering(double val){
     return std::max(std::min(val, max_steering), -max_steering);
 }
 
 double Lateral::calc_steering(){
-    double k= 40;
+    
     if(speed>0){
-        steering = target_yaw + atan2(k*target_y,speed);
+        steering = wrapAngle(target_yaw) + atan2(k*target_y, std::max(speed, 0.5));
     }else{
         steering =0;
     }

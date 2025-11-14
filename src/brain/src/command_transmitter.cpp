@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <iostream>
 #include "ros/ros.h"
+#include <fcntl.h>
 
 class CommandTransmitter {
 public:
@@ -15,6 +16,9 @@ public:
             perror("socket creation failed");
             exit(EXIT_FAILURE);
         }
+
+        int flags = fcntl(sock, F_GETFL, 0);
+        fcntl(sock, F_SETFL, flags | O_NONBLOCK); //makes it non blocking
 
         memset(&server_addr, 0, sizeof(server_addr));
         server_addr.sin_family = AF_INET;

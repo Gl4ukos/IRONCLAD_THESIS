@@ -13,19 +13,13 @@ Requirements:
 TODO:
 
     BASELINE:
-        -> Add correct wheelbase
 
-        -> Play with speeds-PID params-Lookaheads and trajectory, get some results on the paper
-        -> Play with values for the physical thing as well
-
+    -> Setup the track, and use Ironclad on it. Get some photos and add to report.
         
 
     OPTIONAL:
-    -> Graphs are very computationally expensive
-    -> Print some cable organizer to screw on the elecmount2
     -> fix: the car model's movement in rviz is completely fucked the pose to tf is bad
     -> Make model more realistic, use urdf from Fusion
-    -> Make a second tcp connection to take the time and calibrate the ironclad's speed
 
     ! NOTES:
     -> MPC:
