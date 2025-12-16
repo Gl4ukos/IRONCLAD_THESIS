@@ -6,6 +6,10 @@ import math
 import sys
 from time import sleep
 
+
+dimension_modifier = 1/2 # to convert to real size
+
+
 class POSE_SEQUENCE:
     def __init__(self):
         self.x_list = []
@@ -94,15 +98,23 @@ controller_type = sys.argv[1]
 PLAN = load_pose_sequence_from_csv("src/informatics/pose_sequences/PLAN.csv")
 title = ""
 anal_trajectory_filename = ""
+means_filename = ""
+controller_name = ""
 if controller_type == "1":
     anal_trajectory_filename += "src/informatics/pose_sequences/PP_TRAJ_ANAL.csv"
     title = "Pure Pursuit trajectory deviation"
+    means_filename = "src/informatics/data/PP_means.txt"
+    controller_name = "Pure Pursuit"
 elif controller_type == "2": 
     title = "Lateral trajectory deviation"
     anal_trajectory_filename += "src/informatics/pose_sequences/LAT_TRAJ_ANAL.csv"
+    means_filename = "src/informatics/data/LAT_means.txt"
+    controller_name = "Stanley"
 elif controller_type == "3":
     title = "MPC trajectory deviation"
     anal_trajectory_filename += "src/informatics/pose_sequences/MPC_TRAJ_ANAL.csv"
+    means_filename = "src/informatics/data/MPC_means.txt"
+    controller_name = "MPC"
 else:
     print("Cant load trajectory")
     print("controller type: ", controller_type)
@@ -112,16 +124,34 @@ ANALYTICAL_TRAJECTORY = load_pose_sequence_from_csv(anal_trajectory_filename)
 anal_traj_dev, sampled_traj = analytical_deviation_calculator(PLAN, ANALYTICAL_TRAJECTORY)
 
 
-plt.figure()
-plt.bar([i for i in range(len(anal_traj_dev))], anal_traj_dev, color = 'red')
-plt.title("mean deviation (per target): " + str(str(statistics.mean(anal_traj_dev))))
 
 
 plt.figure()
-plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color='k', markersize = 0.1)
-plt.plot(ANALYTICAL_TRAJECTORY.y_list, ANALYTICAL_TRAJECTORY.x_list, marker='x', linestyle = '-', color = 'r', markersize=0)
+scaled_anal_traj_dev = [x * (0.8) for x in anal_traj_dev]
+plt.bar([i for i in range(len(anal_traj_dev))], scaled_anal_traj_dev, color = 'red')
+plt.title(controller_name +" controller. Mean deviation " + str(str(round(statistics.mean(scaled_anal_traj_dev),3))) + "m")
+plt.xlabel("Deviation (m)")
+plt.ylabel("Target point indices")
+
+#storing the mean of deviation for later
+with open(means_filename, "a") as f:
+    f.write(f"{statistics.mean(scaled_anal_traj_dev)}\n")
+
+
+plt.figure()
+scaled_plan_x_list = [x * (1) for x in PLAN.x_list]
+flipped_plan_y_list = [x * (-1) for x in PLAN.y_list]
+plt.plot(flipped_plan_y_list, scaled_plan_x_list, marker='o', linestyle='-', color='k', markersize = 0.1)
+
+
+scaled_traj_x_list = [x * (1) for x in ANALYTICAL_TRAJECTORY.x_list]
+flipped_traj_y_list = [x *(-1) for x in ANALYTICAL_TRAJECTORY.y_list]
+plt.plot(flipped_traj_y_list, scaled_traj_x_list, marker='x', linestyle = '-', color = 'r', markersize=0)
 plt.title("plan & trajectory")
 plt.axis('equal') 
+plt.xlabel("Y coordinates")
+plt.ylabel("X coordinates")
+
 
 plt.figure()
 plt.plot(PLAN.y_list, PLAN.x_list, marker='o', linestyle='-', color="gray", markersize = 0.1)

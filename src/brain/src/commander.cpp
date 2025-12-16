@@ -36,20 +36,20 @@ double curr_x, curr_y, curr_z, curr_yaw;
 
 // PURE PURSUIT PARAMETERS
 double LOOKAHEAD_PP = 2.0;
-double MAX_SPEED_PP = 30.0;
-double MIN_SPEED_PP = 2.0;
+double MAX_SPEED_PP = 45.0;
+double MIN_SPEED_PP = 40.0;
 double MAX_STEER_PP = 0.75;
 
 // STANLEY PARAMETERS
-double LOOKAHEAD_LAT = 1.0;
-double MAX_SPEED_LAT = 20.0;
-double MIN_SPEED_LAT = 2.0;
+double LOOKAHEAD_LAT = 1.00;
+double MAX_SPEED_LAT = 40.0;
+double MIN_SPEED_LAT = 35.0;
 double MAX_STEER_LAT = 0.70;
 
 // MPC PARAMETERS
-double LOOKAHEAD_MPC = 1.0;
-double MAX_SPEED_MPC = 30.0;
-double MIN_SPEED_MPC = 1.0;
+double LOOKAHEAD_MPC = 2.0;
+double MAX_SPEED_MPC = 50.0;
+double MIN_SPEED_MPC = 45.0;
 double MAX_STEER_MPC = 0.75;
 
 
@@ -160,7 +160,7 @@ int main(int argc, char** argv)
     Pure_pursuit ctr_pure_pursuit(wheelbase, MAX_SPEED_PP, MAX_STEER_PP);
     
     //setting up stanley controller
-    Lateral ctr_lateral(wheelbase, MAX_SPEED, MAX_STEER);
+    Lateral ctr_lateral(wheelbase, MAX_SPEED_LAT, MAX_STEER);
     visualization_msgs::Marker lateral_error_marker;
     visualization_msgs::Marker target_yaw_marker;
 
@@ -402,7 +402,7 @@ int main(int argc, char** argv)
     sleep(0.5);
     std::cout<<"ZEROING SPEED\n";
 
-    for(int o=0; o<10; o++){ //will this thing fucking stop?
+    for(int o=0; o<20; o++){ //will this thing ever fucking stop?
         transmitter.send_command(0, 0);
         sleep(0.2);
     }
@@ -416,16 +416,19 @@ int main(int argc, char** argv)
     std::cout<<"SAVING TRAJECTORY...\n";
     
     std::string final_anal_traj_filename= "";
-    
+    std::string time_log_filename = "";
     switch(controller_mode){
         case 1:
             final_anal_traj_filename = "src/informatics/pose_sequences/PP_TRAJ_ANAL.csv";
+            time_log_filename = "src/informatics/data/PP_time_log.txt";
             break;
         case 2:
             final_anal_traj_filename = "src/informatics/pose_sequences/LAT_TRAJ_ANAL.csv";
+            time_log_filename = "src/informatics/data/LAT_time_log.txt";
             break;
         case 3:
             final_anal_traj_filename = "src/informatics/pose_sequences/MPC_TRAJ_ANAL.csv";
+            time_log_filename = "src/informatics/data/MPC_time_log.txt";
             break;            
     }
 
@@ -447,6 +450,12 @@ int main(int argc, char** argv)
     sim_pubs.reset_position();
     curr_x=0;
     curr_y=0;
+
+
+    std::ofstream file(time_log_filename, std::ios::app); // append mode
+    file << duration << '\n';
+    file.close();
+
 
     //make sure to remove the analytics bc they are too big for github
     cmd = "rm -rf "+ final_anal_traj_filename;
