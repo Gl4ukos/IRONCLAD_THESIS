@@ -36,20 +36,20 @@ double curr_x, curr_y, curr_z, curr_yaw;
 
 // PURE PURSUIT PARAMETERS
 double LOOKAHEAD_PP = 2.0;
-double MAX_SPEED_PP = 45.0;
-double MIN_SPEED_PP = 40.0;
+double MAX_SPEED_PP = 30.0;
+double MIN_SPEED_PP = 10.0;
 double MAX_STEER_PP = 0.75;
 
 // STANLEY PARAMETERS
 double LOOKAHEAD_LAT = 1.00;
-double MAX_SPEED_LAT = 40.0;
-double MIN_SPEED_LAT = 35.0;
+double MAX_SPEED_LAT = 30.0;
+double MIN_SPEED_LAT = 10.0;
 double MAX_STEER_LAT = 0.70;
 
 // MPC PARAMETERS
 double LOOKAHEAD_MPC = 2.0;
-double MAX_SPEED_MPC = 50.0;
-double MIN_SPEED_MPC = 45.0;
+double MAX_SPEED_MPC = 40.0;
+double MIN_SPEED_MPC = 30.0;
 double MAX_STEER_MPC = 0.75;
 
 
@@ -444,8 +444,8 @@ int main(int argc, char** argv)
 
     sleep(1);
     std::cout<<"DISPLAYING RESULTS...\n";
-    std::string cmd = "python3 src/informatics/src/plotter.py "+ std::to_string(controller_mode);
-    std::system(cmd.c_str());
+    //std::string cmd = "python3 src/informatics/src/plotter.py "+ std::to_string(controller_mode);
+    //std::system(cmd.c_str());
 
     sim_pubs.reset_position();
     curr_x=0;
@@ -458,8 +458,8 @@ int main(int argc, char** argv)
 
 
     //make sure to remove the analytics bc they are too big for github
-    cmd = "rm -rf "+ final_anal_traj_filename;
-    std::system(cmd.c_str());
+    //cmd = "rm -rf "+ final_anal_traj_filename;
+    //std::system(cmd.c_str());
 
     return 0;
 }

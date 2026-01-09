@@ -8,8 +8,8 @@ W_d = 7.0
 W_h = 1.0
 W_e = 2.0
 l = 1.0
-x_target = -2.0
-y_target =3.1
+x_target = 5.0
+y_target = 3.1
 theta_target = 0.0
 
 # ----- Cost function -----
@@ -36,7 +36,7 @@ C = cost(V, S)
 # ----- Parameters -----
 alpha_v = 1.0     # step size in velocity units (discrete)
 alpha_s = 0.05    # step size in steering units (discrete)
-steps = 200
+steps = 20
 
 v_path = [0.0]
 s_path = [0.0]
@@ -103,7 +103,7 @@ def update(frame):
     return point, path_line
 
 
-ani = FuncAnimation(fig, update, frames=360, interval=50, blit=False)
+ani = FuncAnimation(fig, update, frames=360, interval=500, blit=False)
 
 ani.event_source.stop()
 plt.show()
