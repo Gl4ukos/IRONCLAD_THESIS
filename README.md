@@ -1,3 +1,6 @@
+This is the ROS package where Pure pursuit, Stanley, MPC algorithms are implemented for the control of Ironclad.
+This package is also responsible for Simulating the movement in various test scenarios and also for transmitting the control commands to the physical Ironclad itself so it follows them in a real life test scenario
+
 Requirements:
 
     ->ROS NOETIC
